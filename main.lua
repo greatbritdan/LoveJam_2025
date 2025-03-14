@@ -5,6 +5,7 @@ function love.load()
     love.graphics.setFont(Font)
 
     FrameImg = love.graphics.newImage("graphics/frame.png")
+    DoorImg = love.graphics.newImage("graphics/door.png")
 
     -- Load Libraries --
     Class = require("libs.middleclass")
@@ -21,6 +22,7 @@ function love.load()
     OBJECTS = {}
     require("class.base")
     require("class.player")
+    require("class.misc")
 
     SCENE:LoadScene("game")
 end

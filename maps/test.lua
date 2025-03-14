@@ -9,7 +9,7 @@ return {
   tilewidth = 16,
   tileheight = 16,
   nextlayerid = 3,
-  nextobjectid = 5,
+  nextobjectid = 7,
   properties = {},
   tilesets = {
     {
@@ -67,10 +67,10 @@ return {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
+        0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
@@ -103,42 +103,38 @@ return {
           properties = {}
         },
         {
-          id = 2,
-          name = "",
-          type = "ground",
-          shape = "rectangle",
-          x = 160,
-          y = 144,
-          width = 80,
-          height = 16,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["oneway"] = "up"
-          }
-        },
-        {
-          id = 3,
-          name = "",
-          type = "ground",
-          shape = "rectangle",
-          x = 96,
-          y = 176,
-          width = 48,
-          height = 16,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["oneway"] = "up"
-          }
-        },
-        {
           id = 4,
           name = "",
           type = "player",
           shape = "rectangle",
           x = 16,
           y = 192,
+          width = 16,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 5,
+          name = "",
+          type = "ground",
+          shape = "rectangle",
+          x = 128,
+          y = 176,
+          width = 128,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 6,
+          name = "",
+          type = "exit",
+          shape = "rectangle",
+          x = 208,
+          y = 160,
           width = 16,
           height = 16,
           rotation = 0,

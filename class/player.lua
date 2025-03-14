@@ -1,6 +1,7 @@
 local player = Class("player",OBJECTS.box)
 function player:initialize(world,x,y,w,h)
     OBJECTS.box.initialize(self,world,x,y,w,h,{gravity=128})
+    self.class = "player"
     self.startX, self.startY = x, y
     self.started = false
 end

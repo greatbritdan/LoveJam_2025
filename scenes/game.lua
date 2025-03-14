@@ -7,6 +7,8 @@ local loadobject = function(data)
         local player = OBJECTS.player:new(GAME.WORLD,data.X,data.Y,16,16)
         if not GAME.PLAYER then GAME.PLAYER = player end
         return player
+    elseif data.class == "exit" then
+        return OBJECTS.exit:new(GAME.WORLD,data.X,data.Y,data.W,data.H)
     end
 end
 
@@ -21,11 +23,14 @@ function scene.LoadScene()
     GAME.MAPPOS = {X=8,Y=8}
 
     GAME.CHIPS = {}
+
+    GAME.ALLOWEDCHIPS = {jump=2,move_left=2,move_right=2}
+    GAME.USEDCHIPS = {jump=0,move_left=0,move_right=0}
 end
 function scene.Update(dt)
     GAME.MAP:GetLayer("Objects"):LoopThrough(function(data)
         if data.obj.update then data.obj:update(dt) end
-        data.obj:updatePhysics(dt)
+        if data.obj.updatePhysics then data.obj:updatePhysics(dt) end
     end)
 end
 function scene.Draw()
@@ -37,7 +42,10 @@ function scene.Draw()
     end)
 
     GAME.MAP:GetLayer("Objects"):LoopThrough(function(data)
-        if data.obj.draw then data.obj:draw() end
+        if data.obj.class == "exit" then data.obj:draw() end
+    end)
+    GAME.MAP:GetLayer("Objects"):LoopThrough(function(data)
+        if data.obj.class == "player" then data.obj:draw() end
     end)
 
     if GAME.PLAYER.started then return end
@@ -61,16 +69,22 @@ end
 
 function scene.Mousepressed(mx,my,b)
     local tilex, tiley = GetTileAtPos(mx,my)
-    local _,chipi = GetChipAtTile(tilex,tiley)
+    local chip,chipi = GetChipAtTile(tilex,tiley)
     if chipi then
+        if chip.action == "jump" then GAME.USEDCHIPS.jump = GAME.USEDCHIPS.jump - 1 end
+        if chip.action == "move_left" then GAME.USEDCHIPS.move_left = GAME.USEDCHIPS.move_left - 1 end
+        if chip.action == "move_right" then GAME.USEDCHIPS.move_right = GAME.USEDCHIPS.move_right - 1 end
         table.remove(GAME.CHIPS,chipi); return
     end
-    if b == 1 then
+    if b == 1 and GAME.USEDCHIPS.jump < GAME.ALLOWEDCHIPS.jump then
         table.insert(GAME.CHIPS,{X=tilex,Y=tiley,action="jump",color={0,1,0}})
-    elseif b == 2 then
+        GAME.USEDCHIPS.jump = GAME.USEDCHIPS.jump + 1
+    elseif b == 2 and GAME.USEDCHIPS.move_left < GAME.ALLOWEDCHIPS.move_left then
         table.insert(GAME.CHIPS,{X=tilex,Y=tiley,action="move_left",color={1,0,0}})
-    elseif b == 3 then
+        GAME.USEDCHIPS.move_left = GAME.USEDCHIPS.move_left + 1
+    elseif b == 3 and GAME.USEDCHIPS.move_right < GAME.ALLOWEDCHIPS.move_right then
         table.insert(GAME.CHIPS,{X=tilex,Y=tiley,action="move_right",color={0,0,1}})
+        GAME.USEDCHIPS.move_right = GAME.USEDCHIPS.move_right + 1
     end
 end
 
