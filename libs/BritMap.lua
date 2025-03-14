@@ -64,7 +64,7 @@ function _tileset:initialize(map,data)
     self.tileW, self.tileH = data.tilewidth, data.tileheight
 
     local result = LoadTileset{
-        path = self.path, tilew=self.tileW, tileh=self.tileH,
+        path = string.sub(self.path,4,-1), tilew=self.tileW, tileh=self.tileH,
         spacex=data.spacing, spacey=data.spacing
     }
     ---@diagnostic disable-next-line: deprecated

@@ -7,6 +7,7 @@ function love.load()
     -- Load Libraries --
     Class = require("libs.middleclass")
     JSON = require("libs.JSON")
+    BUMP = require("libs.bump")
 
     UI = require("libs.BritUI")
     SCENE = require("libs.BritScene")
@@ -15,8 +16,11 @@ function love.load()
     INPUT = require("libs.BritInput")
 
     -- Load Classes -- 
+    OBJECTS = {}
+    require("class.base")
+    require("class.player")
 
-    SCENE:LoadScene("blank")
+    SCENE:LoadScene("game")
 end
 
 function love.update(dt)

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="2021.02.15" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="5">
+ <editorsettings>
+  <export target="test.lua" format="lua"/>
+ </editorsettings>
+ <tileset firstgid="1" name="tiles" tilewidth="16" tileheight="16" tilecount="256" columns="16">
+  <image source="../graphics/tiles.png" width="256" height="256"/>
+ </tileset>
+ <layer id="1" name="Tiles" width="16" height="16">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,2,2,2,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+</data>
+ </layer>
+ <objectgroup id="2" name="Objects">
+  <object id="1" type="ground" x="0" y="208" width="256" height="48"/>
+  <object id="2" type="ground" x="160" y="128" width="80" height="16">
+   <properties>
+    <property name="oneway" value="up"/>
+   </properties>
+  </object>
+  <object id="3" type="ground" x="96" y="160" width="48" height="16">
+   <properties>
+    <property name="oneway" value="up"/>
+   </properties>
+  </object>
+  <object id="4" type="player" x="16" y="192" width="16" height="16"/>
+ </objectgroup>
+</map>
