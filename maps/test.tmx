@@ -16,10 +16,10 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,2,2,2,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
@@ -28,12 +28,12 @@
  </layer>
  <objectgroup id="2" name="Objects">
   <object id="1" type="ground" x="0" y="208" width="256" height="48"/>
-  <object id="2" type="ground" x="160" y="128" width="80" height="16">
+  <object id="2" type="ground" x="160" y="144" width="80" height="16">
    <properties>
     <property name="oneway" value="up"/>
    </properties>
   </object>
-  <object id="3" type="ground" x="96" y="160" width="48" height="16">
+  <object id="3" type="ground" x="96" y="176" width="48" height="16">
    <properties>
     <property name="oneway" value="up"/>
    </properties>
