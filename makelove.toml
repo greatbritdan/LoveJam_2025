@@ -1,0 +1,15 @@
+name = "BritBase"
+default_targets = ["win32", "win64", "macos", "lovejs"]
+build_directory = "builds"
+icon_file = "graphics/icon.png"
+love_version = "11.5"
+
+love_files = [
+    "+*",
+    "-*/.*",
+    "-./builds/*",
+]
+
+[lovejs]
+title = "BritBase"
+memory = "80000000"

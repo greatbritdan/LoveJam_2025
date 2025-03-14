@@ -1,0 +1,26 @@
+Theme: PLAN
+- I think a solid like, base idea, is drafting out your moves and then running the game
+
+Ideas:
+[ ] - what if youre an event planner and have to fill your calandar with events but spesfiic people have spesific requirements like they cant do a friday or after 3pm etc, so you have to try and fill in as much of a schedule as possible
+[X] - physics sim, Where you have to design a component to keep a structure stable of some sort, I was thinking to tie into the planning theme, you'd assemble them on a blueprint and then you'd see how it looks in the simulation
+[X] - you're an architect trying to build a tower with a given set of parts and your job is to assemble them in a way where the tower doesnt collapse
+[X] - but what if you have to plan out your movements before you play, you'll get given a view of the level and have to chose when to jump or start moving before you play it out
+[ ] - Some sort of rpg boss fight, but you have to plan your moves; but the fight is random, so instead of writing specific moves, you write rules that will decide what move you do based on the battle conditions
+And your goal is to create a plan that will get you through the most encounters, Every time you die you learn more about what can happen, and write a better plan
+
+Final Ideas:
+- You're an event planner who manages a communal space that runs Monday to Saturday, 9am to 5pm and have to manage all the events in the calandar, some people what speisific days while others prioritise having it for a longer ammount of time,
+you're given a collection of events for the week and have to fit them in the schedule, each week you will become more busy with more events to plan until you are unable to fit everyone on the calandar, between weeks you can choose to spend the
+money gained from the events to expand how long you stay open for or open more smaller rooms to use for smaller events, bigger ones (marked as VIP will require the big room)
+
+- RPG where you have to plan what moves you'll play based on battle conditions, your plan will have to work for the whole round so every time you change your plan you have to beat all previous enemies again.
+You'll be able to create simple events e.g. If health < 15% then heal or more advaced conditions through chained if's e.g. if health < 15%; if enemyhealth < 10% then attack; heal,
+You'll be scored based on how many conditions you had to use where less is better.
+
+- Dicelatro, like Balatro but with dice, you start with 5 dice and can customize each face, you can also in the future add more dice, you'll roll all your dice and can then choose to reroll a few dice per round,
+You can buy and store aditional faces, update dice faces or change their values, there will be glass tiles to trigger both the front and back face and weighted plates you can add to tiles to give them a better chance of being rolled.
+Game end when you are unable to beat the score required.
+
+Actions:
+- Make Game
