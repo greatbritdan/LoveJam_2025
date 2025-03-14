@@ -4,6 +4,8 @@ function love.load()
     Font = love.graphics.newImageFont("graphics/font.png","abcdefghijklmnopqrstuvwxyz |.,:;!?_-/\\<>'\"0123456789",1)
     love.graphics.setFont(Font)
 
+    FrameImg = love.graphics.newImage("graphics/frame.png")
+
     -- Load Libraries --
     Class = require("libs.middleclass")
     JSON = require("libs.JSON")

@@ -13,10 +13,10 @@ function box:initialize(world,x,y,w,h,extra)
     self.defaultmovement = "slide"
 end
 
-function box:draw()
+--[[function box:draw()
     love.graphics.setColor(255,255,255)
     love.graphics.rectangle("line",self.X,self.Y,self.W,self.H)
-end
+end]]
 
 function box:setBox(x,y,w,h)
     if x and y then

@@ -18,7 +18,7 @@ function scene.LoadScene()
     table.insert(GAME.MAP:GetLayer("Objects").objects,OBJECTS.ground:new(GAME.WORLD,-16,0,16,256,{}))
     table.insert(GAME.MAP:GetLayer("Objects").objects,OBJECTS.ground:new(GAME.WORLD,256,0,16,256,{}))
     table.insert(GAME.MAP:GetLayer("Objects").objects,OBJECTS.ground:new(GAME.WORLD,-16,256,288,16,{}))
-    GAME.MAPPOS = {X=7,Y=7}
+    GAME.MAPPOS = {X=8,Y=8}
 
     GAME.CHIPS = {}
 end
@@ -30,19 +30,17 @@ function scene.Update(dt)
 end
 function scene.Draw()
     love.graphics.setColor(1,1,1)
+    love.graphics.draw(FrameImg,0,0)
+
     GAME.MAP:GetLayer("Tiles"):LoopThrough(function(data)
         love.graphics.draw(data.image,data.quad,((GAME.MAPPOS.X/16)+data.X-1)*16,((GAME.MAPPOS.Y/16)+data.Y-1)*16)
     end)
 
     GAME.MAP:GetLayer("Objects"):LoopThrough(function(data)
-        love.graphics.setColor(1,0.3,0.3)
-        love.graphics.rectangle("line",GAME.MAPPOS.X+data.obj.X,GAME.MAPPOS.Y+data.obj.Y,data.obj.W,data.obj.H)
-        if data.obj.started then
-            love.graphics.setColor(1,1,1)
-            love.graphics.rectangle("fill",GAME.MAPPOS.X+data.obj.X+7,GAME.MAPPOS.Y+data.obj.Y+7,2,2)
-        end
+        if data.obj.draw then data.obj:draw() end
     end)
 
+    if GAME.PLAYER.started then return end
     for i,v in pairs(GAME.CHIPS) do
         love.graphics.setColor(v.color)
         love.graphics.rectangle("line",(v.X+(GAME.MAPPOS.X/16))*16,(v.Y+(GAME.MAPPOS.Y/16))*16,16,16)
@@ -78,7 +76,11 @@ end
 
 function scene.Keypressed(key)
     if key == "space" then
-        GAME.PLAYER:start()
+        if not GAME.PLAYER.started then
+            GAME.PLAYER:start()
+        else
+            GAME.PLAYER:stop()
+        end
     end
 end
 
