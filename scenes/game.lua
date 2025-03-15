@@ -12,10 +12,6 @@ local loadobject = function(data)
     end
 end
 
-_ITEMS = {
-    springboard = {name="springboard",img=ItemsImg,quad=ItemsQuads.springboard,spawn={ox=0,oy=0,w=16,h=16}}
-}
-
 GAME = {DEBUGDRAW=false}
 function scene.LoadScene()
     GAME.WORLD = BUMP.newWorld(16)
@@ -53,6 +49,7 @@ end
 function scene.Draw()
     love.graphics.setColor(1,1,1)
     love.graphics.draw(FrameImg,0,0)
+    love.graphics.print("level 1",348,10)
 
     love.graphics.push()
     love.graphics.translate(GAME.MAPPOS.X,GAME.MAPPOS.Y)
@@ -71,6 +68,8 @@ function scene.Draw()
     love.graphics.pop()
 
     GAME.INVENTORY:draw()
+
+    if GAME.SIMULATING then return end
     for i = 1, #GAME.ITEMS do
         GAME.ITEMS[i]:draw()
     end

@@ -5,11 +5,15 @@ function love.load()
     love.graphics.setFont(Font)
 
     FrameImg = love.graphics.newImage("graphics/frame.png")
-    DoorImg = love.graphics.newImage("graphics/door.png")
+    InventoryImg, InventoryQuads = LoadSprites{path="graphics/inventory.png",xquads=10,yquads=1,xquadnames={"slot",1,2,3,4,5,6,7,8,9}}
 
     PlayerImg, PlayerQuads = LoadSprites{path="graphics/player.png",xquads=6,yquads=1}
-    InventoryImg, InventoryQuads = LoadSprites{path="graphics/inventory.png",xquads=10,yquads=1,xquadnames={"slot",1,2,3,4,5,6,7,8,9}}
-    ItemsImg, ItemsQuads = LoadSprites{path="graphics/items.png",xquads=4,yquads=1,xquadnames={"springboard","?","??","???"}}
+    DoorImg = love.graphics.newImage("graphics/door.png")
+    SpringboardImg, SpringboardQuads = LoadSprites{path="graphics/springboard.png",xquads=4,yquads=1}
+
+    _ITEMS = {
+        springboard = {name="springboard",img=SpringboardImg,quad=SpringboardQuads[2],spawn={ox=1,oy=14,w=14,h=2}}
+    }
 
     -- Load Libraries --
     Class = require("libs.middleclass")

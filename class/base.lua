@@ -13,11 +13,6 @@ function box:initialize(world,x,y,w,h,extra)
     self.defaultmovement = "slide"
 end
 
---[[function box:draw()
-    love.graphics.setColor(255,255,255)
-    love.graphics.rectangle("line",self.X,self.Y,self.W,self.H)
-end]]
-
 function box:setBox(x,y,w,h)
     if x and y then
         self.world:update(self,x,y,w,h)
@@ -40,6 +35,7 @@ function box:updatePhysics(dt)
         for i,v in ipairs(cols) do
             local col = cols[i]
             -- if cross then dont reset velocity
+            local oldvx, oldvy = self.VX, self.VY
             if col.type == "touch" then
                 self.VX = 0; self.VY = 0
             end
@@ -52,7 +48,7 @@ function box:updatePhysics(dt)
                 if col.normal.y ~= 0 then self.VY = -self.VY end
             end
             if self.collided then
-                self:collided{other=col.other, col=col}
+                self:collided{other=col.other, col=col, VX=oldvx, VY=oldvy}
             end
         end
     end
@@ -72,13 +68,13 @@ function box:filter(other)
     return self.defaultmovement
 end
 function box:filter_oneway(other)
-    if other.oneway == "up" and self.Y > other.Y-other.H then
+    if other.oneway == "up" and self.Y > other.Y-self.H then
         return "cross"
     end
     if other.oneway == "down" and self.Y < other.Y+other.H then
         return "cross"
     end
-    if other.oneway == "left" and self.X > other.X-other.W then
+    if other.oneway == "left" and self.X > other.X-self.W then
         return "cross"
     end
     if other.oneway == "right" and self.X < other.X+other.W then

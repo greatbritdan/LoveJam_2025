@@ -25,8 +25,8 @@ function player:update(dt)
     end
 
     self.walktimer = self.walktimer + dt
-    if self.walktimer > 0.4 then
-        self.walktimer = self.walktimer - 0.4
+    if self.walktimer > 0.2 then
+        self.walktimer = self.walktimer - 0.2
     end
 
     if not self.inair and self.VY > 0 then
@@ -36,7 +36,13 @@ function player:update(dt)
     GAME.MAP:GetLayer("Objects"):LoopThrough(function(data)
         if data.obj.class == "exit" then
             if AABB(self.X+self.W/2-1,self.Y+self.H/2-1,2,2,data.obj.X,data.obj.Y,data.obj.W,data.obj.H) then
-                print("winner is you")
+                StopSimulation()
+            end
+        end
+        if data.obj.class == "springboard" then
+            if AABB(self.X,self.Y,self.W,self.H,data.obj.X-1,data.obj.Y-1,data.obj.W+2,data.obj.H+1) then
+                data.obj:trigger(self)
+                self.VY = -148; self.inair = true
             end
         end
     end)
@@ -45,6 +51,9 @@ end
 function player:collided(data)
     if data.col.normal.y == -1 then
         self.inair = false
+    end
+    if data.col.normal.x ~= 0 and (not data.other.oneway) then
+        self.VX = -data.VX
     end
 end
 
@@ -56,7 +65,7 @@ function player:draw()
         if self.idletimer >= 4 then quad = 3 end
     else
         quad = 4
-        if self.walktimer >= 0.2 then quad = 5 end
+        if self.walktimer >= 0.1 then quad = 5 end
         if self.inair then quad = 6 end
     end
 
@@ -71,7 +80,7 @@ function player:draw()
 end
 
 function player:start()
-    self.VX = 40
+    self.VX = 52
     local tilex, tiley = GetTileAtPos(self.X+(self.W/2),self.Y+(self.H/2))
     self.lastTile = {X=tilex,Y=tiley}
 end
