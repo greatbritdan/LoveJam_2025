@@ -59,6 +59,7 @@ function scene.Update(dt)
 end
 
 function scene.Draw()
+    love.graphics.setBackgroundColor(141/255, 183/255, 255/255)
     love.graphics.setColor(1,1,1)
     love.graphics.draw(FrameImg,0,0)
     love.graphics.print("level 1",348,10)
@@ -84,10 +85,10 @@ function scene.Draw()
     end
 
     -- draw allowed spots
-    love.graphics.setColor(1,1,1,0.1)
+    love.graphics.setColor(1,1,1,0.2)
     for k,_ in pairs(GAME.ITEMS_ALLOW) do
         local x,y = k:match("(%d+)-(%d+)")
-        love.graphics.rectangle("fill",(x-1)*16,(y-1)*16,16,16)
+        love.graphics.rectangle("fill",((x-1)*16)+1,((y-1)*16)+1,14,14)
     end
 
     love.graphics.pop()
@@ -146,8 +147,13 @@ function scene.Mousereleased(mx,my,b)
         if v.moving then
             local tilex, tiley = GetTileAtPos(mx,my,true)
             if InMap(tilex,tiley) then
-                if ((not GAME.ITEMS_ALLOW[tilex.."-"..tiley]) or HasItem(tilex,tiley,v)) and v.oldx then
-                    v.X, v.Y = v.oldx, v.oldy
+                if ((not GAME.ITEMS_ALLOW[tilex.."-"..tiley]) or HasItem(tilex,tiley,v)) then
+                    if v.oldx then
+                        v.X, v.Y = v.oldx, v.oldy
+                    else
+                        GAME.INVENTORY:addItem(v.name,1)
+                        table.remove(GAME.ITEMS,i)
+                    end
                 else
                     v.X, v.Y = (tilex-1)*16, (tiley-1)*16
                 end
