@@ -2,22 +2,25 @@ function love.load()
     -- Load Graphics --
     love.graphics.setDefaultFilter("nearest","nearest")
     Font = love.graphics.newImageFont("graphics/font.png","abcdefghijklmnopqrstuvwxyz |.,:;!?_-/\\<>'\"0123456789",1)
-    love.graphics.setFont(Font)
+    SmallFont = love.graphics.newImageFont("graphics/smallfont.png","abcdefghijklmnopqrstuvwxyz 0123456789.,!?'()",1)
+    love.graphics.setFont(SmallFont)
 
     FrameImg = love.graphics.newImage("graphics/frame.png")
     InventoryImg, InventoryQuads = LoadSprites{path="graphics/inventory.png",xquads=10,yquads=1,xquadnames={"slot",1,2,3,4,5,6,7,8,9}}
+    ItemselecterImg = love.graphics.newImage("graphics/itemselecter.png")
 
+    BackgroundImg = love.graphics.newImage("graphics/background.png")
     PlayerImg, PlayerQuads = LoadSprites{path="graphics/player.png",xquads=6,yquads=1}
-    DoorImg = love.graphics.newImage("graphics/door.png")
+    DoorImg, DoorQuads = LoadSprites{path="graphics/door.png",xquads=4,yquads=1}
     SpringboardImg, SpringboardQuads = LoadSprites{path="graphics/springboard.png",xquads=4,yquads=1}
     CrateImg = love.graphics.newImage("graphics/crate.png")
     PlatformImg, PlatformQuads = LoadSprites{path="graphics/platform.png",xquads=4,yquads=1}
 
-    _ITEMS = {
-        springboard = {name="springboard",img=SpringboardImg,quad=SpringboardQuads[2],spawn={ox=1,oy=14,w=14,h=2}},
-        crate = {name="crate",img=CrateImg,quad=false,spawn={ox=0,oy=0,w=16,h=16}},
-        platform = {name="platform",img=PlatformImg,quad=PlatformQuads[1],spawn={ox=0,oy=0,w=16,h=16}}
-    }
+    _ITEMS_ORDER = {"springboard","crate","platform"}
+    _ITEMS = {}
+    _ITEMS.springboard = {name="springboard",img=SpringboardImg,quad=SpringboardQuads[3],spawn={ox=1,oy=14,w=14,h=2}}
+    _ITEMS.crate = {name="crate",img=CrateImg,quad=false,spawn={ox=0,oy=0,w=16,h=16}}
+    _ITEMS.platform = {name="platform",img=PlatformImg,quad=PlatformQuads[1],spawn={ox=0,oy=0,w=16,h=16}}
 
     -- Load Libraries --
     Class = require("libs.middleclass")

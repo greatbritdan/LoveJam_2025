@@ -52,9 +52,9 @@ function INVENTORY:removeItem(name,amount)
     local idx = TableContains(name,self.items,"name")
     if idx then
         self.items[idx].amount = self.items[idx].amount - amount
-        if self.items[idx].amount <= 0 then
+        --[[if self.items[idx].amount <= 0 then
             table.remove(self.items,idx)
-        end
+        end]]
     end
 end
 
@@ -93,7 +93,6 @@ function ITEM:draw()
         else
             love.graphics.draw(item.img,x,y)
         end
-        love.graphics.setColor(1,0.5,0.5)
-        love.graphics.rectangle("line",x,y,16,16)
+        love.graphics.draw(ItemselecterImg,x-1,y-1)
     end
 end

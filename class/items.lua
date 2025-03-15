@@ -53,6 +53,17 @@ function crate:initialize(world,x,y,w,h)
     self.offsety = 8
 end
 
+function crate:update(dt)
+    GAME.MAP:GetLayer("Objects"):LoopThrough(function(data)
+        if data.obj.class == "springboard" then
+            if AABB(self.X,self.Y,self.W,self.H,data.obj.X,data.obj.Y-1,data.obj.W,data.obj.H+1) then
+                data.obj:trigger(self)
+                self.VY = -148
+            end
+        end
+    end)
+end
+
 function crate:draw()
     love.graphics.setColor(1,1,1)
     love.graphics.draw(CrateImg,self.X+self.offsetx,self.Y+self.offsety,0,1,1,self.quadcenterx,self.quadcentery)

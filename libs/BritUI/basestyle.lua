@@ -2,7 +2,7 @@ local style = Class("britui_style")
 
 function style:initialize()
     self.name = "default"
-    self.font = Font
+    self.font = SmallFont
 
     self.colors = {
         fill =  {base={0,0,0},       hover={0,0,0},       click={0,0,0},       backbase={0,0,0}},
@@ -14,7 +14,9 @@ function style:initialize()
     self.text = {fill="text"}
     self.image = {fill="image"}
 
-    self.margin = 16
+    -- I shouldn't really be editing the basestyle but shhhh
+    self.margin = 4
+    self.matrixmargin = 4
     self.linewidth = 1
     self.fontheightgap = 2
 end

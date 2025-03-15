@@ -40,7 +40,7 @@ function player:update(dt)
             end
         end
         if data.obj.class == "springboard" then
-            if AABB(self.X,self.Y,self.W,self.H,data.obj.X-1,data.obj.Y-1,data.obj.W+2,data.obj.H+1) then
+            if AABB(self.X,self.Y,self.W,self.H,data.obj.X-2,data.obj.Y-1,data.obj.W+4,data.obj.H+1) then
                 data.obj:trigger(self)
                 self.VY = -148; self.inair = true
             end
@@ -52,6 +52,7 @@ function player:collided(data)
     if data.col.normal.y == -1 then
         self.inair = false
     end
+    -- Flip direction when hitting a wall
     if data.col.normal.x ~= 0 and (not data.other.oneway) then
         self.VX = -data.VX
     end

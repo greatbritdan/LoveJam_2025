@@ -6,11 +6,11 @@ local loadobject = function(data)
         local xcount, ycount = data.W/16, data.H/16
         for x = 1, xcount do
             for y = 1, ycount do
-                print((tilex+x).."-"..(tiley+y))
                 GAME.ITEMS_ALLOW[(tilex+x).."-"..(tiley+y)] = true
             end
         end
     end
+
     if data.class == "ground" then
         return OBJECTS.ground:new(GAME.WORLD,data.X,data.Y,data.W,data.H,data.args)
     elseif data.class == "player" then
@@ -30,21 +30,31 @@ function scene.LoadScene()
     GAME.WORLD = BUMP.newWorld(16)
     GAME.MAP = MAP:new("maps/test.lua",{LoadObject=loadobject})
 
-    local inv_data = GAME.MAP.raw.properties
-    GAME.INVENTORY = INVENTORY:new()
-    for _,item in pairs(_ITEMS) do
-        if inv_data[item.name] then
-            GAME.INVENTORY:addItem(item.name,inv_data[item.name])
-        end
-    end
-
-    GAME.ITEMS = {}
-
     -- Level bounderies
     table.insert(GAME.MAP:GetLayer("Objects").objects,OBJECTS.ground:new(GAME.WORLD,-16,-16,352,16,{}))
     table.insert(GAME.MAP:GetLayer("Objects").objects,OBJECTS.ground:new(GAME.WORLD,-16,0,16,256,{}))
     table.insert(GAME.MAP:GetLayer("Objects").objects,OBJECTS.ground:new(GAME.WORLD,320,0,16,256,{}))
     table.insert(GAME.MAP:GetLayer("Objects").objects,OBJECTS.ground:new(GAME.WORLD,-16,256,352,16,{}))
+
+    -- Load inventory
+    local inv_data = GAME.MAP.raw.properties
+    GAME.INVENTORY = INVENTORY:new()
+    for _,itemname in pairs(_ITEMS_ORDER) do
+        if inv_data[_ITEMS[itemname].name] and inv_data[_ITEMS[itemname].name] > 0 then
+            GAME.INVENTORY:addItem(_ITEMS[itemname].name,inv_data[_ITEMS[itemname].name])
+        end
+    end
+    GAME.ITEMS = {}
+
+    GAME.LEVEL_NAME = inv_data.level_name or "no name"
+
+    -- Load UI
+    GAME.UI = {}
+    GAME.UI.PLAY = UI.BUTTON:new({W=118,H=20},{children={{text="play"}}})
+
+    GAME.UI.SIDEBAR = UI.MATRIX:new({X=345,Y=99,W=126,H=166})
+    GAME.UI.SIDEBAR:Setup{TC={{GAME.UI.PLAY}}}
+    GAME.UI.SIDEBAR:Recaclulate()
 end
 
 function scene.Update(dt)
@@ -56,17 +66,20 @@ function scene.Update(dt)
             end
         end
     end)
+
+    GAME.UI.SIDEBAR:Update(dt)
 end
 
 function scene.Draw()
-    love.graphics.setBackgroundColor(141/255, 183/255, 255/255)
     love.graphics.setColor(1,1,1)
-    love.graphics.draw(FrameImg,0,0)
-    love.graphics.print("level 1",348,10)
+    love.graphics.draw(BackgroundImg,GAME.MAPPOS.X,GAME.MAPPOS.Y)
 
     love.graphics.push()
     love.graphics.translate(GAME.MAPPOS.X,GAME.MAPPOS.Y)
 
+    GAME.MAP:GetLayer("BackTiles"):LoopThrough(function(data)
+        love.graphics.draw(data.image,data.quad,(data.X-1)*16,(data.Y-1)*16)
+    end)
     GAME.MAP:GetLayer("Tiles"):LoopThrough(function(data)
         love.graphics.draw(data.image,data.quad,(data.X-1)*16,(data.Y-1)*16)
     end)
@@ -78,24 +91,33 @@ function scene.Draw()
         DrawObject(item.name)
     end
 
-    if GAME.SIMULATING then
-        love.graphics.pop()
-        GAME.INVENTORY:draw()
-        return
-    end
-
-    -- draw allowed spots
-    love.graphics.setColor(1,1,1,0.2)
-    for k,_ in pairs(GAME.ITEMS_ALLOW) do
-        local x,y = k:match("(%d+)-(%d+)")
-        love.graphics.rectangle("fill",((x-1)*16)+1,((y-1)*16)+1,14,14)
+    if not GAME.SIMULATING then
+        -- draw allowed spots
+        love.graphics.setColor(1,1,1,0.2)
+        for k,_ in pairs(GAME.ITEMS_ALLOW) do
+            local x,y = k:match("(%d+)-(%d+)")
+            love.graphics.rectangle("fill",((x-1)*16)+1,((y-1)*16)+1,14,14)
+        end
     end
 
     love.graphics.pop()
+
+    love.graphics.setColor(1,1,1)
+    love.graphics.draw(FrameImg,0,0)
+    love.graphics.print("level 1:",348,10)
+    love.graphics.print(GAME.LEVEL_NAME,348,25)
+
+    GAME.UI.SIDEBAR:Draw()
+    if GAME.DEBUGDRAW then
+        GAME.UI.SIDEBAR:DebugDraw()
+    end
+
     GAME.INVENTORY:draw()
 
-    for i = 1, #GAME.ITEMS do
-        GAME.ITEMS[i]:draw()
+    if not GAME.SIMULATING then
+        for i = 1, #GAME.ITEMS do
+            GAME.ITEMS[i]:draw()
+        end
     end
 end
 
