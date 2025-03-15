@@ -9,7 +9,7 @@ DIALOGS = {
         {text="click and hold an item to move it around. &if you want to discard it you can simple drop it somewhere off the map.",highlight="inventory"},
         {text="you can place the item in any of these highlighted spots, &you can also move items you've already placed.",highlight="available"},
         {text="this is a springboard, &this will launch the player upwards. &place it in one of the available spots to bring the guy to the exit.",highlight="springboard"},
-        {text="once you're ready, &click the play button to start the simulation, &good luck!"},
+        {text="once you're ready, &click the play button to start the simulation, &good luck!",highlight="play"},
     }
 }
 
@@ -20,7 +20,7 @@ function DIALOG:initialize(dialog)
 end
 
 function DIALOG:update(dt)
-    if self.finished then return end
+    if not GAME.INDIALOG then return end
 
     if self.waittimer then
         self.waittimer = self.waittimer - dt
@@ -35,7 +35,7 @@ function DIALOG:update(dt)
         self.timer = self.timer - self.textspeed
         self.char = self.char + 1
         local next = self.fulltext:sub(self.char,self.char)
-        if next == "&" then
+        if next == "&" then -- & is used for breff pauses
             self.waittimer = 0.3
         else
             self.text = self.text .. next
@@ -47,7 +47,7 @@ function DIALOG:update(dt)
 end
 
 function DIALOG:draw()
-    if self.finished then return end
+    if not GAME.INDIALOG then return end
 
     love.graphics.setColor(0,0,0,0.5)
     love.graphics.rectangle("fill",12,12,312,60)
@@ -106,10 +106,14 @@ function DIALOG:getHighlight()
         return 342-4, 52-4, 132+8, 30+8
     end
     if self.highlight == "available" then
-        return 120, 184, 48, 32
+        return 120-4, 184-4, 48+8, 32+8
     end
     if self.highlight == "springboard" then
         return 342-4, 52-4, 30+8, 30+8
+    end
+    if self.highlight == "play" then
+        local ui = GAME.UI.PLAY
+        return ui.X-4, ui.Y-4, ui.W+8, ui.H+8
     end
 end
 

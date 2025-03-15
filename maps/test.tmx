@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="2021.02.15" orientation="orthogonal" renderorder="right-down" width="20" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="13">
+<map version="1.5" tiledversion="2021.02.15" orientation="orthogonal" renderorder="right-down" width="20" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="15">
  <editorsettings>
   <export target="test.lua" format="lua"/>
  </editorsettings>
  <properties>
   <property name="crate" type="int" value="0"/>
+  <property name="dialog_name" value="level1"/>
   <property name="level_name" value="the first leap"/>
   <property name="platform" type="int" value="0"/>
   <property name="springboard" type="int" value="1"/>

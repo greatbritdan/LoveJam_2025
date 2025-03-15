@@ -54,13 +54,16 @@ function scene.LoadScene()
 
     -- Load UI
     GAME.UI = {}
-    GAME.UI.PLAY = UI.BUTTON:new({W=118,H=19},{children={{text="play"}}})
+    GAME.UI.PLAY = UI.BUTTON:new({W=118,H=19},{children={{text="play"}}},"basic")
+    GAME.UI.MENU = UI.BUTTON:new({X=8,Y=8,W=118,H=19},{children={{text="menu"}}},"basic")
 
-    GAME.UI.SIDEBAR = UI.MATRIX:new({X=345,Y=99,W=126,H=166})
-    GAME.UI.SIDEBAR:Setup{BC={{GAME.UI.PLAY}}}
+    GAME.UI.SIDEBAR = UI.MATRIX:new({X=345,Y=99,W=126,H=166},{},"basic")
+    GAME.UI.SIDEBAR:Setup{BC={{GAME.UI.MENU},{GAME.UI.PLAY}}}
     GAME.UI.SIDEBAR:Recaclulate()
 
-    DIALOG:start("level1")
+    if inv_data.dialog_name then
+        DIALOG:start(inv_data.dialog_name)
+    end
 end
 
 function scene.Update(dt)
@@ -111,7 +114,7 @@ function scene.Draw()
     love.graphics.pop()
 
     love.graphics.setColor(1,1,1)
-    love.graphics.draw(FrameImg,0,0)
+    if not GAME.DEBUGDRAW then love.graphics.draw(FrameImg,0,0) end
     love.graphics.print("level "..GAME.LEVEL_NO.." / 12:",348,10)
     love.graphics.print(GAME.LEVEL_NAME,348,25)
 
@@ -168,17 +171,23 @@ function scene.Mousepressed(mx,my,b)
             GAME.ITEMS[#GAME.ITEMS+1] = ITEM:new(item.name)
         end
     else
+        local click = false
         for i = #GAME.ITEMS, 1, -1 do
             local v = GAME.ITEMS[i]
             if AABB(mx,my,1,1,v.X+GAME.MAPPOS.X,v.Y+GAME.MAPPOS.Y,16,16) then
                 v.moving = true
                 v.oldx, v.oldy = v.X, v.Y
+                click = true
                 break
             end
+        end
+        if not click then
+            GAME.UI.SIDEBAR:Mousepressed(mx,my,b) -- Only register clicks if no item is clicked
         end
     end
 end
 function scene.Mousereleased(mx,my,b)
+    --if b ~= 1 then return end
     for i = #GAME.ITEMS, 1, -1 do
         local v = GAME.ITEMS[i]
         if v.moving then
@@ -201,6 +210,7 @@ function scene.Mousereleased(mx,my,b)
             end
         end
     end
+    GAME.UI.SIDEBAR:Mousereleased(mx,my,b)
 end
 
 function scene.Keypressed(key)

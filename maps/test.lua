@@ -9,9 +9,10 @@ return {
   tilewidth = 16,
   tileheight = 16,
   nextlayerid = 6,
-  nextobjectid = 13,
+  nextobjectid = 15,
   properties = {
     ["crate"] = 0,
+    ["dialog_name"] = "level1",
     ["level_name"] = "the first leap",
     ["platform"] = 0,
     ["springboard"] = 1
