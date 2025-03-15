@@ -2,7 +2,7 @@ function love.load()
     -- Load Graphics --
     love.graphics.setDefaultFilter("nearest","nearest")
     Font = love.graphics.newImageFont("graphics/font.png","abcdefghijklmnopqrstuvwxyz |.,:;!?_-/\\<>'\"0123456789",1)
-    SmallFont = love.graphics.newImageFont("graphics/smallfont.png","abcdefghijklmnopqrstuvwxyz 0123456789.,!?'()",1)
+    SmallFont = love.graphics.newImageFont("graphics/smallfont.png","abcdefghijklmnopqrstuvwxyz 0123456789.,!?'():/",1)
     love.graphics.setFont(SmallFont)
 
     FrameImg = love.graphics.newImage("graphics/frame.png")
@@ -35,6 +35,7 @@ function love.load()
 
     -- Load Classes -- 
     OBJECTS = {}
+    require("class.dialog")
     require("class.inventory")
     require("class.base")
 

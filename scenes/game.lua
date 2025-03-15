@@ -27,8 +27,11 @@ function scene.LoadScene()
     GAME.ITEMS_ALLOW = {}
     GAME.MAPPOS = {X=8,Y=8}
 
+    local level_no = 1
+
     GAME.WORLD = BUMP.newWorld(16)
     GAME.MAP = MAP:new("maps/test.lua",{LoadObject=loadobject})
+    --GAME.MAP = MAP:new("maps/level"..level_no..".lua",{LoadObject=loadobject})
 
     -- Level bounderies
     table.insert(GAME.MAP:GetLayer("Objects").objects,OBJECTS.ground:new(GAME.WORLD,-16,-16,352,16,{}))
@@ -47,17 +50,22 @@ function scene.LoadScene()
     GAME.ITEMS = {}
 
     GAME.LEVEL_NAME = inv_data.level_name or "no name"
+    GAME.LEVEL_NO = level_no
 
     -- Load UI
     GAME.UI = {}
-    GAME.UI.PLAY = UI.BUTTON:new({W=118,H=20},{children={{text="play"}}})
+    GAME.UI.PLAY = UI.BUTTON:new({W=118,H=19},{children={{text="play"}}})
 
     GAME.UI.SIDEBAR = UI.MATRIX:new({X=345,Y=99,W=126,H=166})
-    GAME.UI.SIDEBAR:Setup{TC={{GAME.UI.PLAY}}}
+    GAME.UI.SIDEBAR:Setup{BC={{GAME.UI.PLAY}}}
     GAME.UI.SIDEBAR:Recaclulate()
+
+    DIALOG:start("level1")
 end
 
 function scene.Update(dt)
+    DIALOG:update(dt)
+
     GAME.MAP:GetLayer("Objects"):LoopThrough(function(data)
         if data.obj.update then data.obj:update(dt) end
         if data.obj.updatePhysics then
@@ -104,7 +112,7 @@ function scene.Draw()
 
     love.graphics.setColor(1,1,1)
     love.graphics.draw(FrameImg,0,0)
-    love.graphics.print("level 1:",348,10)
+    love.graphics.print("level "..GAME.LEVEL_NO.." / 12:",348,10)
     love.graphics.print(GAME.LEVEL_NAME,348,25)
 
     GAME.UI.SIDEBAR:Draw()
@@ -119,6 +127,9 @@ function scene.Draw()
             GAME.ITEMS[i]:draw()
         end
     end
+
+    love.graphics.setColor(1,1,1)
+    DIALOG:draw()
 end
 
 function DrawObject(class)
@@ -145,6 +156,10 @@ function HasItem(tilex,tiley,otheritem)
 end
 
 function scene.Mousepressed(mx,my,b)
+    if GAME.INDIALOG then
+        DIALOG:next()
+        return
+    end
     if b ~= 1 then return end
     local idx, item = GAME.INVENTORY:hover(mx,my)
     if idx and item then
@@ -189,6 +204,10 @@ function scene.Mousereleased(mx,my,b)
 end
 
 function scene.Keypressed(key)
+    if GAME.INDIALOG then
+        DIALOG:next()
+        return
+    end
     if key == "space" then
         if not GAME.SIMULATING then
             StartSimulation()

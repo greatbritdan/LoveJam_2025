@@ -11,7 +11,7 @@ return {
   nextlayerid = 6,
   nextobjectid = 13,
   properties = {
-    ["crate"] = 1,
+    ["crate"] = 0,
     ["level_name"] = "the first leap",
     ["platform"] = 0,
     ["springboard"] = 1
