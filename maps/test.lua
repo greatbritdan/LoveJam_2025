@@ -10,7 +10,9 @@ return {
   tileheight = 16,
   nextlayerid = 3,
   nextobjectid = 7,
-  properties = {},
+  properties = {
+    ["springboard"] = 3
+  },
   tilesets = {
     {
       name = "tiles",

@@ -18,17 +18,21 @@ function scene.LoadScene()
     GAME.MAP = MAP:new("maps/test.lua",{LoadObject=loadobject})
     GAME.MAPPOS = {X=8,Y=8}
 
+    local inv_data = GAME.MAP.raw.properties
+    GAME.INVENTORY = INVENTORY:new()
+    if inv_data.springboard then
+        GAME.INVENTORY:addItem("springboard",inv_data.springboard)
+    end
+
+    GAME.ITEMS = {}
+
     -- Level bounderies
     table.insert(GAME.MAP:GetLayer("Objects").objects,OBJECTS.ground:new(GAME.WORLD,-16,-16,352,16,{}))
     table.insert(GAME.MAP:GetLayer("Objects").objects,OBJECTS.ground:new(GAME.WORLD,-16,0,16,256,{}))
     table.insert(GAME.MAP:GetLayer("Objects").objects,OBJECTS.ground:new(GAME.WORLD,320,0,16,256,{}))
     table.insert(GAME.MAP:GetLayer("Objects").objects,OBJECTS.ground:new(GAME.WORLD,-16,256,352,16,{}))
-
-    -- Chips are how you control the player
-    GAME.CHIPS = {}
-    GAME.ALLOWEDCHIPS = {jump=1,move_left=0,move_right=0}
-    GAME.USEDCHIPS = {jump=0,move_left=0,move_right=0}
 end
+
 function scene.Update(dt)
     GAME.MAP:GetLayer("Objects"):LoopThrough(function(data)
         if data.obj.update then data.obj:update(dt) end
@@ -39,6 +43,7 @@ function scene.Update(dt)
         end
     end)
 end
+
 function scene.Draw()
     love.graphics.setColor(1,1,1)
     love.graphics.draw(FrameImg,0,0)
@@ -54,51 +59,60 @@ function scene.Draw()
     DrawObject("exit")
     DrawObject("player")
 
-    --if not GAME.PLAYER.started then
-        for i,v in pairs(GAME.CHIPS) do
-            love.graphics.setColor(v.color)
-            love.graphics.rectangle("line",v.X*16,v.Y*16,16,16)
-        end
-    --end
-
     love.graphics.pop()
+
+    GAME.INVENTORY:draw()
+    for i = 1, #GAME.ITEMS do
+        GAME.ITEMS[i]:draw()
+    end
 end
+
 function DrawObject(class)
     GAME.MAP:GetLayer("Objects"):LoopThrough(function(data)
         if data.obj.class == class then data.obj:draw() end
     end)
 end
 
-function GetTileAtPos(x,y)
+function GetTileAtPos(x,y,mapadjust)
+    if mapadjust then x,y = x+GAME.MAPPOS.X, y+GAME.MAPPOS.Y end
     return math.floor(x/16), math.floor(y/16)
 end
-
-function GetChipAtTile(x,y)
-    for i,v in pairs(GAME.CHIPS) do
-        if v.X == x and v.Y == y then
-            return v, i
-        end
-    end
+function InMap(tilex,tiley)
+    return tilex >= 1 and tilex <= 20 and tiley >= 1 and tiley <= 16
 end
 
 function scene.Mousepressed(mx,my,b)
-    local tilex, tiley = GetTileAtPos(mx-GAME.MAPPOS.X,my-GAME.MAPPOS.Y)
-    local chip,chipi = GetChipAtTile(tilex,tiley)
-    if chipi then
-        if chip.action == "jump" then GAME.USEDCHIPS.jump = GAME.USEDCHIPS.jump - 1 end
-        if chip.action == "move_left" then GAME.USEDCHIPS.move_left = GAME.USEDCHIPS.move_left - 1 end
-        if chip.action == "move_right" then GAME.USEDCHIPS.move_right = GAME.USEDCHIPS.move_right - 1 end
-        table.remove(GAME.CHIPS,chipi); return
+    if b ~= 1 then return end
+    local idx, item = GAME.INVENTORY:hover(mx,my)
+    if idx and item then
+        if item.amount > 0 then
+            GAME.INVENTORY:removeItem(item.name,1)
+            GAME.ITEMS[#GAME.ITEMS+1] = ITEM:new(item.name)
+        end
+    else
+        for i = #GAME.ITEMS, 1, -1 do
+            local v = GAME.ITEMS[i]
+            if AABB(mx,my,1,1,v.X+GAME.MAPPOS.X,v.Y+GAME.MAPPOS.Y,16,16) then
+                v.moving = true
+                break
+            end
+        end
     end
-    if b == 1 and GAME.USEDCHIPS.jump < GAME.ALLOWEDCHIPS.jump then
-        table.insert(GAME.CHIPS,{X=tilex,Y=tiley,action="jump",color={0,1,0}})
-        GAME.USEDCHIPS.jump = GAME.USEDCHIPS.jump + 1
-    elseif b == 2 and GAME.USEDCHIPS.move_left < GAME.ALLOWEDCHIPS.move_left then
-        table.insert(GAME.CHIPS,{X=tilex,Y=tiley,action="move_left",color={1,0,0}})
-        GAME.USEDCHIPS.move_left = GAME.USEDCHIPS.move_left + 1
-    elseif b == 3 and GAME.USEDCHIPS.move_right < GAME.ALLOWEDCHIPS.move_right then
-        table.insert(GAME.CHIPS,{X=tilex,Y=tiley,action="move_right",color={0,0,1}})
-        GAME.USEDCHIPS.move_right = GAME.USEDCHIPS.move_right + 1
+end
+function scene.Mousereleased(mx,my,b)
+    for i = #GAME.ITEMS, 1, -1 do
+        local v = GAME.ITEMS[i]
+        if v.moving then
+            local tilex, tiley = GetTileAtPos(mx,my,true)
+            if InMap(tilex,tiley) then
+                v.X, v.Y = (tilex-1)*16, (tiley-1)*16
+                print("Dropped item at",tilex,tiley)
+                v.moving = false
+            else
+                GAME.INVENTORY:addItem(v.name,1)
+                GAME.ITEMS[i] = nil
+            end
+        end
     end
 end
 

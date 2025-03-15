@@ -41,24 +41,6 @@ function player:update(dt)
             end
         end
     end)
-
-    local tilex, tiley = GetTileAtPos(self.X+(self.W/2),self.Y+(self.H/2))
-    if tilex ~= self.lastTile.X or tiley ~= self.lastTile.Y then
-        self.lastTile = {X=tilex,Y=tiley}
-        local chip = GetChipAtTile(tilex,tiley)
-        if chip then
-            if chip.action == "jump" and self.inair == false then
-                self.VY = -96
-                self.inair = true
-            end
-            if chip.action == "move_left" then
-                self.VX = -40
-            end
-            if chip.action == "move_right" then
-                self.VX = 40
-            end
-        end
-    end
 end
 
 function player:collided(data)
