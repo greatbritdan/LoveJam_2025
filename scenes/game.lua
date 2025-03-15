@@ -1,6 +1,16 @@
 local scene = {}
 
 local loadobject = function(data)
+    if data.class == "place_allow" then
+        local tilex, tiley = GetTileAtPos(data.X,data.Y,true)
+        local xcount, ycount = data.W/16, data.H/16
+        for x = 1, xcount do
+            for y = 1, ycount do
+                print((tilex+x).."-"..(tiley+y))
+                GAME.ITEMS_ALLOW[(tilex+x).."-"..(tiley+y)] = true
+            end
+        end
+    end
     if data.class == "ground" then
         return OBJECTS.ground:new(GAME.WORLD,data.X,data.Y,data.W,data.H,data.args)
     elseif data.class == "player" then
@@ -14,9 +24,11 @@ end
 
 GAME = {DEBUGDRAW=false}
 function scene.LoadScene()
+    GAME.ITEMS_ALLOW = {}
+    GAME.MAPPOS = {X=8,Y=8}
+
     GAME.WORLD = BUMP.newWorld(16)
     GAME.MAP = MAP:new("maps/test.lua",{LoadObject=loadobject})
-    GAME.MAPPOS = {X=8,Y=8}
 
     local inv_data = GAME.MAP.raw.properties
     GAME.INVENTORY = INVENTORY:new()
@@ -65,11 +77,22 @@ function scene.Draw()
         DrawObject(item.name)
     end
 
-    love.graphics.pop()
+    if GAME.SIMULATING then
+        love.graphics.pop()
+        GAME.INVENTORY:draw()
+        return
+    end
 
+    -- draw allowed spots
+    love.graphics.setColor(1,1,1,0.1)
+    for k,_ in pairs(GAME.ITEMS_ALLOW) do
+        local x,y = k:match("(%d+)-(%d+)")
+        love.graphics.rectangle("fill",(x-1)*16,(y-1)*16,16,16)
+    end
+
+    love.graphics.pop()
     GAME.INVENTORY:draw()
 
-    if GAME.SIMULATING then return end
     for i = 1, #GAME.ITEMS do
         GAME.ITEMS[i]:draw()
     end
@@ -89,6 +112,15 @@ function InMap(tilex,tiley)
     return tilex >= 1 and tilex <= 20 and tiley >= 1 and tiley <= 16
 end
 
+function HasItem(tilex,tiley,otheritem)
+    for _,item in pairs(GAME.ITEMS) do
+        if item ~= otheritem and item.X == (tilex-1)*16 and item.Y == (tiley-1)*16 then
+            return true
+        end
+    end
+    return false
+end
+
 function scene.Mousepressed(mx,my,b)
     if b ~= 1 then return end
     local idx, item = GAME.INVENTORY:hover(mx,my)
@@ -102,6 +134,7 @@ function scene.Mousepressed(mx,my,b)
             local v = GAME.ITEMS[i]
             if AABB(mx,my,1,1,v.X+GAME.MAPPOS.X,v.Y+GAME.MAPPOS.Y,16,16) then
                 v.moving = true
+                v.oldx, v.oldy = v.X, v.Y
                 break
             end
         end
@@ -113,7 +146,11 @@ function scene.Mousereleased(mx,my,b)
         if v.moving then
             local tilex, tiley = GetTileAtPos(mx,my,true)
             if InMap(tilex,tiley) then
-                v.X, v.Y = (tilex-1)*16, (tiley-1)*16
+                if ((not GAME.ITEMS_ALLOW[tilex.."-"..tiley]) or HasItem(tilex,tiley,v)) and v.oldx then
+                    v.X, v.Y = v.oldx, v.oldy
+                else
+                    v.X, v.Y = (tilex-1)*16, (tiley-1)*16
+                end
                 v.moving = false
             else
                 GAME.INVENTORY:addItem(v.name,1)

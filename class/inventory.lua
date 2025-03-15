@@ -19,16 +19,24 @@ function INVENTORY:draw()
 
             if ammount == 0 then
                 love.graphics.setColor(1,1,1,0.4)
-                love.graphics.draw(item.img,item.quad,x+7,y+7)
+                self:drawimage(item.img,item.quad,x+7,y+7)
             else
-                love.graphics.draw(item.img,item.quad,x+7,y+7)
+                self:drawimage(item.img,item.quad,x+7,y+7)
                 if ammount < 10 then
                     love.graphics.draw(InventoryImg,InventoryQuads[ammount],x,y)
                 end
             end
         end
-        
+
         x = x + 34
+    end
+end
+
+function INVENTORY:drawimage(img,quad,x,y)
+    if quad then
+        love.graphics.draw(img,quad,x,y)
+    else
+        love.graphics.draw(img,x,y)
     end
 end
 
@@ -80,6 +88,12 @@ function ITEM:draw()
         end
 
         love.graphics.setColor(1,1,1)
-        love.graphics.draw(item.img,item.quad,x,y)
+        if item.quad then
+            love.graphics.draw(item.img,item.quad,x,y)
+        else
+            love.graphics.draw(item.img,x,y)
+        end
+        love.graphics.setColor(1,0.5,0.5)
+        love.graphics.rectangle("line",x,y,16,16)
     end
 end

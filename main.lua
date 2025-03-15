@@ -10,9 +10,13 @@ function love.load()
     PlayerImg, PlayerQuads = LoadSprites{path="graphics/player.png",xquads=6,yquads=1}
     DoorImg = love.graphics.newImage("graphics/door.png")
     SpringboardImg, SpringboardQuads = LoadSprites{path="graphics/springboard.png",xquads=4,yquads=1}
+    CrateImg = love.graphics.newImage("graphics/crate.png")
+    PlatformImg, PlatformQuads = LoadSprites{path="graphics/platform.png",xquads=4,yquads=1}
 
     _ITEMS = {
-        springboard = {name="springboard",img=SpringboardImg,quad=SpringboardQuads[2],spawn={ox=1,oy=14,w=14,h=2}}
+        springboard = {name="springboard",img=SpringboardImg,quad=SpringboardQuads[2],spawn={ox=1,oy=14,w=14,h=2}},
+        crate = {name="crate",img=CrateImg,quad=false,spawn={ox=0,oy=0,w=16,h=16}},
+        platform = {name="platform",img=PlatformImg,quad=PlatformQuads[1],spawn={ox=0,oy=0,w=16,h=16}}
     }
 
     -- Load Libraries --

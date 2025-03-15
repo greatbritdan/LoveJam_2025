@@ -8,10 +8,12 @@ return {
   height = 16,
   tilewidth = 16,
   tileheight = 16,
-  nextlayerid = 3,
-  nextobjectid = 8,
+  nextlayerid = 5,
+  nextobjectid = 12,
   properties = {
-    ["springboard"] = 3
+    ["crate"] = 999,
+    ["platform"] = 999,
+    ["springboard"] = 999
   },
   tilesets = {
     {
@@ -73,7 +75,7 @@ return {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
       }
@@ -98,8 +100,8 @@ return {
           shape = "rectangle",
           x = 0,
           y = 208,
-          width = 320,
-          height = 48,
+          width = 80,
+          height = 16,
           rotation = 0,
           visible = true,
           properties = {}
@@ -109,7 +111,7 @@ return {
           name = "",
           type = "player",
           shape = "rectangle",
-          x = 48,
+          x = 32,
           y = 192,
           width = 16,
           height = 16,
@@ -125,7 +127,7 @@ return {
           x = 160,
           y = 176,
           width = 160,
-          height = 32,
+          height = 48,
           rotation = 0,
           visible = true,
           properties = {}
@@ -135,7 +137,7 @@ return {
           name = "",
           type = "exit",
           shape = "rectangle",
-          x = 256,
+          x = 272,
           y = 160,
           width = 16,
           height = 16,
@@ -157,6 +159,73 @@ return {
           properties = {
             ["oneway"] = "up"
           }
+        },
+        {
+          id = 8,
+          name = "",
+          type = "ground",
+          shape = "rectangle",
+          x = 0,
+          y = 224,
+          width = 320,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 9,
+          name = "",
+          type = "ground",
+          shape = "rectangle",
+          x = 128,
+          y = 208,
+          width = 32,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        }
+      }
+    },
+    {
+      type = "objectgroup",
+      draworder = "topdown",
+      id = 4,
+      name = "Allow",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      parallaxx = 1,
+      parallaxy = 1,
+      properties = {},
+      objects = {
+        {
+          id = 10,
+          name = "",
+          type = "place_allow",
+          shape = "rectangle",
+          x = 80,
+          y = 144,
+          width = 48,
+          height = 80,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 11,
+          name = "",
+          type = "place_allow",
+          shape = "rectangle",
+          x = 160,
+          y = 128,
+          width = 96,
+          height = 48,
+          rotation = 0,
+          visible = true,
+          properties = {}
         }
       }
     }
