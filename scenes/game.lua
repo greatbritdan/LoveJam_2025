@@ -106,7 +106,6 @@ function scene.Mousereleased(mx,my,b)
             local tilex, tiley = GetTileAtPos(mx,my,true)
             if InMap(tilex,tiley) then
                 v.X, v.Y = (tilex-1)*16, (tiley-1)*16
-                print("Dropped item at",tilex,tiley)
                 v.moving = false
             else
                 GAME.INVENTORY:addItem(v.name,1)
@@ -119,14 +118,25 @@ end
 function scene.Keypressed(key)
     if key == "space" then
         if not GAME.PLAYER.started then
-            GAME.PLAYER:start()
+            StartSimulation()
         else
-            GAME.PLAYER:stop()
+            StopSimulation()
         end
     end
     if key == "tab" then
         GAME.DEBUGDRAW = not GAME.DEBUGDRAW
     end
+end
+
+function StartSimulation()
+    for i = 1, #GAME.ITEMS do
+        GAME.ITEMS[i].moving = false
+    end
+    GAME.PLAYER:start()
+end
+
+function StopSimulation()
+    GAME.PLAYER:stop()
 end
 
 return scene
