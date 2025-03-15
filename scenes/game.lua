@@ -12,6 +12,10 @@ local loadobject = function(data)
     end
 end
 
+_ITEMS = {
+    springboard = {name="springboard",img=ItemsImg,quad=ItemsQuads.springboard,spawn={ox=0,oy=0,w=16,h=16}}
+}
+
 GAME = {DEBUGDRAW=false}
 function scene.LoadScene()
     GAME.WORLD = BUMP.newWorld(16)
@@ -20,8 +24,10 @@ function scene.LoadScene()
 
     local inv_data = GAME.MAP.raw.properties
     GAME.INVENTORY = INVENTORY:new()
-    if inv_data.springboard then
-        GAME.INVENTORY:addItem("springboard",inv_data.springboard)
+    for _,item in pairs(_ITEMS) do
+        if inv_data[item.name] then
+            GAME.INVENTORY:addItem(item.name,inv_data[item.name])
+        end
     end
 
     GAME.ITEMS = {}
@@ -37,7 +43,7 @@ function scene.Update(dt)
     GAME.MAP:GetLayer("Objects"):LoopThrough(function(data)
         if data.obj.update then data.obj:update(dt) end
         if data.obj.updatePhysics then
-            if (not data.obj.class == "player") or (GAME.PLAYER.started) then
+            if (not data.obj.class == "player") or (GAME.SIMULATING) then
                 data.obj:updatePhysics(dt)
             end
         end
@@ -58,6 +64,9 @@ function scene.Draw()
     DrawObject("ground")
     DrawObject("exit")
     DrawObject("player")
+    for _,item in pairs(_ITEMS) do
+        DrawObject(item.name)
+    end
 
     love.graphics.pop()
 
@@ -109,7 +118,7 @@ function scene.Mousereleased(mx,my,b)
                 v.moving = false
             else
                 GAME.INVENTORY:addItem(v.name,1)
-                GAME.ITEMS[i] = nil
+                table.remove(GAME.ITEMS,i)
             end
         end
     end
@@ -117,7 +126,7 @@ end
 
 function scene.Keypressed(key)
     if key == "space" then
-        if not GAME.PLAYER.started then
+        if not GAME.SIMULATING then
             StartSimulation()
         else
             StopSimulation()
@@ -129,14 +138,37 @@ function scene.Keypressed(key)
 end
 
 function StartSimulation()
+    -- Create all items
     for i = 1, #GAME.ITEMS do
-        GAME.ITEMS[i].moving = false
+        local v = GAME.ITEMS[i]
+        if TableContains(v.name,_ITEMS,"name") then
+            local item = _ITEMS[v.name]
+            table.insert(GAME.MAP:GetLayer("Objects").objects,OBJECTS[item.name]:new(GAME.WORLD,v.X+item.spawn.ox,v.Y+item.spawn.oy,item.spawn.w,item.spawn.h,{}))
+        end
     end
+
     GAME.PLAYER:start()
+    GAME.SIMULATING = true
 end
 
 function StopSimulation()
+    -- Remove all items, but only the ones placed
+    for _,item in pairs(_ITEMS) do
+        local delete = {}
+        GAME.MAP:GetLayer("Objects"):LoopThrough(function(data)
+            if data.obj.class == item.name then
+                GAME.WORLD:remove(data.obj)
+                table.insert(delete,data.idx)
+            end
+        end)
+        table.sort(delete,function(a,b) return a > b end)
+        for _,idx in ipairs(delete) do
+            table.remove(GAME.MAP:GetLayer("Objects").objects,idx)
+        end
+    end
+
     GAME.PLAYER:stop()
+    GAME.SIMULATING = false
 end
 
 return scene

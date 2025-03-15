@@ -1,6 +1,6 @@
 local springboard = Class("springboard",OBJECTS.box)
 function springboard:initialize(world,x,y,w,h)
-    OBJECTS.box.initialize(self,world,x,y,w,h,{gravity=128})
+    OBJECTS.box.initialize(self,world,x,y,w,h,{gravity=180})
     self.class = "springboard"
 end
 

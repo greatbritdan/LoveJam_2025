@@ -12,17 +12,22 @@ function INVENTORY:draw()
     for i = 1, self.size do
         love.graphics.setColor(1,1,1)
         love.graphics.draw(InventoryImg,InventoryQuads.slot,x,y)
-        if self.items[i] then
-            if self.items[i].amount == 0 then
+
+        if self.items[i] and TableContains(self.items[i].name,_ITEMS,"name") then
+            local ammount = self.items[i].amount
+            local item = _ITEMS[self.items[i].name]
+
+            if ammount == 0 then
                 love.graphics.setColor(1,1,1,0.4)
-                love.graphics.draw(ItemsImg,ItemsQuad[self.items[i].name],x+7,y+7)
+                love.graphics.draw(item.img,item.quad,x+7,y+7)
             else
-                love.graphics.draw(ItemsImg,ItemsQuad[self.items[i].name],x+7,y+7)
-                if self.items[i].amount < 10 then
-                    love.graphics.draw(InventoryImg,InventoryQuads[self.items[i].amount],x,y)
+                love.graphics.draw(item.img,item.quad,x+7,y+7)
+                if ammount < 10 then
+                    love.graphics.draw(InventoryImg,InventoryQuads[ammount],x,y)
                 end
             end
         end
+        
         x = x + 34
     end
 end
@@ -67,11 +72,14 @@ function ITEM:initialize(name)
 end
 
 function ITEM:draw()
-    local x,y = self.X+GAME.MAPPOS.X,self.Y+GAME.MAPPOS.Y
-    if self.moving then
-        x,y = love.mouse.getX()-8, love.mouse.getY()-8
-    end
+    if TableContains(self.name,_ITEMS,"name") then
+        local item = _ITEMS[self.name]
+        local x,y = self.X+GAME.MAPPOS.X,self.Y+GAME.MAPPOS.Y
+        if self.moving then
+            x,y = love.mouse.getX()-8, love.mouse.getY()-8
+        end
 
-    love.graphics.setColor(1,1,1)
-    love.graphics.draw(ItemsImg,ItemsQuad[self.name],x,y)
+        love.graphics.setColor(1,1,1)
+        love.graphics.draw(item.img,item.quad,x,y)
+    end
 end

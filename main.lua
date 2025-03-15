@@ -9,7 +9,7 @@ function love.load()
 
     PlayerImg, PlayerQuads = LoadSprites{path="graphics/player.png",xquads=6,yquads=1}
     InventoryImg, InventoryQuads = LoadSprites{path="graphics/inventory.png",xquads=10,yquads=1,xquadnames={"slot",1,2,3,4,5,6,7,8,9}}
-    ItemsImg, ItemsQuad = LoadSprites{path="graphics/items.png",xquads=4,yquads=1,xquadnames={"springboard","?","??","???"}}
+    ItemsImg, ItemsQuads = LoadSprites{path="graphics/items.png",xquads=4,yquads=1,xquadnames={"springboard","?","??","???"}}
 
     -- Load Libraries --
     Class = require("libs.middleclass")
@@ -26,8 +26,10 @@ function love.load()
     OBJECTS = {}
     require("class.inventory")
     require("class.base")
-    require("class.player")
+
     require("class.misc")
+    require("class.player")
+    require("class.items")
 
     SCENE:LoadScene("game")
 end

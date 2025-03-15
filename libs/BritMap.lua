@@ -109,8 +109,8 @@ function _layer:LoopThrough(func)
             end
         end
     elseif self.type == "objectgroup" then
-        for _,obj in ipairs(self.objects) do
-            func{obj=obj,all=self.objects}
+        for idx,obj in ipairs(self.objects) do
+            func{obj=obj,all=self.objects,idx=idx}
         end
     end
 end

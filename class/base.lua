@@ -88,21 +88,3 @@ function box:filter_oneway(other)
 end
 
 OBJECTS.box = box
-
-----------------------
-
-local ground = Class("ground",box)
-function ground:initialize(world,x,y,w,h,args)
-    box.initialize(self,world,x,y,w,h,{static=true})
-    self.class = "ground"
-    self.oneway = args.oneway
-end
-
-function ground:draw()
-    if GAME.DEBUGDRAW then
-        love.graphics.setColor(1,0.5,0.5,0.5)
-        love.graphics.rectangle("fill",self.X,self.Y,self.W,self.H)
-    end
-end
-
-OBJECTS.ground = ground

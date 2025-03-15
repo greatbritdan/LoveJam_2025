@@ -1,9 +1,8 @@
 local player = Class("player",OBJECTS.box)
 function player:initialize(world,x,y,w,h)
-    OBJECTS.box.initialize(self,world,x,y,w,h,{gravity=128})
+    OBJECTS.box.initialize(self,world,x,y,w,h,{gravity=180})
     self.class = "player"
     self.startX, self.startY = x, y
-    self.started = false
 
     self.quadcenterx = 8
     self.quadcentery = 8
@@ -16,7 +15,7 @@ function player:initialize(world,x,y,w,h)
 end
 
 function player:update(dt)
-    if not self.started then
+    if not GAME.SIMULATING then
         self.idletimer = self.idletimer + dt
         if self.idletimer > 5 then
             self.idletimer = 0
@@ -53,7 +52,7 @@ function player:draw()
     local scale = 1
     if self.VX < 0 then scale = -1 end
     local quad = 1
-    if not self.started then
+    if not GAME.SIMULATING then
         if self.idletimer >= 4 then quad = 3 end
     else
         quad = 4
@@ -75,7 +74,6 @@ function player:start()
     self.VX = 40
     local tilex, tiley = GetTileAtPos(self.X+(self.W/2),self.Y+(self.H/2))
     self.lastTile = {X=tilex,Y=tiley}
-    self.started = true
 end
 
 function player:stop()
@@ -84,7 +82,6 @@ function player:stop()
     self.X, self.Y = self.startX, self.startY
     -- Hacky fix because bump doesn't update the rect when setting the position manually
     GAME.WORLD.rects[self] = {x=self.X,y=self.Y,w=self.W,h=self.H}
-    self.started = false
 end
 
 OBJECTS.player = player
