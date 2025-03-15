@@ -7,6 +7,8 @@ function love.load()
     FrameImg = love.graphics.newImage("graphics/frame.png")
     DoorImg = love.graphics.newImage("graphics/door.png")
 
+    PlayerImg, PlayerQuads = LoadSprites{path="graphics/player.png",xquads=6,yquads=1}
+
     -- Load Libraries --
     Class = require("libs.middleclass")
     JSON = require("libs.JSON")

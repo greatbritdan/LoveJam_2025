@@ -4,59 +4,73 @@ local loadobject = function(data)
     if data.class == "ground" then
         return OBJECTS.ground:new(GAME.WORLD,data.X,data.Y,data.W,data.H,data.args)
     elseif data.class == "player" then
-        local player = OBJECTS.player:new(GAME.WORLD,data.X,data.Y,16,16)
+        local player = OBJECTS.player:new(GAME.WORLD,data.X+2,data.Y+2,12,14)
         if not GAME.PLAYER then GAME.PLAYER = player end
         return player
     elseif data.class == "exit" then
-        return OBJECTS.exit:new(GAME.WORLD,data.X,data.Y,data.W,data.H)
+        return OBJECTS.exit:new(GAME.WORLD,data.X,data.Y,16,16)
     end
 end
 
-GAME = {}
+GAME = {DEBUGDRAW=false}
 function scene.LoadScene()
     GAME.WORLD = BUMP.newWorld(16)
     GAME.MAP = MAP:new("maps/test.lua",{LoadObject=loadobject})
-    table.insert(GAME.MAP:GetLayer("Objects").objects,OBJECTS.ground:new(GAME.WORLD,-16,-16,288,16,{}))
-    table.insert(GAME.MAP:GetLayer("Objects").objects,OBJECTS.ground:new(GAME.WORLD,-16,0,16,256,{}))
-    table.insert(GAME.MAP:GetLayer("Objects").objects,OBJECTS.ground:new(GAME.WORLD,256,0,16,256,{}))
-    table.insert(GAME.MAP:GetLayer("Objects").objects,OBJECTS.ground:new(GAME.WORLD,-16,256,288,16,{}))
     GAME.MAPPOS = {X=8,Y=8}
 
-    GAME.CHIPS = {}
+    -- Level bounderies
+    table.insert(GAME.MAP:GetLayer("Objects").objects,OBJECTS.ground:new(GAME.WORLD,-16,-16,352,16,{}))
+    table.insert(GAME.MAP:GetLayer("Objects").objects,OBJECTS.ground:new(GAME.WORLD,-16,0,16,256,{}))
+    table.insert(GAME.MAP:GetLayer("Objects").objects,OBJECTS.ground:new(GAME.WORLD,320,0,16,256,{}))
+    table.insert(GAME.MAP:GetLayer("Objects").objects,OBJECTS.ground:new(GAME.WORLD,-16,256,352,16,{}))
 
-    GAME.ALLOWEDCHIPS = {jump=2,move_left=2,move_right=2}
+    -- Chips are how you control the player
+    GAME.CHIPS = {}
+    GAME.ALLOWEDCHIPS = {jump=1,move_left=0,move_right=0}
     GAME.USEDCHIPS = {jump=0,move_left=0,move_right=0}
 end
 function scene.Update(dt)
     GAME.MAP:GetLayer("Objects"):LoopThrough(function(data)
         if data.obj.update then data.obj:update(dt) end
-        if data.obj.updatePhysics then data.obj:updatePhysics(dt) end
+        if data.obj.updatePhysics then
+            if (not data.obj.class == "player") or (GAME.PLAYER.started) then
+                data.obj:updatePhysics(dt)
+            end
+        end
     end)
 end
 function scene.Draw()
     love.graphics.setColor(1,1,1)
     love.graphics.draw(FrameImg,0,0)
 
+    love.graphics.push()
+    love.graphics.translate(GAME.MAPPOS.X,GAME.MAPPOS.Y)
+
     GAME.MAP:GetLayer("Tiles"):LoopThrough(function(data)
-        love.graphics.draw(data.image,data.quad,((GAME.MAPPOS.X/16)+data.X-1)*16,((GAME.MAPPOS.Y/16)+data.Y-1)*16)
+        love.graphics.draw(data.image,data.quad,(data.X-1)*16,(data.Y-1)*16)
     end)
 
-    GAME.MAP:GetLayer("Objects"):LoopThrough(function(data)
-        if data.obj.class == "exit" then data.obj:draw() end
-    end)
-    GAME.MAP:GetLayer("Objects"):LoopThrough(function(data)
-        if data.obj.class == "player" then data.obj:draw() end
-    end)
+    DrawObject("ground")
+    DrawObject("exit")
+    DrawObject("player")
 
-    if GAME.PLAYER.started then return end
-    for i,v in pairs(GAME.CHIPS) do
-        love.graphics.setColor(v.color)
-        love.graphics.rectangle("line",(v.X+(GAME.MAPPOS.X/16))*16,(v.Y+(GAME.MAPPOS.Y/16))*16,16,16)
-    end
+    --if not GAME.PLAYER.started then
+        for i,v in pairs(GAME.CHIPS) do
+            love.graphics.setColor(v.color)
+            love.graphics.rectangle("line",v.X*16,v.Y*16,16,16)
+        end
+    --end
+
+    love.graphics.pop()
+end
+function DrawObject(class)
+    GAME.MAP:GetLayer("Objects"):LoopThrough(function(data)
+        if data.obj.class == class then data.obj:draw() end
+    end)
 end
 
 function GetTileAtPos(x,y)
-    return math.floor((x-GAME.MAPPOS.X)/16), math.floor((y-GAME.MAPPOS.Y)/16)
+    return math.floor(x/16), math.floor(y/16)
 end
 
 function GetChipAtTile(x,y)
@@ -68,7 +82,7 @@ function GetChipAtTile(x,y)
 end
 
 function scene.Mousepressed(mx,my,b)
-    local tilex, tiley = GetTileAtPos(mx,my)
+    local tilex, tiley = GetTileAtPos(mx-GAME.MAPPOS.X,my-GAME.MAPPOS.Y)
     local chip,chipi = GetChipAtTile(tilex,tiley)
     if chipi then
         if chip.action == "jump" then GAME.USEDCHIPS.jump = GAME.USEDCHIPS.jump - 1 end
@@ -95,6 +109,9 @@ function scene.Keypressed(key)
         else
             GAME.PLAYER:stop()
         end
+    end
+    if key == "tab" then
+        GAME.DEBUGDRAW = not GAME.DEBUGDRAW
     end
 end
 
