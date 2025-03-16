@@ -8,7 +8,7 @@ function scene.LoadScene()
     MENU.UI = {}
     MENU.UI.LEVELSELECT = UI.MATRIX:new({X=0,Y=0,W=Env.width,H=Env.height},{},"basic")
 
-    MENU.UI.levelselect = UI.TEXT:new({W=166,H=12},{text="levelselect"},"basic")
+    MENU.UI.levelselect = UI.TEXT:new({W=166,H=12},{text="level select!"},"basic")
     MENU.UI.LEVELSELECT:Add(MENU.UI.levelselect,"MC","horizontal")
 
     local i = 0

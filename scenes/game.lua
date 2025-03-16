@@ -34,11 +34,13 @@ end
 
 GAME = {}
 function scene.LoadScene()
+    GAME.TIMER = 0
+
     GAME.ITEMS_ALLOW = {}
     GAME.MAPPOS = {X=8,Y=8}
 
     GAME.DEBUGDRAW = false
-    GAME.NOTUTORIAL = true
+    GAME.NOTUTORIAL = false --true
 
     GAME.WORLD = BUMP.newWorld(16)
     if LEVELNO == 0 then
@@ -84,6 +86,8 @@ function scene.LoadScene()
 end
 
 function scene.Update(dt)
+    GAME.TIMER = GAME.TIMER + dt
+
     DIALOG:update(dt)
 
     GAME.MAP:GetLayer("Objects"):LoopThrough(function(data)
@@ -151,6 +155,15 @@ function scene.Draw()
         end
     end
 
+    love.graphics.setColor(1,1,1,0.8)
+    for i = 1, 20 do
+        local siny = math.sin((GAME.TIMER*2)+i)*2
+        local frame = math.floor(GAME.TIMER*4)%4+1
+        love.graphics.draw(WaterImg,WaterQuads[1][frame],((i-1)*16),224+siny)
+        love.graphics.draw(WaterImg,WaterQuads[2][frame],((i-1)*16),240+siny)
+        love.graphics.draw(WaterImg,WaterQuads[2][frame],((i-1)*16),256+siny)
+    end
+
     love.graphics.pop()
 
     love.graphics.setColor(1,1,1)
@@ -203,6 +216,7 @@ function scene.Mousepressed(mx,my,b)
         DIALOG:next()
         return
     end
+    if GAME.SIMULATING then return end
     if b ~= 1 then return end
     local idx, item = GAME.INVENTORY:hover(mx,my)
     if idx and item then

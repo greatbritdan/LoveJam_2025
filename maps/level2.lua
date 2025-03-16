@@ -12,7 +12,7 @@ return {
   nextobjectid = 20,
   properties = {
     ["crate"] = 3,
-    ["dialog_name"] = "none",
+    ["dialog_name"] = "level2",
     ["level_name"] = "sealing the cracks",
     ["platform"] = 0,
     ["springboard"] = 0

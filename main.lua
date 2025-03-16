@@ -10,6 +10,8 @@ function love.load()
     InventoryImg, InventoryQuads = LoadSprites{path="graphics/inventory.png",xquads=10,yquads=1,xquadnames={"slot",1,2,3,4,5,6,7,8,9}}
     ItemselecterImg = love.graphics.newImage("graphics/itemselecter.png")
 
+    WaterImg, WaterQuads = LoadSprites{path="graphics/water.png",xquads=4,yquads=2}
+
     BackgroundImg = love.graphics.newImage("graphics/background.png")
     PlayerImg, PlayerQuads = LoadSprites{path="graphics/player.png",xquads=9,yquads=1}
     ExitImg, ExitQuads = LoadSprites{path="graphics/exit.png",xquads=4,yquads=1}

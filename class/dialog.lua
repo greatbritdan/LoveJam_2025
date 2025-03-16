@@ -10,6 +10,11 @@ DIALOGS = {
         {text="you can place the item in any of these highlighted spots, &you can also move items you've already placed.",highlight="available"},
         {text="this is a springboard, &this will launch the player upwards. &place it in one of the available spots to bring the guy to the exit.",highlight="slot1"},
         {text="once you're ready, &click the play button to start the simulation, &good luck!",highlight="play"},
+    },
+    level2 = {
+        {text="oh no! &looks like someone has put a convinitly square whole in the floor."},
+        {text="you can use this crate to fill the hole, &you can place them directly over the area or higher up as they are affected by gravity.",highlight="slot1"},
+        {text="sometimes you might be given more items than you need, &don't feel the need to use every single one!",highlight="slot1"},
     }
 }
 
