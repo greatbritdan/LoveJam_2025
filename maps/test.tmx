@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="2021.02.15" orientation="orthogonal" renderorder="right-down" width="20" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="28">
+<map version="1.5" tiledversion="2021.02.15" orientation="orthogonal" renderorder="right-down" width="20" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="32">
  <editorsettings>
   <export target="test.lua" format="lua"/>
  </editorsettings>
@@ -29,12 +29,12 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,66,0,0,0,0,0,0,66,0,0,0,0,66,0,0,0,0,82,
+0,0,66,0,0,0,0,0,0,66,0,0,0,0,66,0,0,0,0,0,
+0,0,66,0,0,0,0,0,0,66,0,0,0,0,66,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,18,0,0,0,18,0,
+0,0,0,0,18,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
  <layer id="1" name="Tiles" width="20" height="16">
@@ -46,15 +46,15 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,82,0,0,0,0,0,0,0,0,0,0,0,0,0,82,
-0,0,0,0,0,82,0,0,0,0,0,0,0,0,0,0,0,0,0,82,
-0,0,0,0,0,82,0,0,0,0,0,0,0,0,0,0,0,0,0,82,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,82,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,82,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,82,
 0,0,65,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,82,
+68,69,69,69,68,69,69,52,52,69,69,69,68,68,69,69,69,69,69,82,
 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
-18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,
-18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18
+18,18,18,18,18,18,18,18,18,18,18,18,18,18,1,2,2,2,3,18,
+2,2,2,2,3,18,18,18,18,18,18,18,18,18,17,18,18,18,19,18
 </data>
  </layer>
  <objectgroup color="#18abcc" id="4" name="Allow">
@@ -62,15 +62,14 @@
  </objectgroup>
  <objectgroup id="2" name="Objects">
   <object id="4" type="player" x="16" y="192" width="16" height="16"/>
-  <object id="6" type="exit" x="288" y="192" width="16" height="16"/>
+  <object id="6" type="exit" x="280" y="192" width="16" height="16"/>
   <object id="8" type="ground" x="0" y="208" width="320" height="48"/>
   <object id="16" type="ground" x="32" y="160" width="288" height="4">
    <properties>
     <property name="oneway" value="up"/>
    </properties>
   </object>
-  <object id="17" type="spike" x="316" y="112" width="4" height="48"/>
-  <object id="18" type="spike" x="92" y="112" width="4" height="48"/>
+  <object id="17" type="spike" x="316" y="112" width="4" height="96"/>
   <object id="20" type="door" x="160" y="176" width="16" height="32">
    <properties>
     <property name="color" value="yellow"/>
@@ -95,14 +94,28 @@
     <property name="dir" value="ver"/>
    </properties>
   </object>
-  <object id="26" type="key" x="80" y="176" width="16" height="16">
+  <object id="28" type="door" x="176" y="48" width="32" height="16">
    <properties>
     <property name="color" value="yellow"/>
+    <property name="dir" value="hor"/>
    </properties>
   </object>
-  <object id="27" type="key" x="144" y="112" width="16" height="16">
+  <object id="29" type="door" x="176" y="64" width="32" height="16">
+   <properties>
+    <property name="color" value="red"/>
+    <property name="dir" value="hor"/>
+   </properties>
+  </object>
+  <object id="30" type="door" x="176" y="80" width="32" height="16">
    <properties>
     <property name="color" value="green"/>
+    <property name="dir" value="hor"/>
+   </properties>
+  </object>
+  <object id="31" type="door" x="176" y="96" width="32" height="16">
+   <properties>
+    <property name="color" value="blue"/>
+    <property name="dir" value="hor"/>
    </properties>
   </object>
  </objectgroup>

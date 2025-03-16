@@ -216,7 +216,10 @@ function scene.Mousepressed(mx,my,b)
         DIALOG:next()
         return
     end
-    if GAME.SIMULATING then return end
+    if GAME.SIMULATING then
+        GAME.UI.SIDEBAR:Mousepressed(mx,my,b) -- Only register clicks if no item is clicked
+        return
+    end
     if b ~= 1 then return end
     local idx, item = GAME.INVENTORY:hover(mx,my)
     if idx and item then
