@@ -7,7 +7,8 @@ function button:initialize(transform, args, style)
     _BRITUI.BASE.initialize(self, transform, args, style)
 
     self.func = args.func
-    self.repeating = args.repeating or true
+    self.repeating = true
+    if args.repeating ~= nil then self.repeating = args.repeating end
     self.repeattime = 0
 end
 

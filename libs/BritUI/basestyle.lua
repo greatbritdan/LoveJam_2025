@@ -14,7 +14,6 @@ function style:initialize()
     self.text = {fill="text"}
     self.image = {fill="image"}
 
-    -- I shouldn't really be editing the basestyle but shhhh
     self.margin = 16
     self.linewidth = 1
     self.fontheightgap = 2

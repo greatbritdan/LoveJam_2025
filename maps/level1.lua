@@ -9,13 +9,13 @@ return {
   tilewidth = 16,
   tileheight = 16,
   nextlayerid = 6,
-  nextobjectid = 19,
+  nextobjectid = 16,
   properties = {
-    ["crate"] = 99,
+    ["crate"] = 0,
     ["dialog_name"] = "level1",
     ["level_name"] = "the first leap",
-    ["platform"] = 99,
-    ["springboard"] = 99
+    ["platform"] = 0,
+    ["springboard"] = 1
   },
   tilesets = {
     {
@@ -75,9 +75,9 @@ return {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        7, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 52, 52, 0, 0, 0, 52, 52,
+        23, 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        23, 24, 52, 52, 0, 0, 6, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
@@ -107,43 +107,15 @@ return {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 82, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 82,
-        0, 0, 0, 0, 0, 82, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 82,
-        0, 0, 0, 0, 0, 82, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 82,
-        0, 0, 65, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65, 51, 1, 2, 2, 2, 2, 2, 2,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 17, 18, 18, 18, 18, 18, 18,
+        2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 37, 18, 18, 18, 18, 18, 18,
         18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18,
         18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18
-      }
-    },
-    {
-      type = "objectgroup",
-      draworder = "topdown",
-      id = 4,
-      name = "Allow",
-      visible = true,
-      opacity = 1,
-      offsetx = 0,
-      offsety = 0,
-      parallaxx = 1,
-      parallaxy = 1,
-      properties = {},
-      objects = {
-        {
-          id = 10,
-          name = "",
-          type = "place_allow",
-          shape = "rectangle",
-          x = 0,
-          y = 0,
-          width = 320,
-          height = 208,
-          rotation = 0,
-          visible = true,
-          properties = {}
-        }
       }
     },
     {
@@ -164,10 +136,23 @@ return {
           name = "",
           type = "player",
           shape = "rectangle",
-          x = 16,
+          x = 48,
           y = 192,
           width = 16,
           height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 5,
+          name = "",
+          type = "ground",
+          shape = "rectangle",
+          x = 208,
+          y = 176,
+          width = 112,
+          height = 32,
           rotation = 0,
           visible = true,
           properties = {}
@@ -177,13 +162,28 @@ return {
           name = "",
           type = "exit",
           shape = "rectangle",
-          x = 288,
-          y = 192,
+          x = 256,
+          y = 160,
           width = 16,
           height = 16,
           rotation = 0,
           visible = true,
           properties = {}
+        },
+        {
+          id = 7,
+          name = "",
+          type = "ground",
+          shape = "rectangle",
+          x = 176,
+          y = 176,
+          width = 32,
+          height = 4,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["oneway"] = "up"
+          }
         },
         {
           id = 8,
@@ -197,44 +197,31 @@ return {
           rotation = 0,
           visible = true,
           properties = {}
-        },
+        }
+      }
+    },
+    {
+      type = "objectgroup",
+      draworder = "topdown",
+      id = 4,
+      name = "Allow",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      parallaxx = 1,
+      parallaxy = 1,
+      properties = {},
+      objects = {
         {
-          id = 16,
+          id = 10,
           name = "",
-          type = "ground",
+          type = "place_allow",
           shape = "rectangle",
-          x = 32,
-          y = 160,
-          width = 288,
-          height = 4,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["oneway"] = "up"
-          }
-        },
-        {
-          id = 17,
-          name = "",
-          type = "spike",
-          shape = "rectangle",
-          x = 316,
-          y = 112,
-          width = 4,
-          height = 48,
-          rotation = 0,
-          visible = true,
-          properties = {}
-        },
-        {
-          id = 18,
-          name = "",
-          type = "spike",
-          shape = "rectangle",
-          x = 92,
-          y = 112,
-          width = 4,
-          height = 48,
+          x = 112,
+          y = 176,
+          width = 48,
+          height = 32,
           rotation = 0,
           visible = true,
           properties = {}

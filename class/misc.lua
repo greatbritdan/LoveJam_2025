@@ -1,8 +1,13 @@
 local ground = Class("ground",OBJECTS.box)
-function ground:initialize(world,x,y,w,h,args)
+function ground:initialize(world,x,y,w,h,args,spike)
     OBJECTS.box.initialize(self,world,x,y,w,h,{static=true})
-    self.class = "ground"
-    self.oneway = args.oneway
+    if spike then
+        self.class = "spike"
+        self.spike = true
+    else
+        self.class = "ground"
+        self.oneway = args.oneway
+    end
 end
 
 function ground:draw()

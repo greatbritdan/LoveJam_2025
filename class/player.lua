@@ -9,9 +9,16 @@ function player:initialize(world,x,y,w,h)
     self.offsetx = 6
     self.offsety = 6
 
+    self.dir = 1
     self.idletimer = 0
     self.walktimer = 0
     self.inair = false
+
+    self.dying = false -- for when you know you're fu##ed but not yet
+    self.dead = false
+
+    self.acceleration = 128
+    self.maxspeed = 64
 end
 
 function player:update(dt)
@@ -20,9 +27,16 @@ function player:update(dt)
         if self.idletimer > 5 then
             self.idletimer = 0
             self.VX = -self.VX
+            self.dir = -self.dir
         end
         return
     end
+
+    if self.dying or self.dead then
+        return
+    end
+
+    self.VX = math.max(math.min(self.VX + self.acceleration * dt * self.dir, self.maxspeed), -self.maxspeed)
 
     self.walktimer = self.walktimer + dt
     if self.walktimer > 0.2 then
@@ -36,7 +50,7 @@ function player:update(dt)
     GAME.MAP:GetLayer("Objects"):LoopThrough(function(data)
         if data.obj.class == "exit" then
             if AABB(self.X+self.W/2-1,self.Y+self.H/2-1,2,2,data.obj.X,data.obj.Y,data.obj.W,data.obj.H) then
-                StopSimulation()
+                StopSimulation(true)
             end
         end
         if data.obj.class == "springboard" then
@@ -49,18 +63,27 @@ function player:update(dt)
 end
 
 function player:collided(data)
+    if data.other.class == "spike" then
+        self.dying = true
+        self.VY = -64
+    end
     if data.col.normal.y == -1 then
         self.inair = false
+        if self.dying then
+            self.dead = true
+            self.dying = false
+            self.VX = 0
+        end
     end
     -- Flip direction when hitting a wall
     if data.col.normal.x ~= 0 and (not data.other.oneway) then
         self.VX = -data.VX
+        self.dir = -self.dir
     end
 end
 
 function player:draw()
-    local scale = 1
-    if self.VX < 0 then scale = -1 end
+    local scale = self.dir
     local quad = 1
     if not GAME.SIMULATING then
         if self.idletimer >= 4 then quad = 3 end
@@ -68,6 +91,8 @@ function player:draw()
         quad = 4
         if self.walktimer >= 0.1 then quad = 5 end
         if self.inair then quad = 6 end
+        if self.dying then quad = 7 end
+        if self.dead then quad = 8 end
     end
 
     love.graphics.setColor(1,1,1)
@@ -81,17 +106,20 @@ function player:draw()
 end
 
 function player:start()
-    self.VX = 52
+    self.dir = 1
     local tilex, tiley = GetTileAtPos(self.X+(self.W/2),self.Y+(self.H/2))
     self.lastTile = {X=tilex,Y=tiley}
 end
 
 function player:stop()
     self.VX, self.VY = 0, 0
-    self.inair = false
     self.X, self.Y = self.startX, self.startY
     -- Hacky fix because bump doesn't update the rect when setting the position manually
     GAME.WORLD.rects[self] = {x=self.X,y=self.Y,w=self.W,h=self.H}
+
+    self.inair = false
+    self.dying = false
+    self.dead = false
 end
 
 OBJECTS.player = player

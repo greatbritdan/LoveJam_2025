@@ -10,7 +10,7 @@ function love.load()
     ItemselecterImg = love.graphics.newImage("graphics/itemselecter.png")
 
     BackgroundImg = love.graphics.newImage("graphics/background.png")
-    PlayerImg, PlayerQuads = LoadSprites{path="graphics/player.png",xquads=6,yquads=1}
+    PlayerImg, PlayerQuads = LoadSprites{path="graphics/player.png",xquads=8,yquads=1}
     DoorImg, DoorQuads = LoadSprites{path="graphics/door.png",xquads=4,yquads=1}
     SpringboardImg, SpringboardQuads = LoadSprites{path="graphics/springboard.png",xquads=4,yquads=1}
     CrateImg = love.graphics.newImage("graphics/crate.png")
@@ -18,7 +18,7 @@ function love.load()
 
     _ITEMS_ORDER = {"springboard","crate","platform"}
     _ITEMS = {}
-    _ITEMS.springboard = {name="springboard",img=SpringboardImg,quad=SpringboardQuads[3],spawn={ox=1,oy=14,w=14,h=2}}
+    _ITEMS.springboard = {name="springboard",img=SpringboardImg,quad=SpringboardQuads[1],spawn={ox=1,oy=14,w=14,h=2}}
     _ITEMS.crate = {name="crate",img=CrateImg,quad=false,spawn={ox=0,oy=0,w=16,h=16}}
     _ITEMS.platform = {name="platform",img=PlatformImg,quad=PlatformQuads[1],spawn={ox=0,oy=0,w=16,h=16}}
 

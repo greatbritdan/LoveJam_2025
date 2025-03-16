@@ -13,6 +13,8 @@ local loadobject = function(data)
 
     if data.class == "ground" then
         return OBJECTS.ground:new(GAME.WORLD,data.X,data.Y,data.W,data.H,data.args)
+    elseif data.class == "spike" then
+        return OBJECTS.ground:new(GAME.WORLD,data.X,data.Y,data.W,data.H,{},true)
     elseif data.class == "player" then
         local player = OBJECTS.player:new(GAME.WORLD,data.X+2,data.Y+2,12,14)
         if not GAME.PLAYER then GAME.PLAYER = player end
@@ -22,7 +24,7 @@ local loadobject = function(data)
     end
 end
 
-GAME = {DEBUGDRAW=false}
+GAME = {DEBUGDRAW=false,NOTUTORIAL=true}
 function scene.LoadScene()
     GAME.ITEMS_ALLOW = {}
     GAME.MAPPOS = {X=8,Y=8}
@@ -54,13 +56,14 @@ function scene.LoadScene()
 
     -- Load UI
     GAME.UI = {}
-    GAME.UI.PLAY = UI.BUTTON:new({W=118,H=19},{children={{text="play"}}},"basic")
-    GAME.UI.MENU = UI.BUTTON:new({X=8,Y=8,W=118,H=19},{children={{text="menu"}}},"basic")
+    GAME.UI.PLAY = UI.BUTTON:new({W=118,H=19},{children={{text="play!"}},repeating=false,func=function() ToggleSimulation() end},"basic")
+    GAME.UI.MENU = UI.BUTTON:new({X=8,Y=8,W=118,H=19},{children={{text="menu"}},repeating=false},"basic")
 
     GAME.UI.SIDEBAR = UI.MATRIX:new({X=345,Y=99,W=126,H=166},{},"basic")
     GAME.UI.SIDEBAR:Setup{BC={{GAME.UI.MENU},{GAME.UI.PLAY}}}
     GAME.UI.SIDEBAR:Recaclulate()
 
+    if GAME.NOTUTORIAL then return end
     if inv_data.dialog_name then
         DIALOG:start(inv_data.dialog_name)
     end
@@ -77,6 +80,21 @@ function scene.Update(dt)
             end
         end
     end)
+
+    if GAME.SIMULATING then
+        GAME.UI.PLAY.children[1].text = "stop!"
+    else
+        GAME.UI.PLAY.children[1].text = "play!"
+    end
+    local wasactive = GAME.UI.MENU.active
+    GAME.UI.MENU.active = not GAME.SIMULATING
+    if wasactive ~= GAME.UI.MENU.active then
+        if GAME.UI.MENU.active then
+            GAME.UI.MENU:ChangeStyle("basic")
+        else
+            GAME.UI.MENU:ChangeStyle("basic disable")
+        end
+    end
 
     GAME.UI.SIDEBAR:Update(dt)
 end
@@ -96,6 +114,7 @@ function scene.Draw()
     end)
 
     DrawObject("ground")
+    DrawObject("spike")
     DrawObject("exit")
     DrawObject("player")
     for _,item in pairs(_ITEMS) do
@@ -218,15 +237,15 @@ function scene.Keypressed(key)
         DIALOG:next()
         return
     end
-    if key == "space" then
-        if not GAME.SIMULATING then
-            StartSimulation()
-        else
-            StopSimulation()
-        end
-    end
-    if key == "tab" then
-        GAME.DEBUGDRAW = not GAME.DEBUGDRAW
+    if key == "space" then ToggleSimulation() end
+    if key == "tab" then GAME.DEBUGDRAW = not GAME.DEBUGDRAW end
+end
+
+function ToggleSimulation()
+    if not GAME.SIMULATING then
+        StartSimulation()
+    else
+        StopSimulation()
     end
 end
 
@@ -244,7 +263,7 @@ function StartSimulation()
     GAME.SIMULATING = true
 end
 
-function StopSimulation()
+function StopSimulation(won)
     -- Remove all items, but only the ones placed
     for _,item in pairs(_ITEMS) do
         local delete = {}
