@@ -2,6 +2,9 @@ INVENTORY = Class("inventory")
 function INVENTORY:initialize()
     self.items = {}
     self.size = 4
+    if LEVELNO == 0 then
+        self.size = 16
+    end
 end
 
 function INVENTORY:update(dt)
@@ -9,6 +12,7 @@ end
 
 function INVENTORY:draw()
     local x,y = 342, 52
+    local ix = 0
     for i = 1, self.size do
         love.graphics.setColor(1,1,1)
         love.graphics.draw(InventoryImg,InventoryQuads.slot,x,y)
@@ -28,7 +32,14 @@ function INVENTORY:draw()
             end
         end
 
-        x = x + 34
+        ix = ix + 1
+        if ix == 4 then
+            ix = 0
+            x = 342
+            y = y + 34
+        else
+            x = x + 34
+        end
     end
 end
 
@@ -60,11 +71,20 @@ end
 
 function INVENTORY:hover(mx,my)
     local x,y = 342, 52
+    local ix = 0
     for i = 1, self.size do
         if AABB(mx,my,1,1,x,y,30,30) then
             return i, self.items[i]
         end
-        x = x + 34
+
+        ix = ix + 1
+        if ix == 4 then
+            ix = 0
+            x = 342
+            y = y + 34
+        else
+            x = x + 34
+        end
     end
     return false, false
 end

@@ -9,13 +9,17 @@ return {
   tilewidth = 16,
   tileheight = 16,
   nextlayerid = 6,
-  nextobjectid = 20,
+  nextobjectid = 28,
   properties = {
+    ["bluekey"] = 99,
     ["crate"] = 99,
     ["dialog_name"] = "none",
+    ["greenkey"] = 99,
     ["level_name"] = "test level",
     ["platform"] = 99,
-    ["springboard"] = 99
+    ["redkey"] = 99,
+    ["springboard"] = 99,
+    ["yellowkey"] = 99
   },
   tilesets = {
     {
@@ -240,17 +244,98 @@ return {
           properties = {}
         },
         {
-          id = 19,
+          id = 20,
+          name = "",
+          type = "door",
+          shape = "rectangle",
+          x = 160,
+          y = 176,
+          width = 16,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["color"] = "yellow",
+            ["dir"] = "ver"
+          }
+        },
+        {
+          id = 23,
+          name = "",
+          type = "door",
+          shape = "rectangle",
+          x = 176,
+          y = 176,
+          width = 16,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["color"] = "red",
+            ["dir"] = "ver"
+          }
+        },
+        {
+          id = 24,
+          name = "",
+          type = "door",
+          shape = "rectangle",
+          x = 192,
+          y = 176,
+          width = 16,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["color"] = "green",
+            ["dir"] = "ver"
+          }
+        },
+        {
+          id = 25,
+          name = "",
+          type = "door",
+          shape = "rectangle",
+          x = 208,
+          y = 176,
+          width = 16,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["color"] = "blue",
+            ["dir"] = "ver"
+          }
+        },
+        {
+          id = 26,
           name = "",
           type = "key",
           shape = "rectangle",
-          x = 112,
-          y = 192,
+          x = 80,
+          y = 176,
           width = 16,
           height = 16,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["color"] = "yellow"
+          }
+        },
+        {
+          id = 27,
+          name = "",
+          type = "key",
+          shape = "rectangle",
+          x = 144,
+          y = 112,
+          width = 16,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["color"] = "green"
+          }
         }
       }
     }

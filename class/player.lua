@@ -9,6 +9,10 @@ function player:initialize(world,x,y,w,h)
     self.offsetx = 6
     self.offsety = 6
 
+    self.acceleration = 128
+    self.maxspeed = 64
+    self.jumpspeed = -148
+
     self.dir = 1
     self.idletimer = 0
     self.walktimer = 0
@@ -17,8 +21,9 @@ function player:initialize(world,x,y,w,h)
     self.dying = false -- for when you know you're fu##ed but not yet
     self.dead = false
 
-    self.acceleration = 128
-    self.maxspeed = 64
+    self.win = false
+    self.winpos = 0
+    self.wintimer = 0
 end
 
 function player:update(dt)
@@ -36,6 +41,28 @@ function player:update(dt)
         return
     end
 
+    if self.win == "walking" then
+        if (self.dir == 1 and self.X < self.winpos) or (self.dir == -1 and self.X > self.winpos) then
+            self.VX = math.max(math.min(self.VX + self.acceleration * dt * self.dir, self.maxspeed), -self.maxspeed)
+        else
+            self.X = self.winpos
+            self.VX = 0
+            self.win = "wink"
+        end
+        return
+    elseif self.win == "wink" or self.win == "hide" then
+        self.wintimer = self.wintimer + dt
+        if self.wintimer > 1 and self.win == "wink" then
+            self.win = "hide"
+        end
+        if self.wintimer > 2 then
+            self.wintimer = 0
+            self.win = false
+            GAME.QueueNextLevel = true
+        end
+        return
+    end
+
     self.VX = math.max(math.min(self.VX + self.acceleration * dt * self.dir, self.maxspeed), -self.maxspeed)
 
     self.walktimer = self.walktimer + dt
@@ -50,13 +77,26 @@ function player:update(dt)
     GAME.MAP:GetLayer("Objects"):LoopThrough(function(data)
         if data.obj.class == "exit" then
             if AABB(self.X+self.W/2-1,self.Y+self.H/2-1,2,2,data.obj.X,data.obj.Y,data.obj.W,data.obj.H) then
-                StopSimulation(true)
+                data.obj:trigger(self)
+                self.win = "walking"
+                self.winpos = data.obj.X+2
             end
         end
         if data.obj.class == "springboard" then
             if AABB(self.X,self.Y,self.W,self.H,data.obj.X-2,data.obj.Y-1,data.obj.W+4,data.obj.H+1) then
                 data.obj:trigger(self)
-                self.VY = -148; self.inair = true
+                self.VY = self.jumpspeed; self.inair = true
+            end
+        end
+        if data.obj.class == "key" then
+            if AABB(self.X,self.Y,self.W,self.H,data.obj.X,data.obj.Y,data.obj.W,data.obj.H) then
+                GAME.KEYSGOT[data.obj.color] = true
+
+                GAME.MAP:GetLayer("Objects"):LoopThrough(function(odata)
+                    if (odata.obj.class == "door" or odata.obj.class == "key") and data.obj.color == odata.obj.color then
+                        odata.obj.active = false
+                    end
+                end)
             end
         end
     end)
@@ -93,6 +133,8 @@ function player:draw()
         if self.inair then quad = 6 end
         if self.dying then quad = 7 end
         if self.dead then quad = 8 end
+        if self.win == "wink" then quad = 9 end
+        if self.win == "hide" then return end
     end
 
     love.graphics.setColor(1,1,1)
@@ -120,6 +162,8 @@ function player:stop()
     self.inair = false
     self.dying = false
     self.dead = false
+    self.win = false
+    self.winpos = 0
 end
 
 OBJECTS.player = player

@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="2021.02.15" orientation="orthogonal" renderorder="right-down" width="20" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="20">
+<map version="1.5" tiledversion="2021.02.15" orientation="orthogonal" renderorder="right-down" width="20" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="28">
  <editorsettings>
   <export target="test.lua" format="lua"/>
  </editorsettings>
  <properties>
+  <property name="bluekey" type="int" value="99"/>
   <property name="crate" type="int" value="99"/>
   <property name="dialog_name" value="none"/>
+  <property name="greenkey" type="int" value="99"/>
   <property name="level_name" value="test level"/>
   <property name="platform" type="int" value="99"/>
+  <property name="redkey" type="int" value="99"/>
   <property name="springboard" type="int" value="99"/>
+  <property name="yellowkey" type="int" value="99"/>
  </properties>
  <tileset firstgid="1" name="tiles" tilewidth="16" tileheight="16" tilecount="256" columns="16">
   <image source="../graphics/tiles.png" width="256" height="256"/>
@@ -67,6 +71,39 @@
   </object>
   <object id="17" type="spike" x="316" y="112" width="4" height="48"/>
   <object id="18" type="spike" x="92" y="112" width="4" height="48"/>
-  <object id="19" type="key" x="112" y="192" width="16" height="16"/>
+  <object id="20" type="door" x="160" y="176" width="16" height="32">
+   <properties>
+    <property name="color" value="yellow"/>
+    <property name="dir" value="ver"/>
+   </properties>
+  </object>
+  <object id="23" type="door" x="176" y="176" width="16" height="32">
+   <properties>
+    <property name="color" value="red"/>
+    <property name="dir" value="ver"/>
+   </properties>
+  </object>
+  <object id="24" type="door" x="192" y="176" width="16" height="32">
+   <properties>
+    <property name="color" value="green"/>
+    <property name="dir" value="ver"/>
+   </properties>
+  </object>
+  <object id="25" type="door" x="208" y="176" width="16" height="32">
+   <properties>
+    <property name="color" value="blue"/>
+    <property name="dir" value="ver"/>
+   </properties>
+  </object>
+  <object id="26" type="key" x="80" y="176" width="16" height="16">
+   <properties>
+    <property name="color" value="yellow"/>
+   </properties>
+  </object>
+  <object id="27" type="key" x="144" y="112" width="16" height="16">
+   <properties>
+    <property name="color" value="green"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

@@ -8,6 +8,8 @@ function box:initialize(world,x,y,w,h,extra)
     self.VX, self.VY = 0,0
 
     self.static = extra.static or false
+    self.active = true
+    if extra.active ~= nil then self.active = extra.active end
     self.gravity = extra.gravity or 0
 
     self.defaultmovement = "slide"
@@ -25,6 +27,7 @@ end
 
 function box:updatePhysics(dt)
     if self.static then return end
+    if not self.active then return end
 
     local oldX, oldY = self.X, self.Y
     self.VY = self.VY + self.gravity*dt
@@ -36,6 +39,9 @@ function box:updatePhysics(dt)
             local col = cols[i]
             -- if cross then dont reset velocity
             local oldvx, oldvy = self.VX, self.VY
+            if col.type == "cross" then
+                self.VX = oldvx; self.VY = oldvy
+            end
             if col.type == "touch" then
                 self.VX = 0; self.VY = 0
             end
@@ -47,7 +53,7 @@ function box:updatePhysics(dt)
                 if col.normal.x ~= 0 then self.VX = -self.VX end
                 if col.normal.y ~= 0 then self.VY = -self.VY end
             end
-            if self.collided then
+            if self.collided and col.type ~= "cross" then
                 self:collided{other=col.other, col=col, VX=oldvx, VY=oldvy}
             end
         end
@@ -59,6 +65,7 @@ function box:updatePhysics(dt)
 end
 
 function box:filter(other)
+    if not self.active or not other.active then return "cross" end
     local oneway = self:filter_oneway(other)
     if oneway then return oneway end
     if self.filter_other then

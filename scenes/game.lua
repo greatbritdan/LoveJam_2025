@@ -21,13 +21,24 @@ local loadobject = function(data)
         return player
     elseif data.class == "exit" then
         return OBJECTS.exit:new(GAME.WORLD,data.X,data.Y,16,16)
+    elseif data.class == "key" then
+        return OBJECTS.key:new(GAME.WORLD,data.X+4,data.Y+2,8,12,data.args)
+    elseif data.class == "door" then
+        if data.args.dir == "hor" then
+            return OBJECTS.door:new(GAME.WORLD,data.X,data.Y+4,32,8,data.args)
+        else
+            return OBJECTS.door:new(GAME.WORLD,data.X+4,data.Y,8,32,data.args)
+        end
     end
 end
 
-GAME = {DEBUGDRAW=false,NOTUTORIAL=true}
+GAME = {}
 function scene.LoadScene()
     GAME.ITEMS_ALLOW = {}
     GAME.MAPPOS = {X=8,Y=8}
+
+    GAME.DEBUGDRAW = false
+    GAME.NOTUTORIAL = true
 
     GAME.WORLD = BUMP.newWorld(16)
     if LEVELNO == 0 then
@@ -51,6 +62,8 @@ function scene.LoadScene()
         end
     end
     GAME.ITEMS = {}
+
+    GAME.KEYSGOT = {yellow=false,red=false,green=false,blue=false}
 
     GAME.LEVEL_NAME = inv_data.level_name or "no name"
     GAME.LEVEL_NO = LEVELNO
@@ -98,6 +111,10 @@ function scene.Update(dt)
     end
 
     GAME.UI.SIDEBAR:Update(dt)
+
+    if GAME.QueueNextLevel then
+        NextLevel()
+    end
 end
 
 function scene.Draw()
@@ -117,10 +134,13 @@ function scene.Draw()
     DrawObject("ground")
     DrawObject("spike")
     DrawObject("exit")
-    DrawObject("player")
+    DrawObject("key")
+    DrawObject("door")
+
     for _,item in pairs(_ITEMS) do
         DrawObject(item.name)
     end
+    DrawObject("player")
 
     if not GAME.SIMULATING then
         -- draw allowed spots
@@ -256,7 +276,11 @@ function StartSimulation()
         local v = GAME.ITEMS[i]
         if TableContains(v.name,_ITEMS,"name") then
             local item = _ITEMS[v.name]
-            table.insert(GAME.MAP:GetLayer("Objects").objects,OBJECTS[item.name]:new(GAME.WORLD,v.X+item.spawn.ox,v.Y+item.spawn.oy,item.spawn.w,item.spawn.h,{}))
+            local args = {}
+            if item.args then args = DeepCopy(item.args) end
+            local temp = OBJECTS[item.class]:new(GAME.WORLD,v.X+item.spawn.ox,v.Y+item.spawn.oy,item.spawn.w,item.spawn.h,args)
+            table.insert(GAME.MAP:GetLayer("Objects").objects,temp)
+            temp.placedbyplayer = true -- Used to delete the item when stopping simulation
         end
     end
 
@@ -266,19 +290,28 @@ end
 
 function StopSimulation(won)
     -- Remove all items, but only the ones placed
-    for _,item in pairs(_ITEMS) do
-        local delete = {}
-        GAME.MAP:GetLayer("Objects"):LoopThrough(function(data)
-            if data.obj.class == item.name then
-                GAME.WORLD:remove(data.obj)
-                table.insert(delete,data.idx)
-            end
-        end)
-        table.sort(delete,function(a,b) return a > b end)
-        for _,idx in ipairs(delete) do
-            table.remove(GAME.MAP:GetLayer("Objects").objects,idx)
+    local delete = {}
+    GAME.MAP:GetLayer("Objects"):LoopThrough(function(data)
+        if data.obj.placedbyplayer then
+            if data.obj.world then GAME.WORLD:remove(data.obj) end
+            table.insert(delete,data.idx)
         end
+    end)
+    table.sort(delete,function(a,b) return a > b end)
+    for _,idx in ipairs(delete) do
+        table.remove(GAME.MAP:GetLayer("Objects").objects,idx)
     end
+
+    GAME.KEYSGOT = {yellow=false,red=false,green=false,blue=false}
+
+    GAME.MAP:GetLayer("Objects"):LoopThrough(function(data)
+        if data.obj.class == "door" or data.obj.class == "key" then
+            data.obj.active = true
+        end
+        if data.obj.class == "exit" then
+            data.obj.opentimer = false
+        end
+    end)
 
     GAME.PLAYER:stop()
     GAME.SIMULATING = false

@@ -75,4 +75,16 @@ function ChooseLevel(levelno)
     SCENE:LoadScene("game")
 end
 
+function NextLevel()
+    if not LEVELNO then
+        LEVELNO = 0
+    end
+    LEVELNO = LEVELNO + 1
+
+    GAME = {} -- Clear game
+    MENU = {} -- Clear menu
+
+    SCENE:LoadScene("game")
+end
+
 return scene
