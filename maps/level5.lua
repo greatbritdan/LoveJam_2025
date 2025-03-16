@@ -1,0 +1,221 @@
+return {
+  version = "1.5",
+  luaversion = "5.1",
+  tiledversion = "2021.02.15",
+  orientation = "orthogonal",
+  renderorder = "right-down",
+  width = 20,
+  height = 16,
+  tilewidth = 16,
+  tileheight = 16,
+  nextlayerid = 6,
+  nextobjectid = 29,
+  properties = {
+    ["crate"] = 0,
+    ["dialog_name"] = "none",
+    ["level_name"] = "the key",
+    ["platform"] = 0,
+    ["springboard"] = 0,
+    ["yellowkey"] = 1
+  },
+  tilesets = {
+    {
+      name = "tiles",
+      firstgid = 1,
+      tilewidth = 16,
+      tileheight = 16,
+      spacing = 0,
+      margin = 0,
+      columns = 16,
+      image = "../graphics/tiles.png",
+      imagewidth = 256,
+      imageheight = 256,
+      objectalignment = "unspecified",
+      tileoffset = {
+        x = 0,
+        y = 0
+      },
+      grid = {
+        orientation = "orthogonal",
+        width = 16,
+        height = 16
+      },
+      properties = {},
+      terrains = {},
+      wangsets = {},
+      tilecount = 256,
+      tiles = {}
+    }
+  },
+  layers = {
+    {
+      type = "tilelayer",
+      x = 0,
+      y = 0,
+      width = 20,
+      height = 16,
+      id = 5,
+      name = "BackTiles",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      parallaxx = 1,
+      parallaxy = 1,
+      tintcolor = { 255, 255, 255 },
+      properties = {},
+      encoding = "lua",
+      data = {
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 66, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 66, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 66, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 66, 6, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 66, 22, 23, 23, 24, 0, 0, 0, 0, 0, 0, 52, 52,
+        0, 0, 0, 0, 0, 0, 0, 66, 22, 23, 23, 24, 0, 0, 0, 0, 6, 7, 7, 7,
+        7, 8, 52, 0, 0, 0, 0, 66, 22, 23, 23, 24, 52, 52, 0, 0, 22, 23, 23, 23,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 18, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 18, 0, 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 18, 0, 0, 0, 0, 0
+      }
+    },
+    {
+      type = "tilelayer",
+      x = 0,
+      y = 0,
+      width = 20,
+      height = 16,
+      id = 1,
+      name = "Tiles",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      parallaxx = 1,
+      parallaxy = 1,
+      properties = {},
+      encoding = "lua",
+      data = {
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 17, 19, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 17, 19, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 17, 19, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 17, 19, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 65, 51, 17, 19, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 17, 19, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 17, 19, 49, 67, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 17, 19, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 33, 35, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        68, 69, 69, 69, 69, 69, 69, 68, 69, 69, 69, 68, 68, 69, 69, 69, 69, 69, 68, 69,
+        2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+        18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 1, 2,
+        18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 17, 18,
+        18, 1, 2, 2, 2, 3, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 17, 18,
+        18, 17, 18, 18, 18, 19, 18, 18, 18, 18, 18, 18, 18, 18, 1, 2, 2, 2, 17, 18
+      }
+    },
+    {
+      type = "objectgroup",
+      draworder = "topdown",
+      id = 2,
+      name = "Objects",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      parallaxx = 1,
+      parallaxy = 1,
+      properties = {},
+      objects = {
+        {
+          id = 4,
+          name = "",
+          type = "player",
+          shape = "rectangle",
+          x = 32,
+          y = 160,
+          width = 16,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 6,
+          name = "",
+          type = "exit",
+          shape = "rectangle",
+          x = 272,
+          y = 160,
+          width = 16,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 8,
+          name = "",
+          type = "ground",
+          shape = "rectangle",
+          x = 0,
+          y = 176,
+          width = 320,
+          height = 80,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 28,
+          name = "",
+          type = "door",
+          shape = "rectangle",
+          x = 152,
+          y = 144,
+          width = 16,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["color"] = "yellow",
+            ["dir"] = "ver"
+          }
+        }
+      }
+    },
+    {
+      type = "objectgroup",
+      draworder = "topdown",
+      id = 4,
+      name = "Allow",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      parallaxx = 1,
+      parallaxy = 1,
+      properties = {},
+      objects = {
+        {
+          id = 18,
+          name = "",
+          type = "place_allow",
+          shape = "rectangle",
+          x = 64,
+          y = 128,
+          width = 48,
+          height = 48,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        }
+      }
+    }
+  }
+}

@@ -16,7 +16,7 @@ local loadobject = function(data)
     elseif data.class == "spike" then
         return OBJECTS.ground:new(GAME.WORLD,data.X,data.Y,data.W,data.H,{},true)
     elseif data.class == "player" then
-        local player = OBJECTS.player:new(GAME.WORLD,data.X+2,data.Y+2,12,14)
+        local player = OBJECTS.player:new(GAME.WORLD,data.X+2,data.Y+2,12,14,data.args)
         if not GAME.PLAYER then GAME.PLAYER = player end
         return player
     elseif data.class == "exit" then
@@ -29,6 +29,8 @@ local loadobject = function(data)
         else
             return OBJECTS.door:new(GAME.WORLD,data.X+4,data.Y,8,32,data.args)
         end
+    elseif data.class == "orb" then
+        return OBJECTS.orb:new(GAME.WORLD,data.X,data.Y,data.W,data.H)
     end
 end
 
@@ -64,6 +66,7 @@ function scene.LoadScene()
         end
     end
     GAME.ITEMS = {}
+    GAME.EFFECTS = {}
 
     GAME.KEYSGOT = {yellow=false,red=false,green=false,blue=false}
 
@@ -98,6 +101,17 @@ function scene.Update(dt)
             end
         end
     end)
+
+    local delete = {}
+    for idx,v in pairs(GAME.EFFECTS) do
+        if v:update(dt) then
+            table.insert(delete,idx)
+        end
+    end
+    table.sort(delete,function(a,b) return a > b end)
+    for _,idx in ipairs(delete) do
+        table.remove(GAME.EFFECTS,idx)
+    end
 
     if GAME.SIMULATING then
         GAME.UI.PLAY.children[1].text = "stop!"
@@ -145,6 +159,10 @@ function scene.Draw()
         DrawObject(item.name)
     end
     DrawObject("player")
+    
+    for idx,v in pairs(GAME.EFFECTS) do
+        v:draw()
+    end
 
     if not GAME.SIMULATING then
         -- draw allowed spots
@@ -337,6 +355,10 @@ end
 function ExitGame()
     GAME = {} -- Clear game data
     SCENE:LoadScene("menu")
+end
+
+function NewEffect(t,x,y)
+    table.insert(GAME.EFFECTS,EFFECT:new(t,x,y))
 end
 
 return scene

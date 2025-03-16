@@ -16,6 +16,7 @@ return {
     ["dialog_name"] = "none",
     ["greenkey"] = 99,
     ["level_name"] = "test level",
+    ["orb"] = 99,
     ["platform"] = 99,
     ["redkey"] = 99,
     ["springboard"] = 99,

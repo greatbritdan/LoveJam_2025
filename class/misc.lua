@@ -79,6 +79,12 @@ function key:draw()
     end
 end
 
+function key:trigger(player)
+    local x,y = self.X+(self.W/2),self.Y+(self.H/2)
+    NewEffect("starul",x-4,y-4); NewEffect("starur",x+4,y-4)
+    NewEffect("stardl",x-4,y+4); NewEffect("stardr",x+4,y+4)
+end
+
 OBJECTS.key = key
 
 ------------------------

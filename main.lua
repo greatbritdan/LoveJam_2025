@@ -23,8 +23,11 @@ function love.load()
     SpringboardImg, SpringboardQuads = LoadSprites{path="graphics/springboard.png",xquads=4,yquads=1}
     CrateImg = love.graphics.newImage("graphics/crate.png")
     PlatformImg, PlatformQuads = LoadSprites{path="graphics/platform.png",xquads=4,yquads=1}
+    OrbImg, OrbQuads = LoadSprites{path="graphics/orb.png",xquads=5,yquads=1}
 
-    _ITEMS_ORDER = {"springboard","crate","platform","yellowkey","redkey","greenkey","bluekey"}
+    EffectImg, EffectQuads = LoadSprites{path="graphics/particle.png",xquads=4,yquads=2,yquadnames={"dust","star"}}
+
+    _ITEMS_ORDER = {"springboard","crate","platform","yellowkey","redkey","greenkey","bluekey","orb"}
     _ITEMS = {}
     _ITEMS.springboard = {name="springboard",class="springboard",img=SpringboardImg,quad=SpringboardQuads[1],spawn={ox=1,oy=14,w=14,h=2}}
     _ITEMS.crate = {name="crate",class="crate",img=CrateImg,quad=false,spawn={ox=0,oy=0,w=16,h=16}}
@@ -33,6 +36,7 @@ function love.load()
     _ITEMS.redkey = {name="redkey",class="key",img=KeyImg,quad=KeyQuads.red,spawn={ox=4,oy=2,w=8,h=12},args={color="red"}}
     _ITEMS.greenkey = {name="greenkey",class="key",img=KeyImg,quad=KeyQuads.green,spawn={ox=4,oy=2,w=8,h=12},args={color="green"}}
     _ITEMS.bluekey = {name="bluekey",class="key",img=KeyImg,quad=KeyQuads.blue,spawn={ox=4,oy=2,w=8,h=12},args={color="blue"}}
+    _ITEMS.orb = {name="orb",class="orb",img=OrbImg,quad=OrbQuads[2],spawn={ox=2,oy=2,w=12,h=12}}
 
     -- Load Libraries --
     Class = require("libs.middleclass")
@@ -51,6 +55,7 @@ function love.load()
     require("class.inventory")
     require("class.base")
 
+    require("class.effects")
     require("class.misc")
     require("class.player")
     require("class.items")

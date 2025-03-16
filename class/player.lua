@@ -1,5 +1,5 @@
 local player = Class("player",OBJECTS.box)
-function player:initialize(world,x,y,w,h)
+function player:initialize(world,x,y,w,h,args)
     OBJECTS.box.initialize(self,world,x,y,w,h,{gravity=180})
     self.class = "player"
     self.startX, self.startY = x, y
@@ -16,6 +16,7 @@ function player:initialize(world,x,y,w,h)
     self.dir = 1
     self.idletimer = 0
     self.walktimer = 0
+    self.grasseffecttimer = 0
     self.inair = false
 
     self.dying = false -- for when you know you're fu##ed but not yet
@@ -24,6 +25,12 @@ function player:initialize(world,x,y,w,h)
     self.win = false
     self.winpos = 0
     self.wintimer = 0
+
+    args = args or {}
+    if args.startleft then
+        self.startleft = true
+        self.dir = -1
+    end
 end
 
 function player:update(dt)
@@ -69,6 +76,16 @@ function player:update(dt)
     if self.walktimer > 0.2 then
         self.walktimer = self.walktimer - 0.2
     end
+    if math.abs(self.VX) > 5 and (not self.inair) and (not self.orbed) then
+        self.grasseffecttimer = self.grasseffecttimer + dt
+        if self.grasseffecttimer > 0.15 then
+            self.grasseffecttimer = self.grasseffecttimer - 0.15
+            local x,y = self.X+self.W/2,self.Y+self.H
+            NewEffect("dust",x,y)
+        end
+    else
+        self.grasseffecttimer = 0
+    end
 
     if not self.inair and self.VY > 0 then
         self.inair = true
@@ -83,15 +100,15 @@ function player:update(dt)
             end
         end
         if data.obj.class == "springboard" then
-            if AABB(self.X,self.Y,self.W,self.H,data.obj.X-2,data.obj.Y-1,data.obj.W+4,data.obj.H+1) then
+            if data.obj.active and AABB(self.X,self.Y,self.W,self.H,data.obj.X-2,data.obj.Y-1,data.obj.W+4,data.obj.H+1) then
                 data.obj:trigger(self)
                 self.VY = self.jumpspeed; self.inair = true
             end
         end
         if data.obj.class == "key" then
-            if AABB(self.X,self.Y,self.W,self.H,data.obj.X,data.obj.Y,data.obj.W,data.obj.H) then
+            if data.obj.active and AABB(self.X,self.Y,self.W,self.H,data.obj.X,data.obj.Y,data.obj.W,data.obj.H) then
                 GAME.KEYSGOT[data.obj.color] = true
-
+                data.obj:trigger(self)
                 GAME.MAP:GetLayer("Objects"):LoopThrough(function(odata)
                     if (odata.obj.class == "door" or odata.obj.class == "key") and data.obj.color == odata.obj.color then
                         odata.obj.active = false
@@ -99,13 +116,28 @@ function player:update(dt)
                 end)
             end
         end
+        if data.obj.class == "orb" then
+            if AABB(self.X+self.W/2-1,self.Y+self.H/2-1,2,2,data.obj.X,data.obj.Y,data.obj.W,data.obj.H) then
+                if self.orbed then
+                    self.orbed:trigger(self,false)
+                end
+                data.obj:trigger(self,true)
+                self.orbed = data.obj -- IT'S MORBIN' TIME! (Orbing time)
+                self.gravity = 0
+            end
+        end
     end)
 end
 
 function player:collided(data)
+    if self.orbed then
+        self.gravity = 180
+        self.orbed:trigger(self,false)
+        self.orbed = false
+    end
     if data.other.class == "spike" then
         self.dying = true
-        self.VY = -64
+        if data.col.normal.x ~= 0 then self.VY = -64 end
     end
     if data.col.normal.y == -1 then
         self.inair = false
@@ -149,6 +181,9 @@ end
 
 function player:start()
     self.dir = 1
+    if self.startleft then
+        self.dir = -1
+    end
     local tilex, tiley = GetTileAtPos(self.X+(self.W/2),self.Y+(self.H/2))
     self.lastTile = {X=tilex,Y=tiley}
 end
@@ -159,11 +194,20 @@ function player:stop()
     -- Hacky fix because bump doesn't update the rect when setting the position manually
     GAME.WORLD.rects[self] = {x=self.X,y=self.Y,w=self.W,h=self.H}
 
+    self.dir = 1
+    if self.startleft then
+        self.dir = -1
+    end
+
     self.inair = false
+    self.orbed = false
+    self.gravity = 180
+
     self.dying = false
     self.dead = false
     self.win = false
     self.winpos = 0
+    self.wintimer = 0
 end
 
 OBJECTS.player = player

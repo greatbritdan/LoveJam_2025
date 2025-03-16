@@ -9,6 +9,7 @@
   <property name="dialog_name" value="none"/>
   <property name="greenkey" type="int" value="99"/>
   <property name="level_name" value="test level"/>
+  <property name="orb" type="int" value="99"/>
   <property name="platform" type="int" value="99"/>
   <property name="redkey" type="int" value="99"/>
   <property name="springboard" type="int" value="99"/>
