@@ -6,12 +6,15 @@ function love.load()
     love.graphics.setFont(SmallFont)
 
     FrameImg = love.graphics.newImage("graphics/frame.png")
+    FrameMenuImg = love.graphics.newImage("graphics/framemenu.png")
     InventoryImg, InventoryQuads = LoadSprites{path="graphics/inventory.png",xquads=10,yquads=1,xquadnames={"slot",1,2,3,4,5,6,7,8,9}}
     ItemselecterImg = love.graphics.newImage("graphics/itemselecter.png")
 
     BackgroundImg = love.graphics.newImage("graphics/background.png")
     PlayerImg, PlayerQuads = LoadSprites{path="graphics/player.png",xquads=8,yquads=1}
     DoorImg, DoorQuads = LoadSprites{path="graphics/door.png",xquads=4,yquads=1}
+    KeyImg = love.graphics.newImage("graphics/key.png")
+
     SpringboardImg, SpringboardQuads = LoadSprites{path="graphics/springboard.png",xquads=4,yquads=1}
     CrateImg = love.graphics.newImage("graphics/crate.png")
     PlatformImg, PlatformQuads = LoadSprites{path="graphics/platform.png",xquads=4,yquads=1}
@@ -43,7 +46,7 @@ function love.load()
     require("class.player")
     require("class.items")
 
-    SCENE:LoadScene("game")
+    SCENE:LoadScene("menu")
 end
 
 function love.update(dt)

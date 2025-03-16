@@ -8,7 +8,7 @@ DIALOGS = {
         {text="to do so you can use these items in your inventory.",highlight="inventory"},
         {text="click and hold an item to move it around. &if you want to discard it you can simple drop it somewhere off the map.",highlight="inventory"},
         {text="you can place the item in any of these highlighted spots, &you can also move items you've already placed.",highlight="available"},
-        {text="this is a springboard, &this will launch the player upwards. &place it in one of the available spots to bring the guy to the exit.",highlight="springboard"},
+        {text="this is a springboard, &this will launch the player upwards. &place it in one of the available spots to bring the guy to the exit.",highlight="slot1"},
         {text="once you're ready, &click the play button to start the simulation, &good luck!",highlight="play"},
     }
 }
@@ -106,10 +106,13 @@ function DIALOG:getHighlight()
         return 342-4, 52-4, 132+8, 30+8
     end
     if self.highlight == "available" then
-        return 120-4, 184-4, 48+8, 32+8
+        return 120-4, 152-4, 48+8, 32+8
     end
-    if self.highlight == "springboard" then
+    if self.highlight == "slot1" then
         return 342-4, 52-4, 30+8, 30+8
+    end
+    if self.highlight == "slot2" then
+        return 376-4, 52-4, 30+8, 30+8
     end
     if self.highlight == "play" then
         local ui = GAME.UI.PLAY

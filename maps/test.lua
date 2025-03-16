@@ -9,11 +9,11 @@ return {
   tilewidth = 16,
   tileheight = 16,
   nextlayerid = 6,
-  nextobjectid = 19,
+  nextobjectid = 20,
   properties = {
     ["crate"] = 99,
-    ["dialog_name"] = "level1",
-    ["level_name"] = "the first leap",
+    ["dialog_name"] = "none",
+    ["level_name"] = "test level",
     ["platform"] = 99,
     ["springboard"] = 99
   },
@@ -235,6 +235,19 @@ return {
           y = 112,
           width = 4,
           height = 48,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 19,
+          name = "",
+          type = "key",
+          shape = "rectangle",
+          x = 112,
+          y = 192,
+          width = 16,
+          height = 16,
           rotation = 0,
           visible = true,
           properties = {}

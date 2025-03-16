@@ -24,3 +24,18 @@ Game end when you are unable to beat the score required.
 
 Actions:
 - Make Game
+
+
+Spikes - Makes you start over
+Fragile Floor - A platform that shatters when you step off it
+Speed Booster - You go fast after touching it for a bit. Might throw you on a short arc in the process, or could just be straight forward.
+Teleporter - Takes you to the other teleporter, which you may or may not be able to place yourself
+Sticky Boots - You climb the next wall you hit after collecting them
+Key & Door - It's a door you open with a key; but you may sometimes get these as elements you can place, which would make players think outside the box
+Button & Door - The button opens the door but it will close after a little while
+Torch & Candle - You carry the torch and can light candles with it for a limited time. Candles are linked to mechanisms, maybe just doors if you're boring, but they could retract spikes
+Antigravity - You lose gravity until you hit a solid object. You'd keep your previous trajectory.
+Water - You move slower underwater and it'll put out your torch
+Sponge - Collecting the sponge removes all water immediately
+Ice - Touching the ice will slide it (and reflect you the other way). It will freeze the surface of water it travels over, and shatter if it hits a wall
+Coin - Getting (every) coin is worth a star on the level select or smth
