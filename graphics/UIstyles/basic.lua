@@ -27,4 +27,11 @@ function style:DefaultText(text,x,y,r,sx,sy,element)
     love.graphics.print(text,x,y-oy,r,sx,sy)
 end
 
+function style:DefaultBoxImage(image,x,y,r,sx,sy,element)
+    if element.imagebuttoncolor then
+        love.graphics.setColor(element.imagebuttoncolor)
+    end
+    love.graphics.draw(image,x,y,r,sx,sy)
+end
+
 return style

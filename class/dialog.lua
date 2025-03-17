@@ -12,9 +12,23 @@ DIALOGS = {
         {text="once you're ready, &click the play button to start the simulation, &good luck!",highlight="play"},
     },
     level2 = {
-        {text="oh no! &looks like someone has put a convinitly square whole in the floor."},
+        {text="oh no! &looks like someone has put a convinitly square hole in the floor."},
         {text="you can use this crate to fill the hole, &you can place them directly over the area or higher up as they are affected by gravity.",highlight="slot1"},
         {text="sometimes you might be given more items than you need, &don't feel the need to use every single one!",highlight="slot1"},
+    },
+    level3 = {
+        {text="looks like someone has put spikes on the floor, &looks like you'll have to use a platform."},
+        {text="platforms will hover in the air, &you can use it to hold up springboards, &or crates &or even yourself!",highlight="slot3"},
+        {text="keep in mind sprinboards will get destroyed if they touch the spikes, &be careful!",highlight="slot1"},
+    },
+    level3_spike = {
+        {text="ouch, &that has got to hurt, &at least you've learned now."},
+    },
+    level4 = {
+        {text="don't hit the spike wall, &i don't know what else to tell you. &&don't &&be &&dumb!"},
+    },
+    level4_dumb = {
+        {text="you hit the spike wall, &&you're dumb."},
     }
 }
 
@@ -76,6 +90,12 @@ function DIALOG:draw()
     love.graphics.setColor(1,1,1)
     love.graphics.draw(DialogImg,12,12)
     love.graphics.printf(self.text,17,17,302,"left")
+
+    if self.finished then
+        local opacity = math.abs(math.sin(self.hightimer*4))
+        love.graphics.setColor(1,1,1,opacity)
+        love.graphics.printf("click to continue",17,59,302,"right")
+    end
 
     if self.highlight then
         local opacity = math.abs(math.sin(self.hightimer*4))
@@ -139,6 +159,9 @@ function DIALOG:getHighlight()
     end
     if self.highlight == "slot2" then
         return 376-4, 52-4, 30+8, 30+8
+    end
+    if self.highlight == "slot3" then
+        return 410-4, 52-4, 30+8, 30+8
     end
     if self.highlight == "play" then
         local ui = GAME.UI.PLAY

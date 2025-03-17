@@ -13,7 +13,8 @@ return {
   nextobjectid = 22,
   properties = {
     ["crate"] = 2,
-    ["dialog_name"] = "none",
+    ["dialog_name"] = "level3",
+    ["dialog_spike_hit"] = "level3_spike",
     ["level_name"] = "mind the gap",
     ["platform"] = 2,
     ["springboard"] = 2

@@ -26,14 +26,26 @@ function exit:initialize(_,x,y,w,h)
     self.class = "exit"
     self.X, self.Y, self.W, self.H = x,y,w,h
 
+    self.open = false
     self.opentimer = false
 end
 
 function exit:update(dt)
-    if self.opentimer and self.opentimer < 1 then
-        self.opentimer = self.opentimer + dt*10
-        if self.opentimer >= 1 then
-            self.opentimer = 1
+    if self.open == "open" then
+        if self.opentimer and self.opentimer < 1 then
+            self.opentimer = self.opentimer + dt*10
+            if self.opentimer >= 1 then
+                self.opentimer = 1
+                self.open = false
+            end
+        end
+    elseif self.open == "close" then
+        if self.opentimer and self.opentimer > 0 then
+            self.opentimer = self.opentimer - dt*10
+            if self.opentimer <= 0 then
+                self.opentimer = false
+                self.open = false
+            end
         end
     end
 end
@@ -52,8 +64,14 @@ function exit:draw()
     end
 end
 
-function exit:trigger(player)
-    self.opentimer = 0
+function exit:trigger(player,open)
+    if open == "open" then
+        self.open = "open"
+        self.opentimer = 0
+    else
+        self.open = "close"
+        self.opentimer = 1
+    end
     DoorSound:play()
 end
 
@@ -82,8 +100,8 @@ end
 
 function key:trigger(player)
     local x,y = self.X+(self.W/2),self.Y+(self.H/2)
-    NewEffect("starul",x-4,y-4); NewEffect("starur",x+4,y-4)
-    NewEffect("stardl",x-4,y+4); NewEffect("stardr",x+4,y+4)
+    NewEffect("starul",x-3,y-3); NewEffect("starur",x+3,y-3)
+    NewEffect("stardl",x-3,y+3); NewEffect("stardr",x+3,y+3)
     self.opentimer = 0
     local sound = KeySounds[math.random(1,#KeySounds)]
     sound:play()

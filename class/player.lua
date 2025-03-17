@@ -62,6 +62,7 @@ function player:update(dt)
         self.wintimer = self.wintimer + dt
         if self.wintimer > 1 and self.win == "wink" then
             self.win = "hide"
+            self.windoor:trigger(self,"close")
         end
         if self.wintimer > 2 then
             self.wintimer = 0
@@ -73,11 +74,7 @@ function player:update(dt)
         return
     end
 
-    --if self.inair then
-    --    self.VX = 0
-    --else
-        self.VX = math.max(math.min(self.VX + self.acceleration * dt * self.dir, self.maxspeed), -self.maxspeed)
-    --end
+    self.VX = math.max(math.min(self.VX + self.acceleration * dt * self.dir, self.maxspeed), -self.maxspeed)
 
     self.walktimer = self.walktimer + dt
     if self.walktimer > 0.2 then
@@ -105,7 +102,8 @@ function player:update(dt)
     GAME.MAP:GetLayer("Objects"):LoopThrough(function(data)
         if data.obj.class == "exit" then
             if AABB(self.X+self.W/2-1,self.Y+self.H/2-1,2,2,data.obj.X,data.obj.Y,data.obj.W,data.obj.H) then
-                data.obj:trigger(self)
+                self.windoor = data.obj
+                data.obj:trigger(self,"open")
                 self.win = "walking"
                 self.winpos = data.obj.X+2
                 if self.orbed then
@@ -157,6 +155,9 @@ function player:collided(data)
         self.dying = true
         DeathSound:play()
         if data.col.normal.x ~= 0 then self.VY = -64 end
+        if GAME.DIALOGSPIKEHIT then
+            DIALOG:start(GAME.DIALOGSPIKEHIT)
+        end
     end
     if data.col.normal.y == -1 then
         self.inair = false

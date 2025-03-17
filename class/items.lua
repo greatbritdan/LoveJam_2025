@@ -45,6 +45,9 @@ end
 
 function springboard:collided(data)
     if data.other.class == "spike" then
+        if self.active then
+            DeathSound:play()
+        end
         self.active = false
     end
     if data.col.normal.y == -1 and data.VY > 5 then

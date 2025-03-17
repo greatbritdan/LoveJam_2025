@@ -5,7 +5,8 @@
  </editorsettings>
  <properties>
   <property name="crate" type="int" value="2"/>
-  <property name="dialog_name" value="none"/>
+  <property name="dialog_name" value="level3"/>
+  <property name="dialog_spike_hit" value="level3_spike"/>
   <property name="level_name" value="mind the gap"/>
   <property name="platform" type="int" value="2"/>
   <property name="springboard" type="int" value="2"/>

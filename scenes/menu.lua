@@ -12,11 +12,14 @@ function scene.LoadScene()
     -- TITLE
     MENU.UI.MENU = UI.MATRIX:new({X=124,Y=90,W=232,H=162},{},"basic")
 
+    MENU.UI.spacer_menu = UI.SPACER:new({W=166,H=30},{},"basic")
     MENU.UI.start = UI.BUTTON:new({W=166,H=30},{children={{text="play!"}},repeating=false,func=function() ChooseLevel(1) end},"basic")
     MENU.UI.levelselect = UI.BUTTON:new({W=166,H=30},{children={{text="level select"}},repeating=false,func=function() MENU.STATE = "levelselect" end},"basic")
     MENU.UI.settings = UI.BUTTON:new({W=166,H=30},{children={{text="settings"}},repeating=false,func=function() MENU.STATE = "settings" end},"basic")
+    MENU.UI.secret = UI.BUTTON:new({W=166,H=30},{children={{text=""}},repeating=false,func=function() MENU.STATE = "secret" end},"basic")
+    MENU.UI.secret.imagebuttoncolor = {1,1,1,0.05}
 
-    MENU.UI.MENU:Setup{MC={{MENU.UI.start},{MENU.UI.levelselect},{MENU.UI.settings}}}
+    MENU.UI.MENU:Setup{MC={{MENU.UI.spacer_menu},{MENU.UI.start},{MENU.UI.levelselect},{MENU.UI.settings},{MENU.UI.secret}}}
     MENU.UI.MENU:Recaclulate()
 
     MENU.TITLETEXTS = {
@@ -97,6 +100,15 @@ function scene.LoadScene()
         PlaceSound:setVolume(e.value)
         PlaceSound:play()
     end
+
+    local idx = 1
+    if SETTINGS:Get("skipdialog") then idx = 2 end
+    MENU.UI.skipdialogtext = UI.TEXT:new({W=166,H=12},{text="skip dialog?"},"basic")
+    MENU.UI.skipdialog = UI.CYCLEBUTTON:new({W=166,H=30},{children={{text="no",autolink=true}},cycle={"no","yes"},cycleidx=idx,func=function(e)
+        local value = false
+        if e:GetValue() == "yes" then value = true end
+        SETTINGS:Set("skipdialog",value); SETTINGS:SAVE()
+    end},"basic")
     
     MENU.UI.spacer_setting = UI.SPACER:new({W=166,H=12},{},"basic")
     MENU.UI.back_settings = UI.BUTTON:new({W=166,H=30},{children={{text="back to menu"}},repeating=false,func=function() MENU.STATE = "title" end},"basic")
@@ -105,10 +117,27 @@ function scene.LoadScene()
         {MENU.UI.settings},
         {MENU.UI.music_left,MENU.UI.music,MENU.UI.music_right},
         {MENU.UI.sounds_left,MENU.UI.sounds,MENU.UI.sounds_right},
+        {MENU.UI.skipdialogtext},
+        {MENU.UI.skipdialog},
         {MENU.UI.spacer_setting},
         {MENU.UI.back_settings}
     }}
     MENU.UI.SETTINGS:Recaclulate()
+
+
+    -- SECRET (But i'll never tell...)
+    MENU.UI.SECRET = UI.MATRIX:new({X=0,Y=0,W=Env.width,H=Env.height},{},"basic")
+
+    MENU.UI.secret = UI.TEXT:new({W=166,H=12},{text="secret!"},"basic")
+    MENU.UI.spacer_secret = UI.SPACER:new({W=166,H=12},{},"basic")
+    MENU.UI.back_secret = UI.BUTTON:new({W=166,H=30},{children={{text="back to menu"}},repeating=false,func=function() MENU.STATE = "title" end},"basic")
+
+    MENU.UI.SECRET:Setup{MC={
+        {MENU.UI.secret},
+        {MENU.UI.spacer_secret},
+        {MENU.UI.back_secret}
+    }}
+    MENU.UI.SECRET:Recaclulate()
 end
 
 function scene.Update(dt)
@@ -123,6 +152,8 @@ function scene.Update(dt)
         MENU.UI.LEVELSELECT:Update(dt)
     elseif MENU.STATE == "settings" then
         MENU.UI.SETTINGS:Update(dt)
+    elseif MENU.STATE == "secret" then
+        MENU.UI.SECRET:Update(dt)
     end
 end
 
@@ -156,19 +187,26 @@ function scene.Draw()
         if MENU.DEBUGDRAW then
             MENU.UI.MENU:DebugDraw()
         end
-    elseif MENU.STATE == "levelselect" then
-        love.graphics.setColor(0,0,0,0.5)
-        love.graphics.rectangle("fill",16,24,Env.width-32,Env.height-48,8,8)
+        return
+    end
+
+    love.graphics.setColor(0,0,0,0.5)
+    love.graphics.rectangle("fill",16,24,Env.width-32,Env.height-48,8,8)
+
+    if MENU.STATE == "levelselect" then
         MENU.UI.LEVELSELECT:Draw()
         if MENU.DEBUGDRAW then
             MENU.UI.LEVELSELECT:DebugDraw()
         end
     elseif MENU.STATE == "settings" then
-        love.graphics.setColor(0,0,0,0.5)
-        love.graphics.rectangle("fill",16,24,Env.width-32,Env.height-48,8,8)
         MENU.UI.SETTINGS:Draw()
         if MENU.DEBUGDRAW then
             MENU.UI.SETTINGS:DebugDraw()
+        end
+    elseif MENU.STATE == "secret" then
+        MENU.UI.SECRET:Draw()
+        if MENU.DEBUGDRAW then
+            MENU.UI.SECRET:DebugDraw()
         end
     end
 end
@@ -181,6 +219,8 @@ function scene.Mousepressed(mx,my,b)
         MENU.UI.LEVELSELECT:Mousepressed(mx,my,b)
     elseif MENU.STATE == "settings" then
         MENU.UI.SETTINGS:Mousepressed(mx,my,b)
+    elseif MENU.STATE == "secret" then
+        MENU.UI.SECRET:Mousepressed(mx,my,b)
     end
 end
 function scene.Mousereleased(mx,my,b)
@@ -191,6 +231,8 @@ function scene.Mousereleased(mx,my,b)
         MENU.UI.LEVELSELECT:Mousereleased(mx,my,b)
     elseif MENU.STATE == "settings" then
         MENU.UI.SETTINGS:Mousereleased(mx,my,b)
+    elseif MENU.STATE == "secret" then
+        MENU.UI.SECRET:Mousereleased(mx,my,b)
     end
 end
 

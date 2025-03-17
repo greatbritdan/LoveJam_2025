@@ -43,7 +43,6 @@ function scene.LoadScene()
 
     GAME.DEBUG = false
     GAME.DEBUGDRAW = false
-    GAME.NOTUTORIAL = false --true
 
     GAME.WORLD = BUMP.newWorld(16)
     if LEVELNO == 0 then
@@ -95,9 +94,12 @@ function scene.LoadScene()
 
     GAME.UI.SIDEBAR:Recaclulate()
 
-    if GAME.NOTUTORIAL then return end
+    if SETTINGS:Get("skipdialog") then return end
     if inv_data.dialog_name and inv_data.dialog_name ~= "none" then
         DIALOG:start(inv_data.dialog_name)
+    end
+    if inv_data.dialog_spike_hit and inv_data.dialog_spike_hit ~= "none" then
+        GAME.DIALOGSPIKEHIT = inv_data.dialog_spike_hit
     end
 end
 
