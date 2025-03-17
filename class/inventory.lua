@@ -2,7 +2,7 @@ INVENTORY = Class("inventory")
 function INVENTORY:initialize()
     self.items = {}
     self.size = 4
-    if LEVELNO == 0 then
+    if GAME.DEBUG then
         self.size = 16
     end
 end

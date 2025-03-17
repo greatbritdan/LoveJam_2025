@@ -1,7 +1,8 @@
 return {
-  version = "1.5",
+  version = "1.10",
   luaversion = "5.1",
-  tiledversion = "2021.02.15",
+  tiledversion = "1.11.2",
+  class = "",
   orientation = "orthogonal",
   renderorder = "right-down",
   width = 20,
@@ -9,7 +10,7 @@ return {
   tilewidth = 16,
   tileheight = 16,
   nextlayerid = 6,
-  nextobjectid = 29,
+  nextobjectid = 31,
   properties = {
     ["crate"] = 0,
     ["dialog_name"] = "none",
@@ -22,6 +23,7 @@ return {
     {
       name = "tiles",
       firstgid = 1,
+      class = "",
       tilewidth = 16,
       tileheight = 16,
       spacing = 0,
@@ -31,6 +33,8 @@ return {
       imagewidth = 256,
       imageheight = 256,
       objectalignment = "unspecified",
+      tilerendersize = "tile",
+      fillmode = "stretch",
       tileoffset = {
         x = 0,
         y = 0
@@ -41,7 +45,6 @@ return {
         height = 16
       },
       properties = {},
-      terrains = {},
       wangsets = {},
       tilecount = 256,
       tiles = {}
@@ -56,6 +59,7 @@ return {
       height = 16,
       id = 5,
       name = "BackTiles",
+      class = "",
       visible = true,
       opacity = 1,
       offsetx = 0,
@@ -92,6 +96,7 @@ return {
       height = 16,
       id = 1,
       name = "Tiles",
+      class = "",
       visible = true,
       opacity = 1,
       offsetx = 0,
@@ -124,6 +129,7 @@ return {
       draworder = "topdown",
       id = 2,
       name = "Objects",
+      class = "",
       visible = true,
       opacity = 1,
       offsetx = 0,
@@ -137,7 +143,7 @@ return {
           name = "",
           type = "player",
           shape = "rectangle",
-          x = 32,
+          x = 24,
           y = 160,
           width = 16,
           height = 16,
@@ -150,7 +156,7 @@ return {
           name = "",
           type = "exit",
           shape = "rectangle",
-          x = 272,
+          x = 280,
           y = 160,
           width = 16,
           height = 16,
@@ -186,6 +192,19 @@ return {
             ["color"] = "yellow",
             ["dir"] = "ver"
           }
+        },
+        {
+          id = 29,
+          name = "",
+          type = "ground",
+          shape = "rectangle",
+          x = 144,
+          y = 0,
+          width = 32,
+          height = 144,
+          rotation = 0,
+          visible = true,
+          properties = {}
         }
       }
     },
@@ -194,6 +213,7 @@ return {
       draworder = "topdown",
       id = 4,
       name = "Allow",
+      class = "",
       visible = true,
       opacity = 1,
       offsetx = 0,
@@ -208,9 +228,9 @@ return {
           type = "place_allow",
           shape = "rectangle",
           x = 64,
-          y = 128,
+          y = 144,
           width = 48,
-          height = 48,
+          height = 32,
           rotation = 0,
           visible = true,
           properties = {}

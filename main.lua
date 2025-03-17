@@ -5,6 +5,7 @@ function love.load()
     SmallFont = love.graphics.newImageFont("graphics/smallfont.png","abcdefghijklmnopqrstuvwxyz 0123456789.,!?'():/",1)
     love.graphics.setFont(SmallFont)
 
+    TitleImg = love.graphics.newImage("graphics/title.png")
     FrameImg = love.graphics.newImage("graphics/frame.png")
     FrameMenuImg = love.graphics.newImage("graphics/framemenu.png")
     InventoryImg, InventoryQuads = LoadSprites{path="graphics/inventory.png",xquads=10,yquads=1,xquadnames={"slot",1,2,3,4,5,6,7,8,9}}

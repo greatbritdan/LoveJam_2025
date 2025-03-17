@@ -3,6 +3,7 @@ function player:initialize(world,x,y,w,h,args)
     OBJECTS.box.initialize(self,world,x,y,w,h,{gravity=180})
     self.class = "player"
     self.startX, self.startY = x, y
+    print("spawned player at",x,y)
 
     self.quadcenterx = 8
     self.quadcentery = 8
@@ -64,13 +65,19 @@ function player:update(dt)
         end
         if self.wintimer > 2 then
             self.wintimer = 0
-            self.win = false
+            self.win = "transition"
             GAME.QueueNextLevel = true
         end
         return
+    elseif self.win == "transition" then
+        return
     end
 
-    self.VX = math.max(math.min(self.VX + self.acceleration * dt * self.dir, self.maxspeed), -self.maxspeed)
+    if self.inair then
+        self.VX = 0
+    else
+        self.VX = math.max(math.min(self.VX + self.acceleration * dt * self.dir, self.maxspeed), -self.maxspeed)
+    end
 
     self.walktimer = self.walktimer + dt
     if self.walktimer > 0.2 then
@@ -97,6 +104,10 @@ function player:update(dt)
                 data.obj:trigger(self)
                 self.win = "walking"
                 self.winpos = data.obj.X+2
+                if self.orbed then
+                    self.orbed:trigger(self,false)
+                end
+                self.orbed = false
             end
         end
         if data.obj.class == "springboard" then
@@ -112,6 +123,9 @@ function player:update(dt)
                 GAME.MAP:GetLayer("Objects"):LoopThrough(function(odata)
                     if (odata.obj.class == "door" or odata.obj.class == "key") and data.obj.color == odata.obj.color then
                         odata.obj.active = false
+                        if odata.obj.class == "door" then
+                            odata.obj.opentimer = 0 -- open animation
+                        end
                     end
                 end)
             end

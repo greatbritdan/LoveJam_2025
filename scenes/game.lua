@@ -41,6 +41,7 @@ function scene.LoadScene()
     GAME.ITEMS_ALLOW = {}
     GAME.MAPPOS = {X=8,Y=8}
 
+    GAME.DEBUG = false
     GAME.DEBUGDRAW = false
     GAME.NOTUTORIAL = false --true
 
@@ -59,10 +60,16 @@ function scene.LoadScene()
 
     -- Load inventory
     local inv_data = GAME.MAP.raw.properties
+    if inv_data.DEBUG then GAME.DEBUG = true end
+
     GAME.INVENTORY = INVENTORY:new()
     for _,itemname in pairs(_ITEMS_ORDER) do
-        if inv_data[_ITEMS[itemname].name] and inv_data[_ITEMS[itemname].name] > 0 then
-            GAME.INVENTORY:addItem(_ITEMS[itemname].name,inv_data[_ITEMS[itemname].name])
+        if GAME.DEBUG then
+            GAME.INVENTORY:addItem(_ITEMS[itemname].name,99999999) -- Add all items
+        else
+            if inv_data[_ITEMS[itemname].name] and inv_data[_ITEMS[itemname].name] > 0 then
+                GAME.INVENTORY:addItem(_ITEMS[itemname].name,inv_data[_ITEMS[itemname].name])
+            end
         end
     end
     GAME.ITEMS = {}
@@ -79,7 +86,13 @@ function scene.LoadScene()
     GAME.UI.MENU = UI.BUTTON:new({X=8,Y=8,W=118,H=19},{children={{text="menu"}},repeating=false,func=function() ExitGame() end},"basic")
 
     GAME.UI.SIDEBAR = UI.MATRIX:new({X=345,Y=99,W=126,H=166},{},"basic")
-    GAME.UI.SIDEBAR:Setup{BC={{GAME.UI.MENU},{GAME.UI.PLAY}}}
+    if GAME.DEBUG or 1 == 1 then
+        GAME.UI.RELOAD = UI.BUTTON:new({X=8,Y=30,W=118,H=19},{children={{text="reload"}},repeating=false,func=function() ChooseLevel(LEVELNO) end},"basic")
+        GAME.UI.SIDEBAR:Setup{BC={{GAME.UI.PLAY},{GAME.UI.MENU},{GAME.UI.RELOAD}}}
+    else
+        GAME.UI.SIDEBAR:Setup{BC={{GAME.UI.PLAY},{GAME.UI.MENU}}}
+    end
+
     GAME.UI.SIDEBAR:Recaclulate()
 
     if GAME.NOTUTORIAL then return end
@@ -268,7 +281,7 @@ function scene.Mousereleased(mx,my,b)
         if v.moving then
             local tilex, tiley = GetTileAtPos(mx,my,true)
             if InMap(tilex,tiley) then
-                if ((not GAME.ITEMS_ALLOW[tilex.."-"..tiley]) or HasItem(tilex,tiley,v)) then
+                if (not GAME.DEBUG) and ((not GAME.ITEMS_ALLOW[tilex.."-"..tiley]) or HasItem(tilex,tiley,v)) then
                     if v.oldx then
                         v.X, v.Y = v.oldx, v.oldy
                     else
@@ -342,6 +355,9 @@ function StopSimulation(won)
     GAME.MAP:GetLayer("Objects"):LoopThrough(function(data)
         if data.obj.class == "door" or data.obj.class == "key" then
             data.obj.active = true
+            if data.obj.class == "door" then
+                data.obj.opentimer = false
+            end
         end
         if data.obj.class == "exit" then
             data.obj.opentimer = false

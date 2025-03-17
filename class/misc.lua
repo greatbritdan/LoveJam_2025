@@ -83,6 +83,7 @@ function key:trigger(player)
     local x,y = self.X+(self.W/2),self.Y+(self.H/2)
     NewEffect("starul",x-4,y-4); NewEffect("starur",x+4,y-4)
     NewEffect("stardl",x-4,y+4); NewEffect("stardr",x+4,y+4)
+    self.opentimer = 0
 end
 
 OBJECTS.key = key
@@ -97,16 +98,29 @@ function door:initialize(world,x,y,w,h,args)
 
     self.dir = args.dir
     self.color = args.color
+    self.opentimer = false
+end
+
+function door:update(dt)
+    if (not self.opentimer) or self.opentimer > 0.5 then return end
+    self.opentimer = self.opentimer + dt
 end
 
 function door:draw()
-    if not self.active then return end
+    if (not self.active) and self.opentimer > 0.5 then return end
+    local off = 0
+    if self.opentimer then
+        off = 0 - 32*self.opentimer*2
+        love.graphics.setScissor((self.X+GAME.MAPPOS.X)*Env.scale,(self.Y+GAME.MAPPOS.Y)*Env.scale,self.W*Env.scale,self.H*Env.scale)
+    end
     love.graphics.setColor(1,1,1,1)
-    love.graphics.rectangle("fill",self.X,self.Y,self.W,self.H)
     if self.dir == "hor" then
-        love.graphics.draw(DoorHorImg,DoorHorQuads[self.color],self.X,self.Y)
+        love.graphics.draw(DoorHorImg,DoorHorQuads[self.color],self.X+off,self.Y)
     else
-        love.graphics.draw(DoorVerImg,DoorVerQuads[self.color],self.X,self.Y)
+        love.graphics.draw(DoorVerImg,DoorVerQuads[self.color],self.X,self.Y+off)
+    end
+    if self.opentimer then
+        love.graphics.setScissor()
     end
     if GAME.DEBUGDRAW then
         love.graphics.setColor(1,1,1,0.5)

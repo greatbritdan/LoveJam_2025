@@ -1,19 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="2021.02.15" orientation="orthogonal" renderorder="right-down" width="20" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="32">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="32">
  <editorsettings>
   <export target="test.lua" format="lua"/>
  </editorsettings>
  <properties>
-  <property name="bluekey" type="int" value="99"/>
-  <property name="crate" type="int" value="99"/>
+  <property name="DEBUG" type="bool" value="true"/>
   <property name="dialog_name" value="none"/>
-  <property name="greenkey" type="int" value="99"/>
   <property name="level_name" value="test level"/>
-  <property name="orb" type="int" value="99"/>
-  <property name="platform" type="int" value="99"/>
-  <property name="redkey" type="int" value="99"/>
-  <property name="springboard" type="int" value="99"/>
-  <property name="yellowkey" type="int" value="99"/>
  </properties>
  <tileset firstgid="1" name="tiles" tilewidth="16" tileheight="16" tilecount="256" columns="16">
   <image source="../graphics/tiles.png" width="256" height="256"/>
@@ -58,9 +51,7 @@
 2,2,2,2,3,18,18,18,18,18,18,18,18,18,17,18,18,18,19,18
 </data>
  </layer>
- <objectgroup color="#18abcc" id="4" name="Allow">
-  <object id="10" type="place_allow" x="0" y="0" width="320" height="208"/>
- </objectgroup>
+ <objectgroup color="#18abcc" id="4" name="Allow"/>
  <objectgroup id="2" name="Objects">
   <object id="4" type="player" x="16" y="192" width="16" height="16"/>
   <object id="6" type="exit" x="280" y="192" width="16" height="16"/>

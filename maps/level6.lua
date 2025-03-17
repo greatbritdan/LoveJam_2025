@@ -10,11 +10,14 @@ return {
   tilewidth = 16,
   tileheight = 16,
   nextlayerid = 6,
-  nextobjectid = 32,
+  nextobjectid = 54,
   properties = {
-    ["DEBUG"] = true,
+    ["DEBUG"] = false,
+    ["crate"] = 2,
     ["dialog_name"] = "none",
-    ["level_name"] = "test level"
+    ["level_name"] = "around and over",
+    ["platform"] = 0,
+    ["springboard"] = 1
   },
   tilesets = {
     {
@@ -67,22 +70,22 @@ return {
       properties = {},
       encoding = "lua",
       data = {
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 22, 23,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 22, 23,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 22, 23,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 52, 52, 22, 23,
+        52, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 7, 7, 42, 23,
+        7, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        23, 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        23, 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 23, 23, 23, 23, 23,
+        23, 24, 52, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 22, 23, 23, 23, 23,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 52, 0, 0, 22, 23, 23, 23, 23,
+        0, 0, 0, 0, 0, 7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 23, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 23, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 18, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 66, 0, 0, 0, 0, 0, 0, 66, 0, 0, 0, 0, 66, 0, 0, 0, 0, 82,
-        0, 0, 66, 0, 0, 0, 0, 0, 0, 66, 0, 0, 0, 0, 66, 0, 0, 0, 0, 0,
-        0, 0, 66, 0, 0, 0, 0, 0, 0, 66, 0, 0, 0, 0, 66, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 18, 0, 0, 0, 18, 0,
-        0, 0, 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        0, 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 18, 0, 0, 0, 0, 0, 0
       }
     },
     {
@@ -108,33 +111,18 @@ return {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 82,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 82,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 82,
-        0, 0, 65, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 82,
-        68, 69, 69, 69, 68, 69, 69, 52, 52, 69, 69, 69, 68, 68, 69, 69, 69, 69, 69, 82,
-        2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-        18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 1, 2, 2, 2, 3, 18,
-        2, 2, 2, 2, 3, 18, 18, 18, 18, 18, 18, 18, 18, 18, 17, 18, 18, 18, 19, 18
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 17, 20, 34, 34, 34, 34,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 33, 35, 0, 0, 0, 0,
+        69, 69, 68, 69, 85, 0, 0, 84, 68, 68, 69, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        2, 2, 2, 2, 3, 0, 0, 1, 2, 2, 2, 3, 69, 69, 68, 69, 69, 69, 69, 68,
+        18, 18, 18, 18, 19, 0, 0, 17, 18, 18, 18, 36, 2, 2, 2, 2, 2, 2, 2, 2,
+        18, 18, 18, 18, 19, 0, 0, 17, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18,
+        18, 18, 18, 18, 19, 81, 81, 17, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 1, 2,
+        18, 18, 18, 18, 36, 2, 2, 37, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 17, 18,
+        2, 2, 2, 3, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 17, 18,
+        18, 18, 18, 19, 18, 18, 18, 18, 18, 18, 18, 18, 18, 1, 2, 2, 2, 2, 17, 18
       }
-    },
-    {
-      type = "objectgroup",
-      draworder = "topdown",
-      id = 4,
-      name = "Allow",
-      class = "",
-      visible = true,
-      opacity = 1,
-      offsetx = 0,
-      offsety = 0,
-      parallaxx = 1,
-      parallaxy = 1,
-      properties = {},
-      objects = {}
     },
     {
       type = "objectgroup",
@@ -155,13 +143,15 @@ return {
           name = "",
           type = "player",
           shape = "rectangle",
-          x = 16,
-          y = 192,
+          x = 144,
+          y = 128,
           width = 16,
           height = 16,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["startleft"] = true
+          }
         },
         {
           id = 6,
@@ -169,7 +159,7 @@ return {
           type = "exit",
           shape = "rectangle",
           x = 280,
-          y = 192,
+          y = 144,
           width = 16,
           height = 16,
           rotation = 0,
@@ -190,160 +180,186 @@ return {
           properties = {}
         },
         {
-          id = 16,
-          name = "",
-          type = "ground",
-          shape = "rectangle",
-          x = 32,
-          y = 160,
-          width = 288,
-          height = 4,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["oneway"] = "up"
-          }
-        },
-        {
-          id = 17,
-          name = "",
-          type = "spike",
-          shape = "rectangle",
-          x = 316,
-          y = 112,
-          width = 4,
-          height = 96,
-          rotation = 0,
-          visible = true,
-          properties = {}
-        },
-        {
-          id = 20,
-          name = "",
-          type = "door",
-          shape = "rectangle",
-          x = 160,
-          y = 176,
-          width = 16,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["color"] = "yellow",
-            ["dir"] = "ver"
-          }
-        },
-        {
-          id = 23,
-          name = "",
-          type = "door",
-          shape = "rectangle",
-          x = 176,
-          y = 176,
-          width = 16,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["color"] = "red",
-            ["dir"] = "ver"
-          }
-        },
-        {
-          id = 24,
-          name = "",
-          type = "door",
-          shape = "rectangle",
-          x = 192,
-          y = 176,
-          width = 16,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["color"] = "green",
-            ["dir"] = "ver"
-          }
-        },
-        {
-          id = 25,
-          name = "",
-          type = "door",
-          shape = "rectangle",
-          x = 208,
-          y = 176,
-          width = 16,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["color"] = "blue",
-            ["dir"] = "ver"
-          }
-        },
-        {
           id = 28,
           name = "",
           type = "door",
           shape = "rectangle",
-          x = 176,
-          y = 48,
+          x = 80,
+          y = 140,
           width = 32,
           height = 16,
           rotation = 0,
           visible = true,
           properties = {
             ["color"] = "yellow",
-            ["dir"] = "hor"
-          }
-        },
-        {
-          id = 29,
-          name = "",
-          type = "door",
-          shape = "rectangle",
-          x = 176,
-          y = 64,
-          width = 32,
-          height = 16,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["color"] = "red",
-            ["dir"] = "hor"
-          }
-        },
-        {
-          id = 30,
-          name = "",
-          type = "door",
-          shape = "rectangle",
-          x = 176,
-          y = 80,
-          width = 32,
-          height = 16,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["color"] = "green",
             ["dir"] = "hor"
           }
         },
         {
           id = 31,
           name = "",
-          type = "door",
+          type = "ground",
           shape = "rectangle",
-          x = 176,
-          y = 96,
-          width = 32,
+          x = 0,
+          y = 144,
+          width = 80,
+          height = 64,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 32,
+          name = "",
+          type = "ground",
+          shape = "rectangle",
+          x = 112,
+          y = 144,
+          width = 80,
+          height = 64,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 33,
+          name = "",
+          type = "ground",
+          shape = "rectangle",
+          x = 192,
+          y = 160,
+          width = 128,
+          height = 48,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 34,
+          name = "",
+          type = "key",
+          shape = "rectangle",
+          x = 0,
+          y = 128,
+          width = 16,
           height = 16,
           rotation = 0,
           visible = true,
           properties = {
-            ["color"] = "blue",
-            ["dir"] = "hor"
+            ["color"] = "yellow"
           }
+        },
+        {
+          id = 35,
+          name = "",
+          type = "spike",
+          shape = "rectangle",
+          x = 80,
+          y = 204,
+          width = 32,
+          height = 4,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 37,
+          name = "",
+          type = "door",
+          shape = "rectangle",
+          x = 232,
+          y = 128,
+          width = 16,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["color"] = "yellow",
+            ["dir"] = "ver"
+          }
+        },
+        {
+          id = 38,
+          name = "",
+          type = "ground",
+          shape = "rectangle",
+          x = 224,
+          y = 0,
+          width = 32,
+          height = 128,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 50,
+          name = "",
+          type = "ground",
+          shape = "rectangle",
+          x = 256,
+          y = 0,
+          width = 64,
+          height = 112,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 51,
+          name = "",
+          type = "key",
+          shape = "rectangle",
+          x = 160,
+          y = 64,
+          width = 16,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["color"] = "yellow"
+          }
+        }
+      }
+    },
+    {
+      type = "objectgroup",
+      draworder = "topdown",
+      id = 4,
+      name = "Allow",
+      class = "",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      parallaxx = 1,
+      parallaxy = 1,
+      properties = {},
+      objects = {
+        {
+          id = 18,
+          name = "",
+          type = "place_allow",
+          shape = "rectangle",
+          x = 80,
+          y = 96,
+          width = 32,
+          height = 48,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 52,
+          name = "",
+          type = "place_allow",
+          shape = "rectangle",
+          x = 0,
+          y = 112,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {}
         }
       }
     }
