@@ -19,6 +19,13 @@ function scene.LoadScene()
     MENU.UI.MENU:Setup{MC={{MENU.UI.start},{MENU.UI.levelselect},{MENU.UI.settings}}}
     MENU.UI.MENU:Recaclulate()
 
+    MENU.TITLETEXTS = {
+        "not the murder kind!", "made in 10 days!", "when the sun always shines!", "dicelatro died for this...", "send all bugs to keyslam!", "the theme was plan btw.",
+        "don't click the secret button?", "0% bugs (give or take 100%)", "love is for all!", "it's jammin' time!", "no little guys we're harmed in the making of this game.",
+        "quality approved by williamfrog.", "don't question the physics...", "collisons courtesy of bump.lua!", "impossible without middleclass!", "blam blam blam... blam?"
+    }
+    MENU.TITLETEXT = MENU.TITLETEXTS[math.random(1,#MENU.TITLETEXTS)]
+
 
     -- LEVEL SELECT
     MENU.UI.LEVELSELECT = UI.MATRIX:new({X=0,Y=0,W=Env.width,H=Env.height},{},"basic")
@@ -63,7 +70,7 @@ function scene.LoadScene()
 
     MENU.UI.music_left = UI.TEXT:new({W=83,H=30},{text="music:",margin=0,alignX="right"},"basic")
     MENU.UI.music = UI.SLIDER:new({W=166,H=30},{value=SETTINGS:Get("music"),limit={0,1,0.1},func=function(e)
-        SETTINGS:Set("music",e.value); SETTINGS:SAVE()
+        SETTINGS:Set("music",e.value); SETTINGS:SAVE(); UpdateVolume(MUSIC,e.value)
     end},"basic")
     MENU.UI.music_right = UI.TEXT:new({W=83,H=30},{text="test",margin=0,alignX="left"},"basic")
     MENU.UI.music_right:Link(MENU.UI.music)
@@ -71,15 +78,24 @@ function scene.LoadScene()
     MENU.UI.music.GetValue = function (self)
         return math.floor(self.value*100).."%"
     end
+    -- Play sound when value changes before its saved
+    MENU.UI.music.heldfunc = function(e)
+        PlaceSound:setVolume(e.value)
+        PlaceSound:play()
+    end
 
     MENU.UI.sounds_left = UI.TEXT:new({W=83,H=30},{text="sounds:",margin=0,alignX="right"},"basic")
     MENU.UI.sounds = UI.SLIDER:new({W=166,H=30},{value=SETTINGS:Get("sounds"),limit={0,1,0.1},func=function(e)
-        SETTINGS:Set("sounds",e.value); SETTINGS:SAVE()
+        SETTINGS:Set("sounds",e.value); SETTINGS:SAVE(); UpdateVolume(SOUNDS,e.value)
     end},"basic")
     MENU.UI.sounds_right = UI.TEXT:new({W=83,H=30},{text="test",margin=0,alignX="left"},"basic")
     MENU.UI.sounds_right:Link(MENU.UI.sounds)
     MENU.UI.sounds.GetValue = function (self)
         return math.floor(self.value*100).."%"
+    end
+    MENU.UI.sounds.heldfunc = function(e)
+        PlaceSound:setVolume(e.value)
+        PlaceSound:play()
     end
     
     MENU.UI.spacer_setting = UI.SPACER:new({W=166,H=12},{},"basic")
@@ -110,10 +126,11 @@ function scene.Update(dt)
     end
 end
 
-local function titletext(text,x,y)
+local function titletext(text,x,y,color)
     love.graphics.setColor(0,0,0)
     love.graphics.print(text,x+1,y+1)
-    love.graphics.setColor(1,1,1)
+    color = color or {1,1,1}
+    love.graphics.setColor(color)
     love.graphics.print(text,x,y)
 end
 
@@ -132,16 +149,23 @@ function scene.Draw()
         titletext("made by britdan",4,Env.height-30)
         titletext("for the love2d game jam 2025!",4,Env.height-20)
 
+        local x = (Env.width/2) - ((SmallFont:getWidth(MENU.TITLETEXT)-1)/2)
+        titletext(MENU.TITLETEXT,x,74,{252/255,239/255,141/255})
+
         MENU.UI.MENU:Draw()
         if MENU.DEBUGDRAW then
             MENU.UI.MENU:DebugDraw()
         end
     elseif MENU.STATE == "levelselect" then
+        love.graphics.setColor(0,0,0,0.5)
+        love.graphics.rectangle("fill",16,24,Env.width-32,Env.height-48,8,8)
         MENU.UI.LEVELSELECT:Draw()
         if MENU.DEBUGDRAW then
             MENU.UI.LEVELSELECT:DebugDraw()
         end
     elseif MENU.STATE == "settings" then
+        love.graphics.setColor(0,0,0,0.5)
+        love.graphics.rectangle("fill",16,24,Env.width-32,Env.height-48,8,8)
         MENU.UI.SETTINGS:Draw()
         if MENU.DEBUGDRAW then
             MENU.UI.SETTINGS:DebugDraw()

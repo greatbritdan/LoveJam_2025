@@ -1,4 +1,6 @@
 function love.load()
+    math.randomseed(os.time());math.random();math.random()
+    
     -- Load Graphics --
     love.graphics.setDefaultFilter("nearest","nearest")
     Font = love.graphics.newImageFont("graphics/font.png","abcdefghijklmnopqrstuvwxyz |.,:;!?_-/\\<>'\"0123456789",1)
@@ -61,6 +63,9 @@ function love.load()
         love.audio.newSource("audio/talk9.mp3","static")
     }
 
+    SOUNDS = {DiscardSound,DoorSound,JumpSound,DeathSound,LandSound,PickupSound,PlaceSound,KeySounds,StepSounds,TalkSounds}
+    MUSIC = {}
+
     -- Load Items --
 
     _ITEMS_ORDER = {"springboard","crate","platform","yellowkey","redkey","greenkey","bluekey","orb"}
@@ -99,8 +104,20 @@ function love.load()
     -- Load Save --
     SETTINGS = SAVE:new{path="settings.json",config="save_settings"}
     SETTINGS:LOAD()
+    UpdateVolume(SOUNDS,SETTINGS:Get("sounds"))
+    UpdateVolume(MUSIC,SETTINGS:Get("music"))
 
     SCENE:LoadScene("menu")
+end
+
+function UpdateVolume(list,value)
+    for i, v in pairs(list) do
+        if type(v) == "table" then
+            UpdateVolume(v,value) -- oooo recursion, scary!
+        else
+            v:setVolume(value)
+        end
+    end
 end
 
 function love.update(dt)

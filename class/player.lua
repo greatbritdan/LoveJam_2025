@@ -90,7 +90,7 @@ function player:update(dt)
             local x,y = self.X+self.W/2,self.Y+self.H
             NewEffect("dust",x,y)
             local sound = StepSounds[math.random(1,#StepSounds)]
-            sound:setVolume(0.5)
+            --sound:setVolume(0.5)
             sound:setPitch(math.random(90,110)/100)
             sound:play()
         end
@@ -167,6 +167,8 @@ function player:collided(data)
         end
         if data.VY > 5 then
             LandSound:play()
+            local x,y = self.X+self.W/2,self.Y+self.H
+            NewEffect("dustl",x-3,y); NewEffect("dustr",x+3,y)
         end
     end
     -- Flip direction when hitting a wall

@@ -43,11 +43,15 @@ function slider:Click(x,y,b)
     self.clicking.offY = y - self.head.Y
 end
 function slider:Held()
+    local oldvalue = self.value
     self.value = self:ValueFromPosition()
     if self.value < self.limit[1] then self.value = self.limit[1] end
     if self.value > self.limit[2] then self.value = self.limit[2] end
     self.value = math.floor((self.value - self.limit[1]) / self.limit[3]) * self.limit[3] + self.limit[1]
-    self:Recaclulate()
+    if oldvalue ~= self.value then
+        self:Recaclulate()
+        if self.heldfunc then self:heldfunc(self) end
+    end
 end
 function slider:Release()
     if self.func then self.func(self) end
