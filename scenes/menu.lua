@@ -13,14 +13,10 @@ function scene.LoadScene()
     MENU.UI.MENU = UI.MATRIX:new({X=124,Y=90,W=232,H=162},{},"basic")
 
     MENU.UI.start = UI.BUTTON:new({W=166,H=30},{children={{text="play!"}},repeating=false,func=function() ChooseLevel(1) end},"basic")
-    MENU.UI.MENU:Add(MENU.UI.start,"MC","horizontal")
-
     MENU.UI.levelselect = UI.BUTTON:new({W=166,H=30},{children={{text="level select"}},repeating=false,func=function() MENU.STATE = "levelselect" end},"basic")
-    MENU.UI.MENU:Add(MENU.UI.levelselect,"MC","vertical")
+    MENU.UI.settings = UI.BUTTON:new({W=166,H=30},{children={{text="settings"}},repeating=false,func=function() MENU.STATE = "settings" end},"basic")
 
-    MENU.UI.settings = UI.BUTTON:new({W=166,H=30},{children={{text="settings"}},repeating=false,func=function() end},"basic")
-    MENU.UI.MENU:Add(MENU.UI.settings,"MC","vertical")
-
+    MENU.UI.MENU:Setup{MC={{MENU.UI.start},{MENU.UI.levelselect},{MENU.UI.settings}}}
     MENU.UI.MENU:Recaclulate()
 
 
@@ -52,6 +48,41 @@ function scene.LoadScene()
     MENU.UI.LEVELSELECT:Add(MENU.UI.back,"MC","vertical")
 
     MENU.UI.LEVELSELECT:Recaclulate()
+
+
+    -- SETTINGS
+    MENU.UI.SETTINGS = UI.MATRIX:new({X=0,Y=0,W=Env.width,H=Env.height},{},"basic")
+
+    MENU.UI.settings = UI.TEXT:new({W=166,H=12},{text="settings!"},"basic")
+
+    MENU.UI.music_left = UI.TEXT:new({W=83,H=30},{text="music:",margin=0,alignX="right"},"basic")
+    MENU.UI.music = UI.SLIDER:new({W=166,H=30},{limit={0,1,0.1},func=function() end},"basic")
+    MENU.UI.music_right = UI.TEXT:new({W=83,H=30},{text="test",margin=0,alignX="left"},"basic")
+    MENU.UI.music_right:Link(MENU.UI.music)
+    -- Override GetValue to return a percentage
+    MENU.UI.music.GetValue = function (self)
+        return math.floor(self.value*100).."%"
+    end
+
+    MENU.UI.sounds_left = UI.TEXT:new({W=83,H=30},{text="sounds:",margin=0,alignX="right"},"basic")
+    MENU.UI.sounds = UI.SLIDER:new({W=166,H=30},{limit={0,1,0.1},func=function() end},"basic")
+    MENU.UI.sounds_right = UI.TEXT:new({W=83,H=30},{text="test",margin=0,alignX="left"},"basic")
+    MENU.UI.sounds_right:Link(MENU.UI.sounds)
+    MENU.UI.sounds.GetValue = function (self)
+        return math.floor(self.value*100).."%"
+    end
+    
+    MENU.UI.spacer_setting = UI.SPACER:new({W=166,H=12},{},"basic")
+    MENU.UI.back_settings = UI.BUTTON:new({W=166,H=30},{children={{text="back to menu"}},repeating=false,func=function() MENU.STATE = "title" end},"basic")
+
+    MENU.UI.SETTINGS:Setup{MC={
+        {MENU.UI.settings},
+        {MENU.UI.music_left,MENU.UI.music,MENU.UI.music_right},
+        {MENU.UI.sounds_left,MENU.UI.sounds,MENU.UI.sounds_right},
+        {MENU.UI.spacer_setting},
+        {MENU.UI.back_settings}
+    }}
+    MENU.UI.SETTINGS:Recaclulate()
 end
 
 function scene.Update(dt)
@@ -64,6 +95,8 @@ function scene.Update(dt)
         MENU.UI.MENU:Update(dt)
     elseif MENU.STATE == "levelselect" then
         MENU.UI.LEVELSELECT:Update(dt)
+    elseif MENU.STATE == "settings" then
+        MENU.UI.SETTINGS:Update(dt)
     end
 end
 
@@ -98,6 +131,11 @@ function scene.Draw()
         if MENU.DEBUGDRAW then
             MENU.UI.LEVELSELECT:DebugDraw()
         end
+    elseif MENU.STATE == "settings" then
+        MENU.UI.SETTINGS:Draw()
+        if MENU.DEBUGDRAW then
+            MENU.UI.SETTINGS:DebugDraw()
+        end
     end
 end
 
@@ -107,6 +145,8 @@ function scene.Mousepressed(mx,my,b)
         MENU.UI.MENU:Mousepressed(mx,my,b)
     elseif MENU.STATE == "levelselect" then
         MENU.UI.LEVELSELECT:Mousepressed(mx,my,b)
+    elseif MENU.STATE == "settings" then
+        MENU.UI.SETTINGS:Mousepressed(mx,my,b)
     end
 end
 function scene.Mousereleased(mx,my,b)
@@ -115,11 +155,13 @@ function scene.Mousereleased(mx,my,b)
         MENU.UI.MENU:Mousereleased(mx,my,b)
     elseif MENU.STATE == "levelselect" then
         MENU.UI.LEVELSELECT:Mousereleased(mx,my,b)
+    elseif MENU.STATE == "settings" then
+        MENU.UI.SETTINGS:Mousereleased(mx,my,b)
     end
 end
 
 function scene.Keypressed(key)
-    if key == "tab" then GAME.DEBUGDRAW = not GAME.DEBUGDRAW end
+    if key == "tab" then MENU.DEBUGDRAW = not MENU.DEBUGDRAW end
 end
 
 function ChooseLevel(levelno)

@@ -257,6 +257,7 @@ function scene.Mousepressed(mx,my,b)
         if item.amount > 0 then
             GAME.INVENTORY:removeItem(item.name,1)
             GAME.ITEMS[#GAME.ITEMS+1] = ITEM:new(item.name)
+            PickupSound:play()
         end
     else
         local click = false
@@ -265,6 +266,7 @@ function scene.Mousepressed(mx,my,b)
             if AABB(mx,my,1,1,v.X+GAME.MAPPOS.X,v.Y+GAME.MAPPOS.Y,16,16) then
                 v.moving = true
                 v.oldx, v.oldy = v.X, v.Y
+                PickupSound:play()
                 click = true
                 break
             end
@@ -284,17 +286,21 @@ function scene.Mousereleased(mx,my,b)
                 if (not GAME.DEBUG) and ((not GAME.ITEMS_ALLOW[tilex.."-"..tiley]) or HasItem(tilex,tiley,v)) then
                     if v.oldx then
                         v.X, v.Y = v.oldx, v.oldy
+                        PlaceSound:play()
                     else
                         GAME.INVENTORY:addItem(v.name,1)
                         table.remove(GAME.ITEMS,i)
+                        DiscardSound:play()
                     end
                 else
                     v.X, v.Y = (tilex-1)*16, (tiley-1)*16
+                    PlaceSound:play()
                 end
                 v.moving = false
             else
                 GAME.INVENTORY:addItem(v.name,1)
                 table.remove(GAME.ITEMS,i)
+                DiscardSound:play()
             end
         end
     end

@@ -2,7 +2,7 @@ function love.load()
     -- Load Graphics --
     love.graphics.setDefaultFilter("nearest","nearest")
     Font = love.graphics.newImageFont("graphics/font.png","abcdefghijklmnopqrstuvwxyz |.,:;!?_-/\\<>'\"0123456789",1)
-    SmallFont = love.graphics.newImageFont("graphics/smallfont.png","abcdefghijklmnopqrstuvwxyz 0123456789.,!?'():/",1)
+    SmallFont = love.graphics.newImageFont("graphics/smallfont.png","abcdefghijklmnopqrstuvwxyz 0123456789.,!?'():/%",1)
     love.graphics.setFont(SmallFont)
 
     TitleImg = love.graphics.newImage("graphics/title.png")
@@ -27,6 +27,29 @@ function love.load()
     OrbImg, OrbQuads = LoadSprites{path="graphics/orb.png",xquads=5,yquads=1}
 
     EffectImg, EffectQuads = LoadSprites{path="graphics/particle.png",xquads=4,yquads=2,yquadnames={"dust","star"}}
+
+    -- Load Sounds --
+    DiscardSound = love.audio.newSource("audio/discard.mp3","static")
+    DoorSound = love.audio.newSource("audio/door.mp3","static")
+    JumpSound = love.audio.newSource("audio/jump.mp3","static")
+    DeathSound = love.audio.newSource("audio/death.wav","static")
+    KeySounds = {
+        love.audio.newSource("audio/key1.mp3","static"),
+        love.audio.newSource("audio/key2.mp3","static"),
+        love.audio.newSource("audio/key3.mp3","static")
+    }
+    LandSound = love.audio.newSource("audio/land.mp3","static")
+    PickupSound = love.audio.newSource("audio/pickup.mp3","static")
+    PlaceSound = love.audio.newSource("audio/place.mp3","static")
+    StepSounds = {
+        love.audio.newSource("audio/step1.mp3","static"),
+        love.audio.newSource("audio/step2.mp3","static"),
+        love.audio.newSource("audio/step3.mp3","static"),
+        love.audio.newSource("audio/step4.mp3","static"),
+        love.audio.newSource("audio/step5.mp3","static")
+    }
+
+    -- Load Items --
 
     _ITEMS_ORDER = {"springboard","crate","platform","yellowkey","redkey","greenkey","bluekey","orb"}
     _ITEMS = {}
@@ -60,6 +83,10 @@ function love.load()
     require("class.misc")
     require("class.player")
     require("class.items")
+
+    -- Load Save --
+    --SETTINGS = SAVE:new{path="settings.json",config="save_settings"}
+    --SETTINGS:LOAD()
 
     SCENE:LoadScene("menu")
 end

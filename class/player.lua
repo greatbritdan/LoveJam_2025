@@ -73,11 +73,11 @@ function player:update(dt)
         return
     end
 
-    if self.inair then
-        self.VX = 0
-    else
+    --if self.inair then
+    --    self.VX = 0
+    --else
         self.VX = math.max(math.min(self.VX + self.acceleration * dt * self.dir, self.maxspeed), -self.maxspeed)
-    end
+    --end
 
     self.walktimer = self.walktimer + dt
     if self.walktimer > 0.2 then
@@ -85,10 +85,14 @@ function player:update(dt)
     end
     if math.abs(self.VX) > 5 and (not self.inair) and (not self.orbed) then
         self.grasseffecttimer = self.grasseffecttimer + dt
-        if self.grasseffecttimer > 0.15 then
-            self.grasseffecttimer = self.grasseffecttimer - 0.15
+        if self.grasseffecttimer > 0.25 then
+            self.grasseffecttimer = self.grasseffecttimer - 0.25
             local x,y = self.X+self.W/2,self.Y+self.H
             NewEffect("dust",x,y)
+            local sound = StepSounds[math.random(1,#StepSounds)]
+            sound:setVolume(0.5)
+            sound:setPitch(math.random(90,110)/100)
+            sound:play()
         end
     else
         self.grasseffecttimer = 0
@@ -131,7 +135,7 @@ function player:update(dt)
             end
         end
         if data.obj.class == "orb" then
-            if AABB(self.X+self.W/2-1,self.Y+self.H/2-1,2,2,data.obj.X,data.obj.Y,data.obj.W,data.obj.H) then
+            if (not self.orbed) and AABB(self.X+self.W/2-1,self.Y+self.H/2-1,2,2,data.obj.X,data.obj.Y,data.obj.W,data.obj.H) then
                 if self.orbed then
                     self.orbed:trigger(self,false)
                 end
@@ -149,8 +153,9 @@ function player:collided(data)
         self.orbed:trigger(self,false)
         self.orbed = false
     end
-    if data.other.class == "spike" then
+    if data.other.class == "spike" and (not self.dying) and (not self.dead) then
         self.dying = true
+        DeathSound:play()
         if data.col.normal.x ~= 0 then self.VY = -64 end
     end
     if data.col.normal.y == -1 then
@@ -159,6 +164,9 @@ function player:collided(data)
             self.dead = true
             self.dying = false
             self.VX = 0
+        end
+        if data.VY > 5 then
+            LandSound:play()
         end
     end
     -- Flip direction when hitting a wall

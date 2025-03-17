@@ -40,11 +40,15 @@ function springboard:trigger(player)
     self.animtimer = 0
     local x,y = self.X+self.W/2,self.Y
     NewEffect("dustl",x-6,y); NewEffect("dustr",x+6,y)
+    JumpSound:play()
 end
 
 function springboard:collided(data)
     if data.other.class == "spike" then
         self.active = false
+    end
+    if data.col.normal.y == -1 and data.VY > 5 then
+        LandSound:play()
     end
 end
 
@@ -64,14 +68,15 @@ function crate:initialize(world,x,y,w,h)
 end
 
 function crate:update(dt)
-    GAME.MAP:GetLayer("Objects"):LoopThrough(function(data)
+    -- too many issues with them bouncing
+    --[[GAME.MAP:GetLayer("Objects"):LoopThrough(function(data)
         if data.obj.class == "springboard" then
             if AABB(self.X,self.Y,self.W,self.H,data.obj.X,data.obj.Y-1,data.obj.W,data.obj.H+1) then
                 data.obj:trigger(self)
                 self.VY = -148
             end
         end
-    end)
+    end)]]
 end
 
 function crate:draw()
@@ -80,6 +85,12 @@ function crate:draw()
     if GAME.DEBUGDRAW then
         love.graphics.setColor(1,1,1,0.5)
         love.graphics.rectangle("fill",self.X,self.Y,self.W,self.H)
+    end
+end
+
+function crate:collided(data)
+    if data.col.normal.y == -1 and data.VY > 5 then
+        LandSound:play()
     end
 end
 
@@ -195,6 +206,7 @@ function orb:trigger(player,start)
     self.usedplayer = false
     if start then
         self.usedplayer = player
+        PlaceSound:play()
     end
 end
 

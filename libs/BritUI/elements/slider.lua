@@ -19,7 +19,7 @@ function slider:initialize(transform, args, style)
     self:Recaclulate()
 
     self.func = args.func
-
+    
     if self.style.initializeElement then
         self.style:initializeElement(self)
     end

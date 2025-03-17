@@ -54,6 +54,7 @@ end
 
 function exit:trigger(player)
     self.opentimer = 0
+    DoorSound:play()
 end
 
 OBJECTS.exit = exit
@@ -84,6 +85,8 @@ function key:trigger(player)
     NewEffect("starul",x-4,y-4); NewEffect("starur",x+4,y-4)
     NewEffect("stardl",x-4,y+4); NewEffect("stardr",x+4,y+4)
     self.opentimer = 0
+    local sound = KeySounds[math.random(1,#KeySounds)]
+    sound:play()
 end
 
 OBJECTS.key = key
