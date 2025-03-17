@@ -30,7 +30,13 @@ function scene.LoadScene()
     for _ = 1, 3 do
         for x = 1, 5 do
             i = i + 1
-            MENU.UI["level"..i] = UI.BUTTON:new({W=30,H=30},{children={{text=i}},repeating=false,func=function(e) ChooseLevel(e.levelno) end},"basic")
+
+            local text = i
+            if SETTINGS:GetInside("levelsbeaten",i) then
+                text = i.."*"
+            end
+
+            MENU.UI["level"..i] = UI.BUTTON:new({W=30,H=30},{children={{text=text}},repeating=false,func=function(e) ChooseLevel(e.levelno) end},"basic")
             MENU.UI["level"..i].levelno = i
             local dir = "horizontal"
             if (x == 1) then dir = "vertical" end
@@ -56,7 +62,9 @@ function scene.LoadScene()
     MENU.UI.settings = UI.TEXT:new({W=166,H=12},{text="settings!"},"basic")
 
     MENU.UI.music_left = UI.TEXT:new({W=83,H=30},{text="music:",margin=0,alignX="right"},"basic")
-    MENU.UI.music = UI.SLIDER:new({W=166,H=30},{limit={0,1,0.1},func=function() end},"basic")
+    MENU.UI.music = UI.SLIDER:new({W=166,H=30},{value=SETTINGS:Get("music"),limit={0,1,0.1},func=function(e)
+        SETTINGS:Set("music",e.value); SETTINGS:SAVE()
+    end},"basic")
     MENU.UI.music_right = UI.TEXT:new({W=83,H=30},{text="test",margin=0,alignX="left"},"basic")
     MENU.UI.music_right:Link(MENU.UI.music)
     -- Override GetValue to return a percentage
@@ -65,7 +73,9 @@ function scene.LoadScene()
     end
 
     MENU.UI.sounds_left = UI.TEXT:new({W=83,H=30},{text="sounds:",margin=0,alignX="right"},"basic")
-    MENU.UI.sounds = UI.SLIDER:new({W=166,H=30},{limit={0,1,0.1},func=function() end},"basic")
+    MENU.UI.sounds = UI.SLIDER:new({W=166,H=30},{value=SETTINGS:Get("sounds"),limit={0,1,0.1},func=function(e)
+        SETTINGS:Set("sounds",e.value); SETTINGS:SAVE()
+    end},"basic")
     MENU.UI.sounds_right = UI.TEXT:new({W=83,H=30},{text="test",margin=0,alignX="left"},"basic")
     MENU.UI.sounds_right:Link(MENU.UI.sounds)
     MENU.UI.sounds.GetValue = function (self)

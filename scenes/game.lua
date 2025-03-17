@@ -144,6 +144,9 @@ function scene.Update(dt)
     GAME.UI.SIDEBAR:Update(dt)
 
     if GAME.QueueNextLevel then
+        if LEVELNO >= 1 and LEVELNO <= 15 then
+            SETTINGS:SetInside("levelsbeaten",LEVELNO,true); SETTINGS:SAVE()
+        end
         NextLevel()
     end
 end

@@ -2,7 +2,7 @@ function love.load()
     -- Load Graphics --
     love.graphics.setDefaultFilter("nearest","nearest")
     Font = love.graphics.newImageFont("graphics/font.png","abcdefghijklmnopqrstuvwxyz |.,:;!?_-/\\<>'\"0123456789",1)
-    SmallFont = love.graphics.newImageFont("graphics/smallfont.png","abcdefghijklmnopqrstuvwxyz 0123456789.,!?'():/%",1)
+    SmallFont = love.graphics.newImageFont("graphics/smallfont.png","abcdefghijklmnopqrstuvwxyz 0123456789.,!?'():/%*",1)
     love.graphics.setFont(SmallFont)
 
     TitleImg = love.graphics.newImage("graphics/title.png")
@@ -10,6 +10,7 @@ function love.load()
     FrameMenuImg = love.graphics.newImage("graphics/framemenu.png")
     InventoryImg, InventoryQuads = LoadSprites{path="graphics/inventory.png",xquads=10,yquads=1,xquadnames={"slot",1,2,3,4,5,6,7,8,9}}
     ItemselecterImg = love.graphics.newImage("graphics/itemselecter.png")
+    DialogImg = love.graphics.newImage("graphics/dialog.png")
 
     WaterImg, WaterQuads = LoadSprites{path="graphics/water.png",xquads=4,yquads=2}
 
@@ -48,6 +49,17 @@ function love.load()
         love.audio.newSource("audio/step4.mp3","static"),
         love.audio.newSource("audio/step5.mp3","static")
     }
+    TalkSounds = {
+        love.audio.newSource("audio/talk1.mp3","static"),
+        love.audio.newSource("audio/talk2.mp3","static"),
+        love.audio.newSource("audio/talk3.mp3","static"),
+        love.audio.newSource("audio/talk4.mp3","static"),
+        love.audio.newSource("audio/talk5.mp3","static"),
+        love.audio.newSource("audio/talk6.mp3","static"),
+        love.audio.newSource("audio/talk7.mp3","static"),
+        love.audio.newSource("audio/talk8.mp3","static"),
+        love.audio.newSource("audio/talk9.mp3","static")
+    }
 
     -- Load Items --
 
@@ -85,8 +97,8 @@ function love.load()
     require("class.items")
 
     -- Load Save --
-    --SETTINGS = SAVE:new{path="settings.json",config="save_settings"}
-    --SETTINGS:LOAD()
+    SETTINGS = SAVE:new{path="settings.json",config="save_settings"}
+    SETTINGS:LOAD()
 
     SCENE:LoadScene("menu")
 end

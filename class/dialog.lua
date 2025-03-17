@@ -22,10 +22,13 @@ DIALOG = {}
 function DIALOG:initialize(dialog)
     self.textspeed = 0.03
     self.finished = true
+    self.timer = 0
+    self.hightimer = 0
 end
 
 function DIALOG:update(dt)
     if not GAME.INDIALOG then return end
+    self.hightimer = self.hightimer + dt
 
     if self.waittimer then
         self.waittimer = self.waittimer - dt
@@ -33,6 +36,15 @@ function DIALOG:update(dt)
             self.waittimer = nil
         end
         return
+    end
+
+    if self.finished then
+        return
+    end
+
+    self.talktimer = self.talktimer + dt
+    if self.talktimer > 0.15 then
+        self.talk = true
     end
 
     self.timer = self.timer + dt
@@ -44,6 +56,13 @@ function DIALOG:update(dt)
             self.waittimer = 0.3
         else
             self.text = self.text .. next
+            if self.talk then
+                local sound = TalkSounds[math.random(1,#TalkSounds)]
+                sound:setPitch(1.15)
+                sound:play()
+                self.talktimer = 0
+                self.talk = false
+            end
         end
         if self.char >= #self.fulltext then
             self.finished = true
@@ -54,15 +73,15 @@ end
 function DIALOG:draw()
     if not GAME.INDIALOG then return end
 
-    love.graphics.setColor(0,0,0,0.5)
-    love.graphics.rectangle("fill",12,12,312,60)
-
     love.graphics.setColor(1,1,1)
-    love.graphics.printf(self.text,14,14,308,"left")
+    love.graphics.draw(DialogImg,12,12)
+    love.graphics.printf(self.text,17,17,302,"left")
 
     if self.highlight then
+        local opacity = math.abs(math.sin(self.hightimer*4))
+
         local x,y,w,h = self:getHighlight()
-        love.graphics.setColor(1,1,1)
+        love.graphics.setColor(1,1,1,opacity)
         love.graphics.rectangle("line",x,y,w,h)
     end
 end
@@ -79,9 +98,11 @@ function DIALOG:play(idx)
     self.highlight = self.dialogs[self.current].highlight
 
     self.timer = 0
+    self.talktimer = 9999; self.talk = true
     self.text = ""
     self.char = 0
     self.finished = false
+    self.hightimer = 0
 end
 
 function DIALOG:next()
