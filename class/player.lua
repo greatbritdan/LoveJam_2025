@@ -3,7 +3,7 @@ function player:initialize(world,x,y,w,h,args)
     OBJECTS.box.initialize(self,world,x,y,w,h,{gravity=180})
     self.class = "player"
     self.startX, self.startY = x, y
-    print("spawned player at",x,y)
+    --print("spawned player at",x,y)
 
     self.quadcenterx = 8
     self.quadcentery = 8
@@ -12,7 +12,7 @@ function player:initialize(world,x,y,w,h,args)
 
     self.acceleration = 128
     self.maxspeed = 64
-    self.jumpspeed = -148
+    self.jumpspeed = -152
 
     self.dir = 1
     self.idletimer = 0

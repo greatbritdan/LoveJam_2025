@@ -12,11 +12,17 @@ function scene.LoadScene()
     -- TITLE
     MENU.UI.MENU = UI.MATRIX:new({X=124,Y=90,W=232,H=162},{},"basic")
 
-    MENU.UI.spacer_menu = UI.SPACER:new({W=166,H=30},{},"basic")
-    MENU.UI.start = UI.BUTTON:new({W=166,H=30},{children={{text="play!"}},repeating=false,func=function() ChooseLevel(1) end},"basic")
-    MENU.UI.levelselect = UI.BUTTON:new({W=166,H=30},{children={{text="level select"}},repeating=false,func=function() MENU.STATE = "levelselect" end},"basic")
-    MENU.UI.settings = UI.BUTTON:new({W=166,H=30},{children={{text="settings"}},repeating=false,func=function() MENU.STATE = "settings" end},"basic")
-    MENU.UI.secret = UI.BUTTON:new({W=166,H=30},{children={{text=""}},repeating=false,func=function() MENU.STATE = "secret" end},"basic")
+    MENU.CONTINUELEVEL = SETTINGS:Get("level")+1
+
+    MENU.UI.spacer_menu = UI.SPACER:new({W=166,H=24},{},"basic")
+    if MENU.CONTINUELEVEL >= 2 then
+        MENU.UI.start = UI.BUTTON:new({W=166,H=24},{children={{text="continue! ("..MENU.CONTINUELEVEL..")"}},repeating=false,func=function() ChooseLevel(MENU.CONTINUELEVEL) end},"basic")
+    else
+        MENU.UI.start = UI.BUTTON:new({W=166,H=24},{children={{text="play!"}},repeating=false,func=function() ChooseLevel(1) end},"basic")
+    end
+    MENU.UI.levelselect = UI.BUTTON:new({W=166,H=24},{children={{text="level select"}},repeating=false,func=function() MENU.STATE = "levelselect" end},"basic")
+    MENU.UI.settings = UI.BUTTON:new({W=166,H=24},{children={{text="settings"}},repeating=false,func=function() MENU.STATE = "settings" end},"basic")
+    MENU.UI.secret = UI.BUTTON:new({W=166,H=24},{children={{text=""}},repeating=false,func=function() MENU.STATE = "secret" end},"basic")
     MENU.UI.secret.imagebuttoncolor = {1,1,1,0.05}
 
     MENU.UI.MENU:Setup{MC={{MENU.UI.spacer_menu},{MENU.UI.start},{MENU.UI.levelselect},{MENU.UI.settings},{MENU.UI.secret}}}
@@ -46,7 +52,7 @@ function scene.LoadScene()
                 text = i.."*"
             end
 
-            MENU.UI["level"..i] = UI.BUTTON:new({W=30,H=30},{children={{text=text}},repeating=false,func=function(e) ChooseLevel(e.levelno) end},"basic")
+            MENU.UI["level"..i] = UI.BUTTON:new({W=30,H=24},{children={{text=text}},repeating=false,func=function(e) ChooseLevel(e.levelno) end},"basic")
             MENU.UI["level"..i].levelno = i
             local dir = "horizontal"
             if (x == 1) then dir = "vertical" end
@@ -54,13 +60,13 @@ function scene.LoadScene()
         end
     end
 
-    MENU.UI.leveltest = UI.BUTTON:new({W=166,H=30},{children={{text="test"}},repeating=false,func=function() ChooseLevel(0) end},"basic")
+    MENU.UI.leveltest = UI.BUTTON:new({W=166,H=24},{children={{text="test"}},repeating=false,func=function() ChooseLevel(0) end},"basic")
     MENU.UI.LEVELSELECT:Add(MENU.UI.leveltest,"MC","vertical")
 
     MENU.UI.spacer = UI.SPACER:new({W=166,H=12},{},"basic")
     MENU.UI.LEVELSELECT:Add(MENU.UI.spacer,"MC","vertical")
 
-    MENU.UI.back = UI.BUTTON:new({W=166,H=30},{children={{text="back to menu"}},repeating=false,func=function() MENU.STATE = "title" end},"basic")
+    MENU.UI.back = UI.BUTTON:new({W=166,H=24},{children={{text="back to menu"}},repeating=false,func=function() MENU.STATE = "title" end},"basic")
     MENU.UI.LEVELSELECT:Add(MENU.UI.back,"MC","vertical")
 
     MENU.UI.LEVELSELECT:Recaclulate()
@@ -71,11 +77,11 @@ function scene.LoadScene()
 
     MENU.UI.settings = UI.TEXT:new({W=166,H=12},{text="settings!"},"basic")
 
-    MENU.UI.music_left = UI.TEXT:new({W=83,H=30},{text="music:",margin=0,alignX="right"},"basic")
-    MENU.UI.music = UI.SLIDER:new({W=166,H=30},{value=SETTINGS:Get("music"),limit={0,1,0.1},func=function(e)
+    MENU.UI.music_left = UI.TEXT:new({W=83,H=24},{text="music:",margin=0,alignX="right"},"basic")
+    MENU.UI.music = UI.SLIDER:new({W=166,H=24},{value=SETTINGS:Get("music"),limit={0,1,0.1},func=function(e)
         SETTINGS:Set("music",e.value); SETTINGS:SAVE(); UpdateVolume(MUSIC,e.value)
     end},"basic")
-    MENU.UI.music_right = UI.TEXT:new({W=83,H=30},{text="test",margin=0,alignX="left"},"basic")
+    MENU.UI.music_right = UI.TEXT:new({W=83,H=24},{text="test",margin=0,alignX="left"},"basic")
     MENU.UI.music_right:Link(MENU.UI.music)
     -- Override GetValue to return a percentage
     MENU.UI.music.GetValue = function (self)
@@ -87,11 +93,11 @@ function scene.LoadScene()
         PlaceSound:play()
     end
 
-    MENU.UI.sounds_left = UI.TEXT:new({W=83,H=30},{text="sounds:",margin=0,alignX="right"},"basic")
-    MENU.UI.sounds = UI.SLIDER:new({W=166,H=30},{value=SETTINGS:Get("sounds"),limit={0,1,0.1},func=function(e)
+    MENU.UI.sounds_left = UI.TEXT:new({W=83,H=24},{text="sounds:",margin=0,alignX="right"},"basic")
+    MENU.UI.sounds = UI.SLIDER:new({W=166,H=24},{value=SETTINGS:Get("sounds"),limit={0,1,0.1},func=function(e)
         SETTINGS:Set("sounds",e.value); SETTINGS:SAVE(); UpdateVolume(SOUNDS,e.value)
     end},"basic")
-    MENU.UI.sounds_right = UI.TEXT:new({W=83,H=30},{text="test",margin=0,alignX="left"},"basic")
+    MENU.UI.sounds_right = UI.TEXT:new({W=83,H=24},{text="test",margin=0,alignX="left"},"basic")
     MENU.UI.sounds_right:Link(MENU.UI.sounds)
     MENU.UI.sounds.GetValue = function (self)
         return math.floor(self.value*100).."%"
@@ -104,14 +110,14 @@ function scene.LoadScene()
     local idx = 1
     if SETTINGS:Get("skipdialog") then idx = 2 end
     MENU.UI.skipdialogtext = UI.TEXT:new({W=166,H=12},{text="skip dialog?"},"basic")
-    MENU.UI.skipdialog = UI.CYCLEBUTTON:new({W=166,H=30},{children={{text="no",autolink=true}},cycle={"no","yes"},cycleidx=idx,func=function(e)
+    MENU.UI.skipdialog = UI.CYCLEBUTTON:new({W=166,H=24},{children={{text="no",autolink=true}},cycle={"no","yes"},cycleidx=idx,func=function(e)
         local value = false
         if e:GetValue() == "yes" then value = true end
         SETTINGS:Set("skipdialog",value); SETTINGS:SAVE()
     end},"basic")
     
     MENU.UI.spacer_setting = UI.SPACER:new({W=166,H=12},{},"basic")
-    MENU.UI.back_settings = UI.BUTTON:new({W=166,H=30},{children={{text="back to menu"}},repeating=false,func=function() MENU.STATE = "title" end},"basic")
+    MENU.UI.back_settings = UI.BUTTON:new({W=166,H=24},{children={{text="back to menu"}},repeating=false,func=function() MENU.STATE = "title" end},"basic")
 
     MENU.UI.SETTINGS:Setup{MC={
         {MENU.UI.settings},
@@ -129,11 +135,23 @@ function scene.LoadScene()
     MENU.UI.SECRET = UI.MATRIX:new({X=0,Y=0,W=Env.width,H=Env.height},{},"basic")
 
     MENU.UI.secret = UI.TEXT:new({W=166,H=12},{text="secret!"},"basic")
+
+    local idx = 1
+    if SETTINGS:Get("secret_debug") then idx = 2 end
+    MENU.UI.skipdialogtext = UI.TEXT:new({W=166,H=12},{text="debug mode?"},"basic")
+    MENU.UI.skipdialog = UI.CYCLEBUTTON:new({W=166,H=24},{children={{text="no",autolink=true}},cycle={"no","yes"},cycleidx=idx,func=function(e)
+        local value = false
+        if e:GetValue() == "yes" then value = true end
+        SETTINGS:Set("secret_debug",value); SETTINGS:SAVE()
+    end},"basic")
+
     MENU.UI.spacer_secret = UI.SPACER:new({W=166,H=12},{},"basic")
-    MENU.UI.back_secret = UI.BUTTON:new({W=166,H=30},{children={{text="back to menu"}},repeating=false,func=function() MENU.STATE = "title" end},"basic")
+    MENU.UI.back_secret = UI.BUTTON:new({W=166,H=24},{children={{text="back to menu"}},repeating=false,func=function() MENU.STATE = "title" end},"basic")
 
     MENU.UI.SECRET:Setup{MC={
         {MENU.UI.secret},
+        {MENU.UI.skipdialogtext},
+        {MENU.UI.skipdialog},
         {MENU.UI.spacer_secret},
         {MENU.UI.back_secret}
     }}

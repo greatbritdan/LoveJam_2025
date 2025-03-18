@@ -21,6 +21,38 @@ OBJECTS.ground = ground
 
 ------------------------
 
+local conveyorbelt = Class("conveyorbelt",OBJECTS.box)
+function conveyorbelt:initialize(world,x,y,w,h,args)
+    OBJECTS.box.initialize(self,world,x,y,w,h,{static=true})
+    self.class = "conveyorbelt"
+    self.X, self.Y, self.W, self.H = x,y,w,h
+
+    self.speed = args.speed
+end
+
+function conveyorbelt:update(dt)
+    GAME.MAP:GetLayer("Objects"):LoopThrough(function(data)
+        if data.obj.class == "player" or data.obj.class == "crate" or data.obj.class == "springboard" then
+            if AABB(self.X,self.Y-2,self.W,2,data.obj.X,data.obj.Y,data.obj.W,data.obj.H) then
+                data.obj.X = data.obj.X + self.speed *dt
+            end
+        end
+    end)
+end
+
+function conveyorbelt:draw()
+    love.graphics.setColor(1,1,1)
+    love.graphics.rectangle("fill",self.X,self.Y,self.W,self.H)
+    if GAME.DEBUGDRAW then
+        love.graphics.setColor(1,0.5,0.5,0.5)
+        love.graphics.rectangle("fill",self.X,self.Y,self.W,self.H)
+    end
+end
+
+OBJECTS.conveyorbelt = conveyorbelt
+
+------------------------
+
 local exit = Class("exit")
 function exit:initialize(_,x,y,w,h)
     self.class = "exit"

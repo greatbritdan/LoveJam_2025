@@ -15,6 +15,8 @@ local loadobject = function(data)
         return OBJECTS.ground:new(GAME.WORLD,data.X,data.Y,data.W,data.H,data.args)
     elseif data.class == "spike" then
         return OBJECTS.ground:new(GAME.WORLD,data.X,data.Y,data.W,data.H,{},true)
+    elseif data.class == "conveyorbelt" then
+        return OBJECTS.conveyorbelt:new(GAME.WORLD,data.X,data.Y,data.W,data.H,data.args)
     elseif data.class == "player" then
         local player = OBJECTS.player:new(GAME.WORLD,data.X+2,data.Y+2,12,14,data.args)
         if not GAME.PLAYER then GAME.PLAYER = player end
@@ -59,7 +61,7 @@ function scene.LoadScene()
 
     -- Load inventory
     local inv_data = GAME.MAP.raw.properties
-    if inv_data.DEBUG then GAME.DEBUG = true end
+    if inv_data.DEBUG or SETTINGS:Get("secret_debug") then GAME.DEBUG = true end
 
     GAME.INVENTORY = INVENTORY:new()
     for _,itemname in pairs(_ITEMS_ORDER) do
@@ -149,6 +151,9 @@ function scene.Update(dt)
         if LEVELNO >= 1 and LEVELNO <= 15 then
             SETTINGS:SetInside("levelsbeaten",LEVELNO,true); SETTINGS:SAVE()
         end
+        if LEVELNO >= SETTINGS:Get("level") then
+            SETTINGS:Set("level",LEVELNO); SETTINGS:SAVE()
+        end
         NextLevel()
     end
 end
@@ -169,6 +174,7 @@ function scene.Draw()
 
     DrawObject("ground")
     DrawObject("spike")
+    DrawObject("conveyorbelt")
     DrawObject("exit")
     DrawObject("key")
     DrawObject("door")

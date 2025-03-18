@@ -1,6 +1,7 @@
 return {
     music = {default=1, type="number", min=0, max=1},
     sounds = {default=1, type="number", min=0, max=1},
+    level = {default=0, type="number", min=1, max=15},
     levelsbeaten = {type="table", table={
         [1] = {default=false, type="boolean"},
         [2] = {default=false, type="boolean"},
@@ -18,5 +19,6 @@ return {
         [14] = {default=false, type="boolean"},
         [15] = {default=false, type="boolean"}
     }},
-    skipdialog = {default=false, type="boolean"}
+    skipdialog = {default=false, type="boolean"},
+    secret_debug = {default=false, type="boolean"}
 }
