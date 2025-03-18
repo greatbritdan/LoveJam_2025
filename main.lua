@@ -17,6 +17,7 @@ function love.load()
     WaterImg, WaterQuads = LoadSprites{path="graphics/water.png",xquads=4,yquads=2}
 
     BackgroundImg = love.graphics.newImage("graphics/background.png")
+    TitleTilesImg = love.graphics.newImage("graphics/titletiles.png")
     PlayerImg, PlayerQuads = LoadSprites{path="graphics/player.png",xquads=9,yquads=1}
     ExitImg, ExitQuads = LoadSprites{path="graphics/exit.png",xquads=4,yquads=1}
 

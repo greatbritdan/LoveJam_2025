@@ -6,15 +6,17 @@ MENU = {DEBUGDRAW=false}
 function scene.LoadScene()
     MENU.STATE = "title"
     MENU.BACKGROUNDSCROLL = 0
+    MENU.BACKGROUNDTILESSCROLL = 0
+    MENU.TIMER = 0
+
     MENU.UI = {}
 
 
     -- TITLE
-    MENU.UI.MENU = UI.MATRIX:new({X=124,Y=90,W=232,H=162},{},"basic")
+    MENU.UI.MENU = UI.MATRIX:new({X=124,Y=90,W=232,H=122},{},"basic")
 
     MENU.CONTINUELEVEL = SETTINGS:Get("level")+1
 
-    MENU.UI.spacer_menu = UI.SPACER:new({W=166,H=24},{},"basic")
     if MENU.CONTINUELEVEL >= 2 then
         MENU.UI.start = UI.BUTTON:new({W=166,H=24},{children={{text="continue! ("..MENU.CONTINUELEVEL..")"}},repeating=false,func=function() ChooseLevel(MENU.CONTINUELEVEL) end},"basic")
     else
@@ -22,10 +24,8 @@ function scene.LoadScene()
     end
     MENU.UI.levelselect = UI.BUTTON:new({W=166,H=24},{children={{text="level select"}},repeating=false,func=function() MENU.STATE = "levelselect" end},"basic")
     MENU.UI.settings = UI.BUTTON:new({W=166,H=24},{children={{text="settings"}},repeating=false,func=function() MENU.STATE = "settings" end},"basic")
-    MENU.UI.secret = UI.BUTTON:new({W=166,H=24},{children={{text=""}},repeating=false,func=function() MENU.STATE = "secret" end},"basic")
-    MENU.UI.secret.imagebuttoncolor = {1,1,1,0.05}
 
-    MENU.UI.MENU:Setup{MC={{MENU.UI.spacer_menu},{MENU.UI.start},{MENU.UI.levelselect},{MENU.UI.settings},{MENU.UI.secret}}}
+    MENU.UI.MENU:Setup{MC={{MENU.UI.start},{MENU.UI.levelselect},{MENU.UI.settings}}}
     MENU.UI.MENU:Recaclulate()
 
     MENU.TITLETEXTS = {
@@ -129,39 +129,23 @@ function scene.LoadScene()
         {MENU.UI.back_settings}
     }}
     MENU.UI.SETTINGS:Recaclulate()
-
-
-    -- SECRET (But i'll never tell...)
-    MENU.UI.SECRET = UI.MATRIX:new({X=0,Y=0,W=Env.width,H=Env.height},{},"basic")
-
-    MENU.UI.secret = UI.TEXT:new({W=166,H=12},{text="secret!"},"basic")
-
-    local idx = 1
-    if SETTINGS:Get("secret_debug") then idx = 2 end
-    MENU.UI.skipdialogtext = UI.TEXT:new({W=166,H=12},{text="debug mode?"},"basic")
-    MENU.UI.skipdialog = UI.CYCLEBUTTON:new({W=166,H=24},{children={{text="no",autolink=true}},cycle={"no","yes"},cycleidx=idx,func=function(e)
-        local value = false
-        if e:GetValue() == "yes" then value = true end
-        SETTINGS:Set("secret_debug",value); SETTINGS:SAVE()
-    end},"basic")
-
-    MENU.UI.spacer_secret = UI.SPACER:new({W=166,H=12},{},"basic")
-    MENU.UI.back_secret = UI.BUTTON:new({W=166,H=24},{children={{text="back to menu"}},repeating=false,func=function() MENU.STATE = "title" end},"basic")
-
-    MENU.UI.SECRET:Setup{MC={
-        {MENU.UI.secret},
-        {MENU.UI.skipdialogtext},
-        {MENU.UI.skipdialog},
-        {MENU.UI.spacer_secret},
-        {MENU.UI.back_secret}
-    }}
-    MENU.UI.SECRET:Recaclulate()
 end
 
 function scene.Update(dt)
+    MENU.TIMER = MENU.TIMER + dt
+    -- Dust effect
+    --[[if MENU.TIMER >= 0.2 then
+        NewEffect("dust",48,Env.height-80)
+        MENU.TIMER = 0
+    end]]
+
     MENU.BACKGROUNDSCROLL = MENU.BACKGROUNDSCROLL + dt * 25
     if MENU.BACKGROUNDSCROLL > 320 then
         MENU.BACKGROUNDSCROLL = MENU.BACKGROUNDSCROLL - 320
+    end
+    MENU.BACKGROUNDTILESSCROLL = MENU.BACKGROUNDTILESSCROLL + dt * 64
+    if MENU.BACKGROUNDTILESSCROLL > 480 then
+        MENU.BACKGROUNDTILESSCROLL = MENU.BACKGROUNDTILESSCROLL - 480
     end
 
     if MENU.STATE == "title" then
@@ -170,8 +154,6 @@ function scene.Update(dt)
         MENU.UI.LEVELSELECT:Update(dt)
     elseif MENU.STATE == "settings" then
         MENU.UI.SETTINGS:Update(dt)
-    elseif MENU.STATE == "secret" then
-        MENU.UI.SECRET:Update(dt)
     end
 end
 
@@ -190,16 +172,31 @@ function scene.Draw()
     love.graphics.draw(BackgroundImg,-MENU.BACKGROUNDSCROLL+640,8)
 
     love.graphics.setColor(1,1,1)
+    love.graphics.draw(TitleTilesImg,-MENU.BACKGROUNDTILESSCROLL,0)
+    love.graphics.draw(TitleTilesImg,-MENU.BACKGROUNDTILESSCROLL+480,0)
+
+    love.graphics.setColor(1,1,1)
     love.graphics.draw(FrameMenuImg,0,0)
 
     if MENU.STATE == "title" then
-        local x,y = (Env.width/2) - (TitleImg:getWidth()/2), 20
+        local quad = 4
+        if MENU.TIMER%0.2 >= 0.1 then quad = 5 end
+        love.graphics.draw(PlayerImg,PlayerQuads[quad],48,Env.height-80)
+
+        local sin = math.sin(MENU.TIMER*4)*2
+
+        local x,y = (Env.width/2) - (TitleImg:getWidth()/2), 20+sin
         love.graphics.draw(TitleImg,x,y)
+
+        x = (Env.width/2) - ((SmallFont:getWidth(MENU.TITLETEXT)-1)/2)
+        titletext(MENU.TITLETEXT,x,74+sin,{252/255,239/255,141/255})
+
         titletext("made by britdan",4,Env.height-30)
         titletext("for the love2d game jam 2025!",4,Env.height-20)
 
-        local x = (Env.width/2) - ((SmallFont:getWidth(MENU.TITLETEXT)-1)/2)
-        titletext(MENU.TITLETEXT,x,74,{252/255,239/255,141/255})
+        local text = "version 1.0"
+        x = Env.width - 4 - (SmallFont:getWidth(text)-1)
+        titletext(text,x,Env.height-20)
 
         MENU.UI.MENU:Draw()
         if MENU.DEBUGDRAW then
@@ -220,11 +217,6 @@ function scene.Draw()
         MENU.UI.SETTINGS:Draw()
         if MENU.DEBUGDRAW then
             MENU.UI.SETTINGS:DebugDraw()
-        end
-    elseif MENU.STATE == "secret" then
-        MENU.UI.SECRET:Draw()
-        if MENU.DEBUGDRAW then
-            MENU.UI.SECRET:DebugDraw()
         end
     end
 end
@@ -249,8 +241,6 @@ function scene.Mousereleased(mx,my,b)
         MENU.UI.LEVELSELECT:Mousereleased(mx,my,b)
     elseif MENU.STATE == "settings" then
         MENU.UI.SETTINGS:Mousereleased(mx,my,b)
-    elseif MENU.STATE == "secret" then
-        MENU.UI.SECRET:Mousereleased(mx,my,b)
     end
 end
 

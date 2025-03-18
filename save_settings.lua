@@ -19,6 +19,5 @@ return {
         [14] = {default=false, type="boolean"},
         [15] = {default=false, type="boolean"}
     }},
-    skipdialog = {default=false, type="boolean"},
-    secret_debug = {default=false, type="boolean"}
+    skipdialog = {default=false, type="boolean"}
 }
