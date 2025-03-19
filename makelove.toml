@@ -1,4 +1,4 @@
-name = "BritBase"
+name = "Pre-Meditated"
 default_targets = ["win32", "win64", "macos", "lovejs"]
 build_directory = "builds"
 icon_file = "graphics/icon.png"
@@ -11,5 +11,5 @@ love_files = [
 ]
 
 [lovejs]
-title = "BritBase"
+title = "Pre-Meditated"
 memory = "80000000"
