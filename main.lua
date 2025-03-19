@@ -64,8 +64,10 @@ function love.load()
         love.audio.newSource("audio/talk9.mp3","static")
     }
 
+    PlaceMusic = love.audio.newSource("audio/place.mp3","static")
+
     SOUNDS = {DiscardSound,DoorSound,JumpSound,DeathSound,LandSound,PickupSound,PlaceSound,KeySounds,StepSounds,TalkSounds}
-    MUSIC = {}
+    MUSIC = {PlaceMusic}
 
     -- Load Items --
 
@@ -76,10 +78,7 @@ function love.load()
     _ITEMS.platform = {name="platform",class="platform",img=PlatformImg,quad=PlatformQuads[1],spawn={ox=0,oy=0,w=16,h=16}}
     _ITEMS.yellowkey = {name="yellowkey",class="key",img=KeyImg,quad=KeyQuads.yellow,spawn={ox=4,oy=2,w=8,h=12},args={color="yellow"}}
     _ITEMS.redkey = {name="redkey",class="key",img=KeyImg,quad=KeyQuads.red,spawn={ox=4,oy=2,w=8,h=12},args={color="red"}}
-    _ITEMS.greenkey = {name="greenkey",class="key",img=KeyImg,quad=KeyQuads.green,spawn={ox=4,oy=2,w=8,h=12},args={color="green"}}
-    _ITEMS.bluekey = {name="bluekey",class="key",img=KeyImg,quad=KeyQuads.blue,spawn={ox=4,oy=2,w=8,h=12},args={color="blue"}}
     _ITEMS.orb = {name="orb",class="orb",img=OrbImg,quad=OrbQuads[2],spawn={ox=2,oy=2,w=12,h=12}}
-
     _ITEMS.yellowdoorver = {name="yellowdoorver",class="door",img=DoorVerImg,quad=DoorVerQuads.yellow,spawn={ox=4,oy=0,w=8,h=32},args={color="yellow"}}
     _ITEMS.yellowdoorhor = {name="yellowdoorhor",class="door",img=DoorHorImg,quad=DoorHorQuads.yellow,spawn={ox=0,oy=4,w=32,h=8},args={color="yellow",dir="hor"}}
     _ITEMS.reddoorver = {name="reddoorver",class="door",img=DoorVerImg,quad=DoorVerQuads.red,spawn={ox=4,oy=0,w=8,h=32},args={color="red"}}

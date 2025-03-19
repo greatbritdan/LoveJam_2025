@@ -25,7 +25,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,66,0,0,0,0,0,0,66,0,0,0,0,66,0,0,0,0,82,
 0,0,66,0,0,0,0,0,0,66,0,0,0,0,66,0,0,0,0,0,
-0,0,66,0,0,0,0,0,0,66,0,0,0,0,66,0,0,0,0,0,
+52,0,66,0,0,0,0,0,0,66,0,0,0,0,66,0,0,0,52,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,18,0,0,0,18,0,
 0,0,0,0,18,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
@@ -40,9 +40,9 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,82,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,82,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,82,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,65,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,82,
 68,69,69,69,68,69,69,52,52,69,69,69,68,68,69,69,69,69,69,82,
@@ -61,56 +61,8 @@
     <property name="oneway" value="up"/>
    </properties>
   </object>
-  <object id="17" type="spike" x="316" y="112" width="4" height="96"/>
-  <object id="20" type="door" x="160" y="176" width="16" height="32">
-   <properties>
-    <property name="color" value="yellow"/>
-    <property name="dir" value="ver"/>
-   </properties>
-  </object>
-  <object id="23" type="door" x="176" y="176" width="16" height="32">
-   <properties>
-    <property name="color" value="red"/>
-    <property name="dir" value="ver"/>
-   </properties>
-  </object>
-  <object id="24" type="door" x="192" y="176" width="16" height="32">
-   <properties>
-    <property name="color" value="green"/>
-    <property name="dir" value="ver"/>
-   </properties>
-  </object>
-  <object id="25" type="door" x="208" y="176" width="16" height="32">
-   <properties>
-    <property name="color" value="blue"/>
-    <property name="dir" value="ver"/>
-   </properties>
-  </object>
-  <object id="28" type="door" x="176" y="48" width="32" height="16">
-   <properties>
-    <property name="color" value="yellow"/>
-    <property name="dir" value="hor"/>
-   </properties>
-  </object>
-  <object id="29" type="door" x="176" y="64" width="32" height="16">
-   <properties>
-    <property name="color" value="red"/>
-    <property name="dir" value="hor"/>
-   </properties>
-  </object>
-  <object id="30" type="door" x="176" y="80" width="32" height="16">
-   <properties>
-    <property name="color" value="green"/>
-    <property name="dir" value="hor"/>
-   </properties>
-  </object>
-  <object id="31" type="door" x="176" y="96" width="32" height="16">
-   <properties>
-    <property name="color" value="blue"/>
-    <property name="dir" value="hor"/>
-   </properties>
-  </object>
-  <object id="32" type="conveyorbelt" x="128" y="144" width="128" height="16">
+  <object id="17" type="spike" x="316" y="160" width="4" height="48"/>
+  <object id="32" type="conveyorbelt" x="144" y="144" width="96" height="16">
    <properties>
     <property name="speed" type="int" value="64"/>
    </properties>

@@ -78,8 +78,8 @@ function scene.LoadScene()
     MENU.UI.settings = UI.TEXT:new({W=166,H=12},{text="settings!"},"basic")
 
     MENU.UI.music_left = UI.TEXT:new({W=83,H=24},{text="music:",margin=0,alignX="right"},"basic")
-    MENU.UI.music = UI.SLIDER:new({W=166,H=24},{value=SETTINGS:Get("music"),limit={0,1,0.1},func=function(e)
-        SETTINGS:Set("music",e.value); SETTINGS:SAVE(); UpdateVolume(MUSIC,e.value)
+    MENU.UI.music = UI.SLIDER:new({W=166,H=24},{value=SETTINGS:Get("music"),limit={0,1,0.01},func=function(e)
+        SETTINGS:Set("music",e.value); SETTINGS:SAVE(); UpdateVolume(MUSIC,e.value); PlaceMusic:play()
     end},"basic")
     MENU.UI.music_right = UI.TEXT:new({W=83,H=24},{text="test",margin=0,alignX="left"},"basic")
     MENU.UI.music_right:Link(MENU.UI.music)
@@ -87,24 +87,15 @@ function scene.LoadScene()
     MENU.UI.music.GetValue = function (self)
         return math.floor(self.value*100).."%"
     end
-    -- Play sound when value changes before its saved
-    MENU.UI.music.heldfunc = function(e)
-        PlaceSound:setVolume(e.value)
-        PlaceSound:play()
-    end
 
     MENU.UI.sounds_left = UI.TEXT:new({W=83,H=24},{text="sounds:",margin=0,alignX="right"},"basic")
-    MENU.UI.sounds = UI.SLIDER:new({W=166,H=24},{value=SETTINGS:Get("sounds"),limit={0,1,0.1},func=function(e)
-        SETTINGS:Set("sounds",e.value); SETTINGS:SAVE(); UpdateVolume(SOUNDS,e.value)
+    MENU.UI.sounds = UI.SLIDER:new({W=166,H=24},{value=SETTINGS:Get("sounds"),limit={0,1,0.01},func=function(e)
+        SETTINGS:Set("sounds",e.value); SETTINGS:SAVE(); UpdateVolume(SOUNDS,e.value); PlaceSound:play()
     end},"basic")
     MENU.UI.sounds_right = UI.TEXT:new({W=83,H=24},{text="test",margin=0,alignX="left"},"basic")
     MENU.UI.sounds_right:Link(MENU.UI.sounds)
     MENU.UI.sounds.GetValue = function (self)
         return math.floor(self.value*100).."%"
-    end
-    MENU.UI.sounds.heldfunc = function(e)
-        PlaceSound:setVolume(e.value)
-        PlaceSound:play()
     end
 
     local idx = 1
@@ -174,7 +165,7 @@ function scene.Draw()
     love.graphics.setColor(1,1,1)
     love.graphics.draw(TitleTilesImg,-MENU.BACKGROUNDTILESSCROLL,0)
     love.graphics.draw(TitleTilesImg,-MENU.BACKGROUNDTILESSCROLL+480,0)
-
+    
     love.graphics.setColor(1,1,1)
     love.graphics.draw(FrameMenuImg,0,0)
 

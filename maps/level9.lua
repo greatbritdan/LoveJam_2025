@@ -15,7 +15,7 @@ return {
     ["DEBUG"] = false,
     ["crate"] = 1,
     ["dialog_name"] = "none",
-    ["level_name"] = "walking on air",
+    ["level_name"] = "u-turn",
     ["orb"] = 0,
     ["platform"] = 1,
     ["springboard"] = 2

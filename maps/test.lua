@@ -79,7 +79,7 @@ return {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 66, 0, 0, 0, 0, 0, 0, 66, 0, 0, 0, 0, 66, 0, 0, 0, 0, 82,
         0, 0, 66, 0, 0, 0, 0, 0, 0, 66, 0, 0, 0, 0, 66, 0, 0, 0, 0, 0,
-        0, 0, 66, 0, 0, 0, 0, 0, 0, 66, 0, 0, 0, 0, 66, 0, 0, 0, 0, 0,
+        52, 0, 66, 0, 0, 0, 0, 0, 0, 66, 0, 0, 0, 0, 66, 0, 0, 0, 52, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 18, 0, 0, 0, 18, 0,
         0, 0, 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
@@ -110,9 +110,9 @@ return {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 82,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 82,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 82,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 65, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 82,
         68, 69, 69, 69, 68, 69, 69, 52, 52, 69, 69, 69, 68, 68, 69, 69, 69, 69, 69, 82,
@@ -210,149 +210,21 @@ return {
           type = "spike",
           shape = "rectangle",
           x = 316,
-          y = 112,
+          y = 160,
           width = 4,
-          height = 96,
+          height = 48,
           rotation = 0,
           visible = true,
           properties = {}
-        },
-        {
-          id = 20,
-          name = "",
-          type = "door",
-          shape = "rectangle",
-          x = 160,
-          y = 176,
-          width = 16,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["color"] = "yellow",
-            ["dir"] = "ver"
-          }
-        },
-        {
-          id = 23,
-          name = "",
-          type = "door",
-          shape = "rectangle",
-          x = 176,
-          y = 176,
-          width = 16,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["color"] = "red",
-            ["dir"] = "ver"
-          }
-        },
-        {
-          id = 24,
-          name = "",
-          type = "door",
-          shape = "rectangle",
-          x = 192,
-          y = 176,
-          width = 16,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["color"] = "green",
-            ["dir"] = "ver"
-          }
-        },
-        {
-          id = 25,
-          name = "",
-          type = "door",
-          shape = "rectangle",
-          x = 208,
-          y = 176,
-          width = 16,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["color"] = "blue",
-            ["dir"] = "ver"
-          }
-        },
-        {
-          id = 28,
-          name = "",
-          type = "door",
-          shape = "rectangle",
-          x = 176,
-          y = 48,
-          width = 32,
-          height = 16,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["color"] = "yellow",
-            ["dir"] = "hor"
-          }
-        },
-        {
-          id = 29,
-          name = "",
-          type = "door",
-          shape = "rectangle",
-          x = 176,
-          y = 64,
-          width = 32,
-          height = 16,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["color"] = "red",
-            ["dir"] = "hor"
-          }
-        },
-        {
-          id = 30,
-          name = "",
-          type = "door",
-          shape = "rectangle",
-          x = 176,
-          y = 80,
-          width = 32,
-          height = 16,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["color"] = "green",
-            ["dir"] = "hor"
-          }
-        },
-        {
-          id = 31,
-          name = "",
-          type = "door",
-          shape = "rectangle",
-          x = 176,
-          y = 96,
-          width = 32,
-          height = 16,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["color"] = "blue",
-            ["dir"] = "hor"
-          }
         },
         {
           id = 32,
           name = "",
           type = "conveyorbelt",
           shape = "rectangle",
-          x = 128,
+          x = 144,
           y = 144,
-          width = 128,
+          width = 96,
           height = 16,
           rotation = 0,
           visible = true,
