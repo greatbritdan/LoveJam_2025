@@ -64,14 +64,18 @@ function love.load()
         love.audio.newSource("audio/talk9.mp3","static")
     }
 
+    MainThemeMusic = love.audio.newSource("audio/maintheme.mp3","stream")
+    MainThemeMusic:setLooping(true)
+    EditThemeMusic = love.audio.newSource("audio/edittheme.mp3","stream")
+    EditThemeMusic:setLooping(true)
     PlaceMusic = love.audio.newSource("audio/place.mp3","static")
 
     SOUNDS = {DiscardSound,DoorSound,JumpSound,DeathSound,LandSound,PickupSound,PlaceSound,KeySounds,StepSounds,TalkSounds}
-    MUSIC = {PlaceMusic}
+    MUSIC = {PlaceMusic,MainThemeMusic,EditThemeMusic}
 
     -- Load Items --
 
-    _ITEMS_ORDER = {"springboard","crate","platform","yellowkey","redkey","greenkey","bluekey","orb","yellowdoorver","yellowdoorhor","reddoorver","reddoorhor"}
+    _ITEMS_ORDER = {"springboard","crate","platform","yellowkey","redkey","orb","yellowdoorver","yellowdoorhor","reddoorver","reddoorhor"}
     _ITEMS = {}
     _ITEMS.springboard = {name="springboard",class="springboard",img=SpringboardImg,quad=SpringboardQuads[1],spawn={ox=1,oy=14,w=14,h=2}}
     _ITEMS.crate = {name="crate",class="crate",img=CrateImg,quad=false,spawn={ox=0,oy=0,w=16,h=16}}
@@ -112,6 +116,8 @@ function love.load()
     UpdateVolume(SOUNDS,SETTINGS:Get("sounds"))
     UpdateVolume(MUSIC,SETTINGS:Get("music"))
 
+    TRANSITION = {timer=0.5,time=1,to=false,x=0,dir=1}
+
     SCENE:LoadScene("menu")
 end
 
@@ -127,6 +133,24 @@ end
 
 function love.update(dt)
     dt = math.min(dt, 1/60) -- no falling through the world
+
+    if TRANSITION then
+        if TRANSITION.dir == 1 then
+            TRANSITION.x = TRANSITION.x + ((Env.width*2)/TRANSITION.time)*dt
+        else
+            TRANSITION.x = TRANSITION.x - ((Env.width*2)/TRANSITION.time)*dt
+        end
+        TRANSITION.timer = TRANSITION.timer + dt
+        if TRANSITION.timer >= TRANSITION.time/2 and TRANSITION.to then
+            SCENE:LoadScene(TRANSITION.to)
+            TRANSITION.to = false
+        end
+        if TRANSITION.timer >= TRANSITION.time then
+            TRANSITION.timer = 0
+            TRANSITION = false
+        end
+    end
+
     INPUT:Update()
     SCENE:Update(dt)
 end
@@ -134,11 +158,18 @@ end
 function love.draw()
     love.graphics.push()
     love.graphics.scale(Env.scale,Env.scale)
+
     SCENE:Draw()
+    if TRANSITION then
+        love.graphics.setColor(31/255,16/255,42/255)
+        love.graphics.rectangle("fill",0+TRANSITION.x,0,Env.width,Env.height)
+    end
+
     love.graphics.pop()
 end
 
 function love.mousepressed(x,y,b)
+    if TRANSITION then return end
     x, y = x/Env.scale, y/Env.scale
     if _BRITUI.INPUTTING and _BRITUI.INPUTTING.inputting then
         _BRITUI.INPUTTING:StopInputting()
@@ -150,34 +181,42 @@ function love.mousepressed(x,y,b)
     SCENE:Run("Mousepressed",{x,y,b})
 end
 function love.mousereleased(x,y,b)
+    if TRANSITION then return end
     x, y = x/Env.scale, y/Env.scale
     INPUT:Mousereleased(b)
     SCENE:Run("Mousereleased",{x,y,b})
 end
 
 function love.keypressed(key)
+    if TRANSITION then return end
     INPUT:Keypressed(key)
     SCENE:Run("Keypressed",{key})
 end
 function love.keyreleased(key)
+    if TRANSITION then return end
     INPUT:Keyreleased(key)
     SCENE:Run("Keyreleased",{key})
 end
 
 function love.gamepadpressed(s,b)
+    if TRANSITION then return end
     INPUT:Gamepadpressed(s,b)
 end
 function love.gamepadreleased(s,b)
+    if TRANSITION then return end
     INPUT:Gamepadreleased(s,b)
 end
 function love.gamepadaxis(s,a,v)
+    if TRANSITION then return end
     INPUT:Gamepadaxis(s,a,v)
 end
 
 function InputPressed(name,dir)
+    if TRANSITION then return end
     SCENE:Run("InputPressed",{name,dir})
 end
 function InputReleased(name,dir)
+    if TRANSITION then return end
     SCENE:Run("InputReleased",{name,dir})
 end
 

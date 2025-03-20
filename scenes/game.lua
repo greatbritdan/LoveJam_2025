@@ -96,12 +96,39 @@ function scene.LoadScene()
 
     GAME.UI.SIDEBAR:Recaclulate()
 
+    if LASTLEVEL then
+        -- dont reset music if we came from the last level
+        UpdateMusic("edit")
+    else
+        UpdateMusic("init")
+    end
+
     if SETTINGS:Get("skipdialog") then return end
     if inv_data.dialog_name and inv_data.dialog_name ~= "none" then
         DIALOG:start(inv_data.dialog_name)
     end
     if inv_data.dialog_spike_hit and inv_data.dialog_spike_hit ~= "none" then
         GAME.DIALOGSPIKEHIT = inv_data.dialog_spike_hit
+    end
+end
+
+function UpdateMusic(type)
+    if type == "stop" then
+        MainThemeMusic:stop()
+        EditThemeMusic:stop()
+    elseif type == "init" then
+        MainThemeMusic:stop()
+        EditThemeMusic:play()
+    elseif type == "play" then
+        local pos = EditThemeMusic:tell("seconds")
+        EditThemeMusic:stop()
+        MainThemeMusic:seek(pos,"seconds")
+        MainThemeMusic:play()
+    elseif type == "edit" then
+        local pos = MainThemeMusic:tell("seconds")
+        MainThemeMusic:stop()
+        EditThemeMusic:seek(pos,"seconds")
+        EditThemeMusic:play()
     end
 end
 
@@ -154,6 +181,7 @@ function scene.Update(dt)
         if LEVELNO >= SETTINGS:Get("level") then
             SETTINGS:Set("level",LEVELNO); SETTINGS:SAVE()
         end
+        LASTLEVEL = LEVELNO
         NextLevel()
     end
 end
@@ -183,7 +211,7 @@ function scene.Draw()
         DrawObject(item.name)
     end
     DrawObject("player")
-    
+
     for idx,v in pairs(GAME.EFFECTS) do
         v:draw()
     end
@@ -351,6 +379,8 @@ function StartSimulation()
 
     GAME.PLAYER:start()
     GAME.SIMULATING = true
+
+    UpdateMusic("play")
 end
 
 function StopSimulation(won)
@@ -383,11 +413,13 @@ function StopSimulation(won)
 
     GAME.PLAYER:stop()
     GAME.SIMULATING = false
+
+    UpdateMusic("edit")
 end
 
 function ExitGame()
-    GAME = {} -- Clear game data
-    SCENE:LoadScene("menu")
+    UpdateMusic("stop")
+    TRANSITION = {timer=0,time=1,to="menu",x=-Env.width,dir=1}
 end
 
 function NewEffect(t,x,y)

@@ -5,10 +5,11 @@ function EFFECT:initialize(t, x, y)
     self.x, self.y = x, y
     self.vx, self.vy = 0, 0
 
-    if t == "dust" or t == "dustl" or t == "dustr" or t == "fan" then
+    if t == "dust" or t == "dustl" or t == "dustr" or t == "fan" or t == "dustltitle" then
         self.group = "dust"
         self.frames = {frames={1,2,3,4}, frame=1, timer=0, time=0.1}
         if t == "dustl" then self.vx = -2 end
+        if t == "dustltitle" then self.vx = -64 end
         if t == "dustr" then self.vx = 2 end
         self.lifetime = 0.4
         if t == "fan" then

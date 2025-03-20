@@ -1,15 +1,21 @@
 local scene = {}
 
 LEVELNO = 0
+MENU = {}
 
-MENU = {DEBUGDRAW=false}
 function scene.LoadScene()
     MENU.STATE = "title"
     MENU.BACKGROUNDSCROLL = 0
     MENU.BACKGROUNDTILESSCROLL = 0
     MENU.TIMER = 0
+    MENU.DEBUGDRAW = false
+
+    MENU.DUSTTIMER = 0
+    MENU.EFFECTS = {}
 
     MENU.UI = {}
+
+    LASTLEVEL = false
 
 
     -- TITLE
@@ -120,23 +126,38 @@ function scene.LoadScene()
         {MENU.UI.back_settings}
     }}
     MENU.UI.SETTINGS:Recaclulate()
+
+    MainThemeMusic:play()
 end
 
 function scene.Update(dt)
     MENU.TIMER = MENU.TIMER + dt
-    -- Dust effect
-    --[[if MENU.TIMER >= 0.2 then
-        NewEffect("dust",48,Env.height-80)
-        MENU.TIMER = 0
-    end]]
 
-    MENU.BACKGROUNDSCROLL = MENU.BACKGROUNDSCROLL + dt * 25
+    -- Dust effect
+    MENU.DUSTTIMER = MENU.DUSTTIMER + dt
+    if MENU.DUSTTIMER >= 0.2 then
+        table.insert(MENU.EFFECTS,EFFECT:new("dustltitle",56,Env.height-64))
+        MENU.DUSTTIMER = 0
+    end
+
+    MENU.BACKGROUNDSCROLL = MENU.BACKGROUNDSCROLL + dt * 32
     if MENU.BACKGROUNDSCROLL > 320 then
         MENU.BACKGROUNDSCROLL = MENU.BACKGROUNDSCROLL - 320
     end
     MENU.BACKGROUNDTILESSCROLL = MENU.BACKGROUNDTILESSCROLL + dt * 64
     if MENU.BACKGROUNDTILESSCROLL > 480 then
         MENU.BACKGROUNDTILESSCROLL = MENU.BACKGROUNDTILESSCROLL - 480
+    end
+
+    local delete = {}
+    for idx,v in pairs(MENU.EFFECTS) do
+        if v:update(dt) then
+            table.insert(delete,idx)
+        end
+    end
+    table.sort(delete,function(a,b) return a > b end)
+    for _,idx in ipairs(delete) do
+        table.remove(MENU.EFFECTS,idx)
     end
 
     if MENU.STATE == "title" then
@@ -173,6 +194,10 @@ function scene.Draw()
         local quad = 4
         if MENU.TIMER%0.2 >= 0.1 then quad = 5 end
         love.graphics.draw(PlayerImg,PlayerQuads[quad],48,Env.height-80)
+        for i,v in pairs(MENU.EFFECTS) do
+            v:draw()
+        end
+        love.graphics.setColor(1,1,1)
 
         local sin = math.sin(MENU.TIMER*4)*2
 
@@ -241,21 +266,13 @@ end
 
 function ChooseLevel(levelno)
     LEVELNO = levelno
-
-    GAME = {} -- Clear game
-    MENU = {} -- Clear menu
-    SCENE:LoadScene("game")
+    TRANSITION = {timer=0,time=1,to="game",x=Env.width,dir=-1}
 end
 
 function NextLevel()
-    if not LEVELNO then
-        LEVELNO = 0
-    end
+    if not LEVELNO then LEVELNO = 0 end
     LEVELNO = LEVELNO + 1
-
-    GAME = {} -- Clear game
-    MENU = {} -- Clear menu
-    SCENE:LoadScene("game")
+    TRANSITION = {timer=0,time=1,to="game",x=Env.width,dir=-1}
 end
 
 return scene
