@@ -3,7 +3,7 @@ function INVENTORY:initialize()
     self.items = {}
     self.size = 4
     if GAME.DEBUG then
-        self.size = 16
+        self.size = 12
     end
 end
 

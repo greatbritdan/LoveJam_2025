@@ -48,6 +48,8 @@ function scene.LoadScene()
     GAME.DEBUG = false
     GAME.DEBUGDRAW = false
 
+    GAME.PLAYER = false
+
     GAME.WORLD = BUMP.newWorld(16)
     if LEVELNO == 0 then
         GAME.MAP = MAP:new("maps/test.lua",{LoadObject=loadobject})

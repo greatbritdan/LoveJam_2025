@@ -234,9 +234,13 @@ end
 
 function teleporter:update(dt)
     local player = GAME.PLAYER
-    local dx = player.X - self.X
-    local dy = player.Y - self.Y
-    self.dist = math.sqrt(dx * dx + dy * dy)
+    if player then
+        local dx = player.X - self.X
+        local dy = player.Y - self.Y
+        self.dist = math.sqrt(dx * dx + dy * dy)
+    else
+        self.dist = math.huge -- it's almost as big as your mother
+    end
 end
 
 function teleporter:draw()

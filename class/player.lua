@@ -38,6 +38,7 @@ function player:initialize(world,x,y,w,h,args)
 end
 
 function player:update(dt)
+    if GAME.QueueNextLevel then return end
     if not GAME.SIMULATING then
         self.idletimer = self.idletimer + dt
         if self.idletimer > 5 then
