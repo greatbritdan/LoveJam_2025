@@ -214,3 +214,42 @@ function orb:trigger(player,start)
 end
 
 OBJECTS.orb = orb
+
+------------------------
+
+local teleporter = Class("teleporter")
+function teleporter:initialize(_,x,y,w,h,args)
+    self.class = "teleporter"
+    self.X, self.Y, self.W, self.H = x,y,w,h
+
+    self.quadcenterx = 8
+    self.quadcentery = 8
+    self.offsetx = 6
+    self.offsety = 6
+
+    args = args or {}
+    self.id = args.id
+    self.other = args.other or false
+end
+
+function teleporter:update(dt)
+    local player = GAME.PLAYER
+    local dx = player.X - self.X
+    local dy = player.Y - self.Y
+    self.dist = math.sqrt(dx * dx + dy * dy)
+end
+
+function teleporter:draw()
+    local quad = 1
+    if self.dist < 16 then quad = 2 end
+
+    love.graphics.setColor(1,1,1)
+    love.graphics.draw(TeleporterImg,TeleporterQuads[quad],self.X+self.offsetx,self.Y+self.offsety,0,1,1,self.quadcenterx,self.quadcentery)
+
+    if GAME.DEBUGDRAW then
+        love.graphics.setColor(1,1,1,0.5)
+        love.graphics.rectangle("fill",self.X,self.Y,self.W,self.H)
+    end
+end
+
+OBJECTS.teleporter = teleporter

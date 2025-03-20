@@ -27,6 +27,9 @@ function player:initialize(world,x,y,w,h,args)
     self.winpos = 0
     self.wintimer = 0
 
+    self.teleportcooldown = false
+    self.balls = false
+
     args = args or {}
     if args.startleft then
         self.startleft = true
@@ -99,6 +102,14 @@ function player:update(dt)
         self.inair = true
     end
 
+    if self.teleportcooldown then
+        self.teleportcooldown = self.teleportcooldown - dt
+        if self.teleportcooldown <= 0 then
+            self.teleportcooldown = false
+            self.balls = false
+        end
+    end
+
     GAME.MAP:GetLayer("Objects"):LoopThrough(function(data)
         if data.obj.class == "exit" then
             if AABB(self.X+self.W/2-1,self.Y+self.H/2-1,2,2,data.obj.X,data.obj.Y,data.obj.W,data.obj.H) then
@@ -142,7 +153,34 @@ function player:update(dt)
                 self.gravity = 0
             end
         end
+        if data.obj.class == "teleporter" and (not self.teleportcooldown) then
+            if AABB(self.X+self.W/2-1,self.Y+self.H/2-1,2,2,data.obj.X+(data.obj.W/2)-1,data.obj.Y+(data.obj.H/2)-1,2,2) then
+                local other = GetOtherTeleporter(data.obj.id,data.obj.other)
+                if other then
+                    self.balls = {{X=data.obj.X-10,Y=data.obj.Y-10},{X=other.X-10,Y=other.Y-10}}
+                    self.X, self.Y = other.X, other.Y
+                    -- Hacky fix because bump doesn't update the rect when setting the position manually
+                    GAME.WORLD.rects[self] = {x=self.X,y=self.Y,w=self.W,h=self.H}
+                    self.teleportcooldown = 0.2
+                    TeleportSound:play()
+                end
+            end
+        end
     end)
+end
+
+function GetOtherTeleporter(id,isother)
+    local other = false
+    GAME.MAP:GetLayer("Objects"):LoopThrough(function(data)
+        if data.obj.class == "teleporter" and id == data.obj.id then
+            if isother == true and data.obj.other == false then
+                other = data.obj
+            elseif isother == false and data.obj.other == true then
+                other = data.obj
+            end
+        end
+    end)
+    return other
 end
 
 function player:collided(data)
@@ -201,6 +239,13 @@ function player:draw()
         love.graphics.rectangle("fill",self.X,self.Y,self.W,self.H)
         love.graphics.setColor(1,1,1)
         love.graphics.rectangle("fill",self.X+self.W/2-1,self.Y+self.H/2-1,2,2)
+    end
+
+    if self.balls then
+        love.graphics.setColor(1,1,1,self.teleportcooldown*5)
+        for i,ball in ipairs(self.balls) do
+            love.graphics.draw(BallImg,ball.X,ball.Y)
+        end
     end
 end
 

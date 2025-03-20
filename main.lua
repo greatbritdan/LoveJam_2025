@@ -29,6 +29,8 @@ function love.load()
     CrateImg = love.graphics.newImage("graphics/crate.png")
     PlatformImg, PlatformQuads = LoadSprites{path="graphics/platform.png",xquads=4,yquads=1}
     OrbImg, OrbQuads = LoadSprites{path="graphics/orb.png",xquads=5,yquads=1}
+    TeleporterImg, TeleporterQuads = LoadSprites{path="graphics/teleporter.png",xquads=2,yquads=1}
+    BallImg = love.graphics.newImage("graphics/ball.png") -- B A L L
 
     EffectImg, EffectQuads = LoadSprites{path="graphics/particle.png",xquads=4,yquads=2,yquadnames={"dust","star"}}
 
@@ -63,6 +65,7 @@ function love.load()
         love.audio.newSource("audio/talk8.mp3","static"),
         love.audio.newSource("audio/talk9.mp3","static")
     }
+    TeleportSound = love.audio.newSource("audio/teleport.mp3","static")
 
     MainThemeMusic = love.audio.newSource("audio/maintheme.mp3","stream")
     MainThemeMusic:setLooping(true)
@@ -70,12 +73,13 @@ function love.load()
     EditThemeMusic:setLooping(true)
     PlaceMusic = love.audio.newSource("audio/place.mp3","static")
 
-    SOUNDS = {DiscardSound,DoorSound,JumpSound,DeathSound,LandSound,PickupSound,PlaceSound,KeySounds,StepSounds,TalkSounds}
+    SOUNDS = {DiscardSound,DoorSound,JumpSound,DeathSound,LandSound,PickupSound,PlaceSound,KeySounds,StepSounds,TalkSounds,TeleportSound}
     MUSIC = {PlaceMusic,MainThemeMusic,EditThemeMusic}
 
     -- Load Items --
 
-    _ITEMS_ORDER = {"springboard","crate","platform","yellowkey","redkey","orb","yellowdoorver","yellowdoorhor","reddoorver","reddoorhor"}
+    _ITEMS_ORDER = {"springboard","crate","platform","yellowkey","redkey","orb","yellowdoorver","yellowdoorhor","reddoorver","reddoorhor","teleporterin","teleporterout"}
+    _ITEM_CLASSES = {"springboard","crate","platform","key","door","orb","teleporter"}
     _ITEMS = {}
     _ITEMS.springboard = {name="springboard",class="springboard",img=SpringboardImg,quad=SpringboardQuads[1],spawn={ox=1,oy=14,w=14,h=2}}
     _ITEMS.crate = {name="crate",class="crate",img=CrateImg,quad=false,spawn={ox=0,oy=0,w=16,h=16}}
@@ -87,6 +91,8 @@ function love.load()
     _ITEMS.yellowdoorhor = {name="yellowdoorhor",class="door",img=DoorHorImg,quad=DoorHorQuads.yellow,spawn={ox=0,oy=4,w=32,h=8},args={color="yellow",dir="hor"}}
     _ITEMS.reddoorver = {name="reddoorver",class="door",img=DoorVerImg,quad=DoorVerQuads.red,spawn={ox=4,oy=0,w=8,h=32},args={color="red"}}
     _ITEMS.reddoorhor = {name="reddoorhor",class="door",img=DoorHorImg,quad=DoorHorQuads.red,spawn={ox=0,oy=4,w=32,h=8},args={color="red",dir="hor"}}
+    _ITEMS.teleporterin = {name="teleporterin",class="teleporter",img=TeleporterImg,quad=TeleporterQuads[2],spawn={ox=2,oy=2,w=12,h=14},args={color="placed",other=false}}
+    _ITEMS.teleporterout = {name="teleporterout",class="teleporter",img=TeleporterImg,quad=TeleporterQuads[2],spawn={ox=2,oy=2,w=12,h=14},args={color="placed",other=true}}
 
     -- Load Libraries --
     Class = require("libs.middleclass")

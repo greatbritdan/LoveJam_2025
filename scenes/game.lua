@@ -33,6 +33,8 @@ local loadobject = function(data)
         end
     elseif data.class == "orb" then
         return OBJECTS.orb:new(GAME.WORLD,data.X,data.Y,data.W,data.H)
+    elseif data.class == "teleporter" then
+        return OBJECTS.teleporter:new(GAME.WORLD,data.X,data.Y,data.W,data.H,data.args)
     end
 end
 
@@ -207,8 +209,8 @@ function scene.Draw()
     DrawObject("key")
     DrawObject("door")
 
-    for _,item in pairs(_ITEMS) do
-        DrawObject(item.name)
+    for _,item in pairs(_ITEM_CLASSES) do
+        DrawObject(item)
     end
     DrawObject("player")
 
