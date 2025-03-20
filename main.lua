@@ -196,6 +196,9 @@ function love.mousereleased(x,y,b)
 end
 
 function love.keypressed(key)
+    if key == "escape" then
+        love.event.quit()
+    end
     if TRANSITION then return end
     INPUT:Keypressed(key)
     SCENE:Run("Keypressed",{key})

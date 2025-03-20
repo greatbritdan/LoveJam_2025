@@ -13,6 +13,8 @@ function scene.LoadScene()
     MENU.DUSTTIMER = 0
     MENU.EFFECTS = {}
 
+    MENU.RESETTIMER = false
+
     MENU.UI = {}
 
     LASTLEVEL = false
@@ -53,7 +55,7 @@ function scene.LoadScene()
         for x = 1, 5 do
             i = i + 1
 
-            local text = i
+            local text = tostring(i)
             if SETTINGS:GetInside("levelsbeaten",i) then
                 text = i.."*"
             end
@@ -114,7 +116,7 @@ function scene.LoadScene()
     end},"basic")
     
     MENU.UI.spacer_setting = UI.SPACER:new({W=166,H=12},{},"basic")
-    MENU.UI.back_settings = UI.BUTTON:new({W=166,H=24},{children={{text="back to menu"}},repeating=false,func=function() MENU.STATE = "title" end},"basic")
+    MENU.UI.back_settings = UI.BUTTON:new({W=166,H=24},{children={{text="back to menu"}},repeating=false,func=function() MENU.STATE = "title" end},"basic") 
 
     MENU.UI.SETTINGS:Setup{MC={
         {MENU.UI.settings},
@@ -131,6 +133,34 @@ function scene.LoadScene()
 end
 
 function scene.Update(dt)
+    if MENU.RESETTIMER then
+        MENU.RESETTIMER = MENU.RESETTIMER + dt
+        if MENU.RESETTIMER >= 3 then
+            love.filesystem.remove("settings.json")
+            SETTINGS:LOAD()
+
+            -- Reset settings
+            UpdateVolume(MUSIC,SETTINGS:Get("music"))
+            MENU.UI.music.value = (SETTINGS:Get("music"))
+            MENU.UI.music:Recaclulate()
+
+            UpdateVolume(SOUNDS,SETTINGS:Get("sounds"))
+            MENU.UI.sounds.value = (SETTINGS:Get("sounds"))
+            MENU.UI.sounds:Recaclulate()
+
+            MENU.UI.skipdialog.cycleidx = 1
+
+            -- Reset level select
+            for i = 1, 15 do
+                MENU.UI["level"..i].children[1].text = tostring(i)
+            end
+            MENU.UI.start.children[1].text = "play!"
+
+            MENU.RESETTIMER = false
+            DeathSound:play()
+        end
+    end
+
     MENU.TIMER = MENU.TIMER + dt
 
     -- Dust effect
@@ -212,7 +242,15 @@ function scene.Draw()
 
         local text = "version 1.0"
         x = Env.width - 4 - (SmallFont:getWidth(text)-1)
-        titletext(text,x,Env.height-20)
+        titletext(text,x,Env.height-30)
+
+        text = "hold q for 3 seconds to clear save"
+        x = Env.width - 4 - (SmallFont:getWidth(text)-1)
+        if MENU.RESETTIMER then
+            titletext(text,x,Env.height-20,{1,0.4,0.4})
+        else
+            titletext(text,x,Env.height-20)
+        end
 
         MENU.UI.MENU:Draw()
         if MENU.DEBUGDRAW then
@@ -261,7 +299,16 @@ function scene.Mousereleased(mx,my,b)
 end
 
 function scene.Keypressed(key)
+    if key == "q" then
+        MENU.RESETTIMER = 0
+    end
     if key == "tab" then MENU.DEBUGDRAW = not MENU.DEBUGDRAW end
+end
+
+function scene.Keyreleased(key)
+    if key == "q" then
+        MENU.RESETTIMER = false
+    end
 end
 
 function ChooseLevel(levelno)
