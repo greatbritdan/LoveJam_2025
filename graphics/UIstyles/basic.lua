@@ -28,9 +28,10 @@ function style:DefaultText(text,x,y,r,sx,sy,element)
 end
 
 function style:DefaultBoxImage(image,x,y,r,sx,sy,element)
-    if element.imagebuttoncolor then
-        love.graphics.setColor(element.imagebuttoncolor)
-    end
+    local oldcolor = {love.graphics.getColor()}
+    love.graphics.setColor(0,0,0,0.29411)
+    love.graphics.draw(image,x,y+2,r,sx,sy)
+    love.graphics.setColor(oldcolor)
     love.graphics.draw(image,x,y,r,sx,sy)
 end
 

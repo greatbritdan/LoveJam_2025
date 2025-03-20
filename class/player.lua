@@ -38,7 +38,6 @@ function player:initialize(world,x,y,w,h,args)
 end
 
 function player:update(dt)
-    if GAME.QueueNextLevel then return end
     if not GAME.SIMULATING then
         self.idletimer = self.idletimer + dt
         if self.idletimer > 5 then
@@ -230,7 +229,7 @@ function player:draw()
         if self.dying then quad = 7 end
         if self.dead then quad = 8 end
         if self.win == "wink" then quad = 9 end
-        if self.win == "hide" then return end
+        if self.win == "hide"or self.win == "transition" then return end
     end
 
     love.graphics.setColor(1,1,1)

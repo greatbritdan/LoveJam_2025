@@ -49,6 +49,7 @@ function scene.LoadScene()
     GAME.DEBUGDRAW = false
 
     GAME.PLAYER = false
+    GAME.SIMULATING = false
 
     GAME.WORLD = BUMP.newWorld(16)
     if LEVELNO == 0 then
@@ -187,6 +188,7 @@ function scene.Update(dt)
         end
         LASTLEVEL = LEVELNO
         NextLevel()
+        GAME.QueueNextLevel = false
     end
 end
 

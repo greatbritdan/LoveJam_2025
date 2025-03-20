@@ -24,6 +24,7 @@ function scene.LoadScene()
     MENU.UI.MENU = UI.MATRIX:new({X=124,Y=90,W=232,H=122},{},"basic")
 
     MENU.CONTINUELEVEL = SETTINGS:Get("level")+1
+    if MENU.CONTINUELEVEL > 15 then MENU.CONTINUELEVEL = 15 end
 
     if MENU.CONTINUELEVEL >= 2 then
         MENU.UI.start = UI.BUTTON:new({W=166,H=24},{children={{text="continue! ("..MENU.CONTINUELEVEL..")"}},repeating=false,func=function() ChooseLevel(MENU.CONTINUELEVEL) end},"basic")
@@ -86,7 +87,7 @@ function scene.LoadScene()
     MENU.UI.settings = UI.TEXT:new({W=166,H=12},{text="settings!"},"basic")
 
     MENU.UI.music_left = UI.TEXT:new({W=83,H=24},{text="music:",margin=0,alignX="right"},"basic")
-    MENU.UI.music = UI.SLIDER:new({W=166,H=24},{value=SETTINGS:Get("music"),limit={0,1,0.01},func=function(e)
+    MENU.UI.music = UI.SLIDER:new({W=166,H=24},{value=SETTINGS:Get("music"),limit={0,1,0.01},headfill=0.135,func=function(e)
         SETTINGS:Set("music",e.value); SETTINGS:SAVE(); UpdateVolume(MUSIC,e.value); PlaceMusic:play()
     end},"basic")
     MENU.UI.music_right = UI.TEXT:new({W=83,H=24},{text="test",margin=0,alignX="left"},"basic")
@@ -97,7 +98,7 @@ function scene.LoadScene()
     end
 
     MENU.UI.sounds_left = UI.TEXT:new({W=83,H=24},{text="sounds:",margin=0,alignX="right"},"basic")
-    MENU.UI.sounds = UI.SLIDER:new({W=166,H=24},{value=SETTINGS:Get("sounds"),limit={0,1,0.01},func=function(e)
+    MENU.UI.sounds = UI.SLIDER:new({W=166,H=24},{value=SETTINGS:Get("sounds"),limit={0,1,0.01},headfill=0.135,func=function(e)
         SETTINGS:Set("sounds",e.value); SETTINGS:SAVE(); UpdateVolume(SOUNDS,e.value); PlaceSound:play()
     end},"basic")
     MENU.UI.sounds_right = UI.TEXT:new({W=83,H=24},{text="test",margin=0,alignX="left"},"basic")
@@ -154,6 +155,7 @@ function scene.Update(dt)
             for i = 1, 15 do
                 MENU.UI["level"..i].children[1].text = tostring(i)
             end
+            MENU.CONTINUELEVEL = 1
             MENU.UI.start.children[1].text = "play!"
 
             MENU.RESETTIMER = false

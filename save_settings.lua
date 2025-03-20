@@ -1,7 +1,7 @@
 return {
     music = {default=0.4, type="number", min=0, max=1},
     sounds = {default=1, type="number", min=0, max=1},
-    level = {default=0, type="number", min=1, max=15},
+    level = {default=0, type="number", min=0, max=15},
     levelsbeaten = {type="table", table={
         [1] = {default=false, type="boolean"},
         [2] = {default=false, type="boolean"},
