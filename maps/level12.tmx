@@ -11,8 +11,8 @@
   <property name="orb" type="int" value="0"/>
   <property name="platform" type="int" value="0"/>
   <property name="springboard" type="int" value="0"/>
-  <property name="teleporterin" type="int" value="1"/>
-  <property name="teleporterout" type="int" value="1"/>
+  <property name="teleporterbluein" type="int" value="1"/>
+  <property name="teleporterblueout" type="int" value="1"/>
  </properties>
  <tileset firstgid="1" name="tiles" tilewidth="16" tileheight="16" tilecount="256" columns="16">
   <image source="../graphics/tiles.png" width="256" height="256"/>

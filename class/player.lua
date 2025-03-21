@@ -105,7 +105,7 @@ function player:update(dt)
     if self.teleportcooldown then
         self.teleportcooldown = self.teleportcooldown - dt
         if self.teleportcooldown <= 0 then
-            self.teleportcooldown = false
+            self.teleportcooldown = false; self.teleportid = false
             self.balls = false
         end
     end
@@ -162,6 +162,7 @@ function player:update(dt)
                     -- Hacky fix because bump doesn't update the rect when setting the position manually
                     GAME.WORLD.rects[self] = {x=self.X,y=self.Y,w=self.W,h=self.H}
                     self.teleportcooldown = 0.2
+                    self.teleportid = data.obj.id
                     TeleportSound:play()
                 end
             end
@@ -242,9 +243,13 @@ function player:draw()
     end
 
     if self.balls then
+        local quad = 3
+        if self.teleportid == "blue" then quad = 1 end
+        if self.teleportid == "orange" then quad = 2 end
+
         love.graphics.setColor(1,1,1,self.teleportcooldown*5)
         for i,ball in ipairs(self.balls) do
-            love.graphics.draw(BallImg,ball.X,ball.Y)
+            love.graphics.draw(BallImg,BallQuads[quad],ball.X,ball.Y)
         end
     end
 end

@@ -10,7 +10,7 @@ return {
   tilewidth = 16,
   tileheight = 16,
   nextlayerid = 6,
-  nextobjectid = 37,
+  nextobjectid = 40,
   properties = {
     ["DEBUG"] = true,
     ["dialog_name"] = "none",
@@ -230,6 +230,38 @@ return {
           visible = true,
           properties = {
             ["speed"] = 64
+          }
+        },
+        {
+          id = 38,
+          name = "",
+          type = "teleporter",
+          shape = "rectangle",
+          x = 66,
+          y = 146,
+          width = 12,
+          height = 14,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["id"] = "boner",
+            ["other"] = true
+          }
+        },
+        {
+          id = 39,
+          name = "",
+          type = "teleporter",
+          shape = "rectangle",
+          x = 66,
+          y = 194,
+          width = 12,
+          height = 14,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["id"] = "boner",
+            ["other"] = false
           }
         }
       }

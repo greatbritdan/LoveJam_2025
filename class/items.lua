@@ -244,8 +244,10 @@ function teleporter:update(dt)
 end
 
 function teleporter:draw()
-    local quad = 1
-    if self.dist < 16 then quad = 2 end
+    local quad = 5
+    if self.id == "blue" then quad = 1 end
+    if self.id == "orange" then quad = 3 end
+    if self.dist < 16 then quad = quad+1 end
 
     love.graphics.setColor(1,1,1)
     love.graphics.draw(TeleporterImg,TeleporterQuads[quad],self.X+self.offsetx,self.Y+self.offsety,0,1,1,self.quadcenterx,self.quadcentery)

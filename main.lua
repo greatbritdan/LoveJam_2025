@@ -29,8 +29,8 @@ function love.load()
     CrateImg = love.graphics.newImage("graphics/crate.png")
     PlatformImg, PlatformQuads = LoadSprites{path="graphics/platform.png",xquads=4,yquads=1}
     OrbImg, OrbQuads = LoadSprites{path="graphics/orb.png",xquads=5,yquads=1}
-    TeleporterImg, TeleporterQuads = LoadSprites{path="graphics/teleporter.png",xquads=2,yquads=1}
-    BallImg = love.graphics.newImage("graphics/ball.png") -- B A L L
+    TeleporterImg, TeleporterQuads = LoadSprites{path="graphics/teleporter.png",xquads=6,yquads=1}
+    BallImg, BallQuads = LoadSprites{path="graphics/ball.png",xquads=3,yquads=1}
 
     EffectImg, EffectQuads = LoadSprites{path="graphics/particle.png",xquads=4,yquads=2,yquadnames={"dust","star"}}
 
@@ -78,9 +78,9 @@ function love.load()
 
     -- Load Items --
 
-    ItemsImg, ItemsQuads = LoadSprites{path="graphics/items.png",xquads=12,yquads=1}
+    ItemsImg, ItemsQuads = LoadSprites{path="graphics/items.png",xquads=14,yquads=1}
 
-    _ITEMS_ORDER = {"springboard","crate","platform","yellowkey","redkey","orb","yellowdoorver","yellowdoorhor","reddoorver","reddoorhor","teleporterin","teleporterout"}
+    _ITEMS_ORDER = {"springboard","crate","platform","yellowkey","redkey","orb","yellowdoorver","yellowdoorhor","reddoorver","reddoorhor","teleporterbluein","teleporterblueout","teleporterorangein","teleporterorangeout"}
     _ITEM_CLASSES = {"springboard","crate","platform","key","door","orb","teleporter"}
     _ITEMS = {}
     _ITEMS.springboard =   {name="springboard",  class="springboard",img=ItemsImg,quad=ItemsQuads[1], spawn={ox=1,oy=14,w=14,h=2}}
@@ -93,8 +93,10 @@ function love.load()
     _ITEMS.yellowdoorhor = {name="yellowdoorhor",class="door",       img=ItemsImg,quad=ItemsQuads[9], spawn={ox=0,oy=4,w=32,h=8}, args={color="yellow",dir="hor"}}
     _ITEMS.reddoorver =    {name="reddoorver",   class="door",       img=ItemsImg,quad=ItemsQuads[8], spawn={ox=4,oy=0,w=8,h=32}, args={color="red"}}
     _ITEMS.reddoorhor =    {name="reddoorhor",   class="door",       img=ItemsImg,quad=ItemsQuads[10],spawn={ox=0,oy=4,w=32,h=8}, args={color="red",dir="hor"}}
-    _ITEMS.teleporterin =  {name="teleporterin", class="teleporter", img=ItemsImg,quad=ItemsQuads[11],spawn={ox=2,oy=2,w=12,h=14},args={color="placed",other=false}}
-    _ITEMS.teleporterout = {name="teleporterout",class="teleporter", img=ItemsImg,quad=ItemsQuads[12],spawn={ox=2,oy=2,w=12,h=14},args={color="placed",other=true}}
+    _ITEMS.teleporterbluein =  {name="teleporterbluein", class="teleporter", img=ItemsImg,quad=ItemsQuads[11],spawn={ox=2,oy=2,w=12,h=14},args={id="blue",other=false}}
+    _ITEMS.teleporterblueout = {name="teleporterblueout",class="teleporter", img=ItemsImg,quad=ItemsQuads[12],spawn={ox=2,oy=2,w=12,h=14},args={id="blue",other=true}}
+    _ITEMS.teleporterorangein =  {name="teleporterorangein", class="teleporter", img=ItemsImg,quad=ItemsQuads[13],spawn={ox=2,oy=2,w=12,h=14},args={id="orange",other=false}}
+    _ITEMS.teleporterorangeout = {name="teleporterorangeout",class="teleporter", img=ItemsImg,quad=ItemsQuads[14],spawn={ox=2,oy=2,w=12,h=14},args={id="orange",other=true}}
 
     -- Load Libraries --
     Class = require("libs.middleclass")
