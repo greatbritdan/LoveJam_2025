@@ -46,7 +46,6 @@ function scene.LoadScene()
     GAME.MAPPOS = {X=8,Y=8}
 
     GAME.DEBUG = false
-    GAME.DEBUGDRAW = false
 
     GAME.PLAYER = false
     GAME.SIMULATING = false
@@ -92,7 +91,7 @@ function scene.LoadScene()
     GAME.UI.MENU = UI.BUTTON:new({X=8,Y=8,W=118,H=19},{children={{text="menu"}},repeating=false,func=function() ExitGame() end},"basic")
 
     GAME.UI.SIDEBAR = UI.MATRIX:new({X=345,Y=99,W=126,H=166},{},"basic")
-    if GAME.DEBUG or 1 == 1 then
+    if GAME.DEBUG then
         GAME.UI.RELOAD = UI.BUTTON:new({X=8,Y=30,W=118,H=19},{children={{text="reload"}},repeating=false,func=function() ChooseLevel(LEVELNO) end},"basic")
         GAME.UI.SIDEBAR:Setup{BC={{GAME.UI.PLAY},{GAME.UI.MENU},{GAME.UI.RELOAD}}}
     else
@@ -110,8 +109,9 @@ function scene.LoadScene()
 
     if SETTINGS:Get("skipdialog") then return end
     if inv_data.dialog_name and inv_data.dialog_name ~= "none" then
-        DIALOG:start(inv_data.dialog_name)
+        DIALOG:start(inv_data.dialog_name,0.5)
     end
+    GAME.DIALOGSPIKEHIT = false
     if inv_data.dialog_spike_hit and inv_data.dialog_spike_hit ~= "none" then
         GAME.DIALOGSPIKEHIT = inv_data.dialog_spike_hit
     end
@@ -224,10 +224,16 @@ function scene.Draw()
 
     if not GAME.SIMULATING then
         -- draw allowed spots
-        love.graphics.setColor(1,1,1,0.2)
+        local quad = 2
+        love.graphics.setColor(1,1,1,0.3)
+        if MovingItem() then
+            quad = 3
+            love.graphics.setColor(1,1,1,0.6)
+        end
         for k,_ in pairs(GAME.ITEMS_ALLOW) do
             local x,y = k:match("(%d+)-(%d+)")
-            love.graphics.rectangle("fill",((x-1)*16)+1,((y-1)*16)+1,14,14)
+            --love.graphics.rectangle("fill",((x-1)*16)+1,((y-1)*16)+1,14,14)
+            love.graphics.draw(ItemselecterImg,ItemselecterQuads[quad],((x-1)*16)-1,((y-1)*16)-1)
         end
     end
 
@@ -243,12 +249,12 @@ function scene.Draw()
     love.graphics.pop()
 
     love.graphics.setColor(1,1,1)
-    if not GAME.DEBUGDRAW then love.graphics.draw(FrameImg,0,0) end
+    love.graphics.draw(FrameImg,0,0)
     love.graphics.print("level "..GAME.LEVEL_NO.." / 15:",348,10)
     love.graphics.print(GAME.LEVEL_NAME,348,25)
 
     GAME.UI.SIDEBAR:Draw()
-    if GAME.DEBUGDRAW then
+    if DEBUGDRAW then
         GAME.UI.SIDEBAR:DebugDraw()
     end
 
@@ -286,6 +292,15 @@ function HasItem(tilex,tiley,otheritem)
     end
     return false
 end
+function MovingItem()
+    for i = #GAME.ITEMS, 1, -1 do
+        local v = GAME.ITEMS[i]
+        if v.moving then
+            return true
+        end
+    end
+    return false
+end
 
 function scene.Mousepressed(mx,my,b)
     if GAME.INDIALOG then
@@ -318,6 +333,7 @@ function scene.Mousepressed(mx,my,b)
         end
         if not click then
             GAME.UI.SIDEBAR:Mousepressed(mx,my,b) -- Only register clicks if no item is clicked
+            GAME.PLAYER:click(mx,my)
         end
     end
 end
@@ -358,7 +374,7 @@ function scene.Keypressed(key)
         return
     end
     if key == "space" then ToggleSimulation() end
-    if key == "tab" then GAME.DEBUGDRAW = not GAME.DEBUGDRAW end
+    if key == "tab" then DEBUGDRAW = not DEBUGDRAW end
 end
 
 function ToggleSimulation()

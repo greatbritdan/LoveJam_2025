@@ -11,7 +11,7 @@ function ground:initialize(world,x,y,w,h,args,spike)
 end
 
 function ground:draw()
-    if GAME.DEBUGDRAW then
+    if DEBUGDRAW then
         love.graphics.setColor(1,0.5,0.5,0.5)
         love.graphics.rectangle("fill",self.X,self.Y,self.W,self.H)
     end
@@ -21,6 +21,7 @@ OBJECTS.ground = ground
 
 ------------------------
 
+-- UNUSED --
 local conveyorbelt = Class("conveyorbelt",OBJECTS.box)
 function conveyorbelt:initialize(world,x,y,w,h,args)
     OBJECTS.box.initialize(self,world,x,y,w,h,{static=true})
@@ -43,7 +44,7 @@ end
 function conveyorbelt:draw()
     love.graphics.setColor(1,1,1)
     love.graphics.rectangle("fill",self.X,self.Y,self.W,self.H)
-    if GAME.DEBUGDRAW then
+    if DEBUGDRAW then
         love.graphics.setColor(1,0.5,0.5,0.5)
         love.graphics.rectangle("fill",self.X,self.Y,self.W,self.H)
     end
@@ -90,7 +91,7 @@ function exit:draw()
     end
     love.graphics.setColor(1,1,1,1)
     love.graphics.draw(ExitImg,ExitQuads[quad],self.X-4,self.Y-8)
-    if GAME.DEBUGDRAW then
+    if DEBUGDRAW then
         love.graphics.setColor(1,1,1,0.5)
         love.graphics.rectangle("fill",self.X,self.Y,self.W,self.H)
     end
@@ -124,7 +125,7 @@ function key:draw()
     if not self.active then return end
     love.graphics.setColor(1,1,1,1)
     love.graphics.draw(KeyImg,KeyQuads[self.color],self.X-4,self.Y-2)
-    if GAME.DEBUGDRAW then
+    if DEBUGDRAW then
         love.graphics.setColor(1,1,1,0.5)
         love.graphics.rectangle("fill",self.X,self.Y,self.W,self.H)
     end
@@ -132,8 +133,13 @@ end
 
 function key:trigger(player)
     local x,y = self.X+(self.W/2),self.Y+(self.H/2)
-    NewEffect("starul",x-3,y-3); NewEffect("starur",x+3,y-3)
-    NewEffect("stardl",x-3,y+3); NewEffect("stardr",x+3,y+3)
+    if self.color == "red" then
+        NewEffect("redstarul",x-3,y-3); NewEffect("redstarur",x+3,y-3)
+        NewEffect("redstardl",x-3,y+3); NewEffect("redstardr",x+3,y+3)
+    elseif self.color == "yellow" then
+        NewEffect("starul",x-3,y-3); NewEffect("starur",x+3,y-3)
+        NewEffect("stardl",x-3,y+3); NewEffect("stardr",x+3,y+3)
+    end
     self.opentimer = 0
     local sound = KeySounds[math.random(1,#KeySounds)]
     sound:play()
@@ -175,7 +181,7 @@ function door:draw()
     if self.opentimer then
         love.graphics.setScissor()
     end
-    if GAME.DEBUGDRAW then
+    if DEBUGDRAW then
         love.graphics.setColor(1,1,1,0.5)
         love.graphics.rectangle("fill",self.X,self.Y,self.W,self.H)
     end

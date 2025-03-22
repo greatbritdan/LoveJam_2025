@@ -101,11 +101,12 @@ function _layer:LoopThrough(func)
         for y=1,self.H do
             for x=1,self.W do
                 local gidx = self.grid[y][x]
-                if gidx == 0 then goto continue end
-                local image, quad, lidx = self.map:GetTileData(gidx)
-                if not image then goto continue end
-                func{X=x,Y=y,idx=lidx,gidx=gidx,image=image,quad=quad}
-                ::continue::
+                if gidx ~= 0 then
+                    local image, quad, lidx = self.map:GetTileData(gidx)
+                    if image then
+                        func{X=x,Y=y,idx=lidx,gidx=gidx,image=image,quad=quad}
+                    end
+                end
             end
         end
     elseif self.type == "objectgroup" then

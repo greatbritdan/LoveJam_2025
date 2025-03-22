@@ -5,7 +5,7 @@
  </editorsettings>
  <properties>
   <property name="crate" type="int" value="0"/>
-  <property name="dialog_name" value="none"/>
+  <property name="dialog_name" value="level5"/>
   <property name="level_name" value="the key"/>
   <property name="platform" type="int" value="0"/>
   <property name="springboard" type="int" value="0"/>

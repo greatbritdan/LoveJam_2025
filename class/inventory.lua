@@ -2,16 +2,13 @@ INVENTORY = Class("inventory")
 function INVENTORY:initialize()
     self.items = {}
     self.size = 4
-    if GAME.DEBUG then
-        self.size = 16
-    end
 end
 
 function INVENTORY:update(dt)
 end
 
 function INVENTORY:draw()
-    local x,y = 342, 52
+    local x,y = 342, 59
     local ix = 0
     for i = 1, self.size do
         love.graphics.setColor(1,1,1)
@@ -41,6 +38,16 @@ function INVENTORY:draw()
             x = x + 34
         end
     end
+
+    local i = self:hover(love.mouse.getX(),love.mouse.getY())
+    if i and self.items[i] then
+        local item = _ITEMS[self.items[i].name]
+        love.graphics.setColor(1,1,1)
+        if self.items[i].amount == 0 then
+            love.graphics.setColor(1,1,1,0.4)
+        end
+        love.graphics.print(item.displayname,342,48)
+    end
 end
 
 function INVENTORY:drawimage(img,quad,x,y)
@@ -57,6 +64,9 @@ function INVENTORY:addItem(name,amount)
         self.items[idx].amount = self.items[idx].amount + amount
     else
         self.items[#self.items+1] = {name=name,amount=amount}
+    end
+    if #self.items > self.size then
+        self.size = self.size + 4 -- for level 15 and debug
     end
 end
 function INVENTORY:removeItem(name,amount)
@@ -113,6 +123,6 @@ function ITEM:draw()
         else
             love.graphics.draw(item.img,x,y)
         end
-        love.graphics.draw(ItemselecterImg,x-1,y-1)
+        love.graphics.draw(ItemselecterImg,ItemselecterQuads[1],x-1,y-1)
     end
 end

@@ -29,7 +29,18 @@ DIALOGS = {
     },
     level4_dumb = {
         {text="you hit the spike wall, &&you're dumb."},
-    }
+    },
+    level5 = {
+        {text="keys can be used to unlock doors, &it will automatically unlock all the doors of the same color when picked up.",highlight="slot1"},
+    },
+    level7 = {
+        {text="this is an anti-gravity orb, &when you touch it you will no longer be affected by gravity until you touch something else.",highlight="slot1"},
+        {text="use it to float over this pit."},
+    },
+    level12 = {
+        {text="these are teleporters, &they take you from one side to the other.",highlight="slot1"},
+        {text="you can use it to get to areas otherwise impossible to reach, &or go back to areas you previously were."},
+    },
 }
 
 DIALOG = {}
@@ -38,9 +49,12 @@ function DIALOG:initialize(dialog)
     self.finished = true
     self.timer = 0
     self.hightimer = 0
+    self.sintimer = 0
 end
 
 function DIALOG:update(dt)
+    self.sintimer = self.sintimer + dt
+
     if not GAME.INDIALOG then return end
     self.hightimer = self.hightimer + dt
 
@@ -87,6 +101,10 @@ end
 function DIALOG:draw()
     if not GAME.INDIALOG then return end
 
+    local siny = math.sin(self.sintimer*3)
+    love.graphics.push()
+    love.graphics.translate(0,siny)
+
     love.graphics.setColor(1,1,1)
     love.graphics.draw(DialogImg,12,12)
     love.graphics.printf(self.text,17,17,302,"left")
@@ -104,11 +122,16 @@ function DIALOG:draw()
         love.graphics.setColor(1,1,1,opacity)
         love.graphics.rectangle("line",x,y,w,h)
     end
+
+    love.graphics.pop()
 end
 
-function DIALOG:start(dialog)
+function DIALOG:start(dialog,delay)
     self.dialogs = DIALOGS[dialog]
     GAME.INDIALOG = true
+    if delay then
+        self.waittimer = delay
+    end
     self:play(1)
 end
 
@@ -149,19 +172,19 @@ function DIALOG:getHighlight()
         return x+GAME.MAPPOS.X-8, y+GAME.MAPPOS.Y-12, 32, 32
     end
     if self.highlight == "inventory" then
-        return 342-4, 52-4, 132+8, 30+8
+        return 342-4, 59-4, 132+8, 30+8
     end
     if self.highlight == "available" then
         return 120-4, 152-4, 48+8, 32+8
     end
     if self.highlight == "slot1" then
-        return 342-4, 52-4, 30+8, 30+8
+        return 342-4, 59-4, 30+8, 30+8
     end
     if self.highlight == "slot2" then
-        return 376-4, 52-4, 30+8, 30+8
+        return 376-4, 59-4, 30+8, 30+8
     end
     if self.highlight == "slot3" then
-        return 410-4, 52-4, 30+8, 30+8
+        return 410-4, 59-4, 30+8, 30+8
     end
     if self.highlight == "play" then
         local ui = GAME.UI.PLAY

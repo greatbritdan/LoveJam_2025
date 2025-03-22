@@ -14,7 +14,7 @@ return {
   properties = {
     ["DEBUG"] = false,
     ["crate"] = 0,
-    ["dialog_name"] = "none",
+    ["dialog_name"] = "level12",
     ["level_name"] = "drag and drop",
     ["orb"] = 0,
     ["platform"] = 0,

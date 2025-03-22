@@ -91,7 +91,7 @@ function style:InitializeImageButton(element,data)
 end
 function style:GenerateImageButtonSB(w,h,data,state)
     local cs = data.cornersize
-    local inw, inh = w-(cs*2), h-(cs*2)
+    local inw, inh = math.ceil(w-(cs*2))+1, math.ceil(h-(cs*2)) -- had to modify as looks bad in lovejs
     local spritebatch = love.graphics.newSpriteBatch(data.image, 9)
     spritebatch:add(data.quads[state].top.left, 0, 0, 0, 1, 1)
     spritebatch:add(data.quads[state].top.mid, cs, 0, 0, inw, 1)

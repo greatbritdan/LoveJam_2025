@@ -77,7 +77,8 @@ function britinput:GetStick()
 end
 
 function britinput:Update()
-    for name,mappings in pairs(self.inputmap) do
+    -- Continue is broken in lovejs and since im not using it, why keep it?
+    --[[for name,mappings in pairs(self.inputmap) do
         self.held[name] = nil
         for _,mapping in ipairs(mappings) do
             local inputtyp, inputid, inputdir = self:SplitMapping(mapping)
@@ -102,7 +103,7 @@ function britinput:Update()
             end
         end
         ::continue::
-    end
+    end]]
 end
 function britinput:Holding(name)
     return self.held[name]

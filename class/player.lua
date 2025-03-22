@@ -66,6 +66,9 @@ function player:update(dt)
         if self.wintimer > 1 and self.win == "wink" then
             self.win = "hide"
             self.windoor:trigger(self,"close")
+            for _ = 1, 24 do
+                NewEffect("confetti",self.X+math.random(-2,14),self.Y+math.random(-2,14))
+            end
         end
         if self.wintimer > 2 then
             self.wintimer = 0
@@ -192,6 +195,9 @@ function player:collided(data)
     end
     if data.other.class == "spike" and (not self.dying) and (not self.dead) then
         self.dying = true
+        for _ = 1, 24 do
+            NewEffect("blood",self.X+math.random(-2,14),self.Y+math.random(-2,14))
+        end
         DeathSound:play()
         if data.col.normal.x ~= 0 then self.VY = -64 end
         if GAME.DIALOGSPIKEHIT then
@@ -235,7 +241,7 @@ function player:draw()
 
     love.graphics.setColor(1,1,1)
     love.graphics.draw(PlayerImg,PlayerQuads[quad],self.X+self.offsetx,self.Y+self.offsety,0,scale,1,self.quadcenterx,self.quadcentery)
-    if GAME.DEBUGDRAW then
+    if DEBUGDRAW then
         love.graphics.setColor(1,1,1,0.5)
         love.graphics.rectangle("fill",self.X,self.Y,self.W,self.H)
         love.graphics.setColor(1,1,1)
@@ -255,6 +261,7 @@ function player:draw()
 end
 
 function player:start()
+    self.VX, self.VY = 0, 0
     self.dir = 1
     if self.startleft then
         self.dir = -1
@@ -283,6 +290,13 @@ function player:stop()
     self.win = false
     self.winpos = 0
     self.wintimer = 0
+end
+
+function player:click(mx,my)
+    if AABB(self.X+GAME.MAPPOS.X,self.Y+GAME.MAPPOS.Y,self.W,self.H,mx,my,1,1) and (not GAME.SIMULATING) then
+        HuhSound:play()
+        --self.VY = self.jumpspeed; self.inair = true
+    end
 end
 
 OBJECTS.player = player

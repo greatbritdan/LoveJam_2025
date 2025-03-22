@@ -3,12 +3,13 @@ local scene = {}
 LEVELNO = 0
 MENU = {}
 
+DEBUGDRAW = false
+
 function scene.LoadScene()
     MENU.STATE = "title"
     MENU.BACKGROUNDSCROLL = 0
     MENU.BACKGROUNDTILESSCROLL = 0
     MENU.TIMER = 0
-    MENU.DEBUGDRAW = false
 
     MENU.DUSTTIMER = 0
     MENU.EFFECTS = {}
@@ -255,7 +256,7 @@ function scene.Draw()
         end
 
         MENU.UI.MENU:Draw()
-        if MENU.DEBUGDRAW then
+        if DEBUGDRAW then
             MENU.UI.MENU:DebugDraw()
         end
         return
@@ -266,12 +267,12 @@ function scene.Draw()
 
     if MENU.STATE == "levelselect" then
         MENU.UI.LEVELSELECT:Draw()
-        if MENU.DEBUGDRAW then
+        if DEBUGDRAW then
             MENU.UI.LEVELSELECT:DebugDraw()
         end
     elseif MENU.STATE == "settings" then
         MENU.UI.SETTINGS:Draw()
-        if MENU.DEBUGDRAW then
+        if DEBUGDRAW then
             MENU.UI.SETTINGS:DebugDraw()
         end
     end
@@ -304,7 +305,7 @@ function scene.Keypressed(key)
     if key == "q" then
         MENU.RESETTIMER = 0
     end
-    if key == "tab" then MENU.DEBUGDRAW = not MENU.DEBUGDRAW end
+    if key == "tab" then DEBUGDRAW = not DEBUGDRAW end
 end
 
 function scene.Keyreleased(key)

@@ -6,7 +6,7 @@
  <properties>
   <property name="DEBUG" type="bool" value="false"/>
   <property name="crate" type="int" value="0"/>
-  <property name="dialog_name" value="none"/>
+  <property name="dialog_name" value="level7"/>
   <property name="level_name" value="walking on air"/>
   <property name="orb" type="int" value="1"/>
   <property name="platform" type="int" value="0"/>

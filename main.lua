@@ -11,7 +11,7 @@ function love.load()
     FrameImg = love.graphics.newImage("graphics/frame.png")
     FrameMenuImg = love.graphics.newImage("graphics/framemenu.png")
     InventoryImg, InventoryQuads = LoadSprites{path="graphics/inventory.png",xquads=10,yquads=1,xquadnames={"slot",1,2,3,4,5,6,7,8,9}}
-    ItemselecterImg = love.graphics.newImage("graphics/itemselecter.png")
+    ItemselecterImg, ItemselecterQuads = LoadSprites{path="graphics/itemselecter.png",xquads=3,yquads=1}
     DialogImg = love.graphics.newImage("graphics/dialog.png")
 
     WaterImg, WaterQuads = LoadSprites{path="graphics/water.png",xquads=4,yquads=2}
@@ -32,7 +32,7 @@ function love.load()
     TeleporterImg, TeleporterQuads = LoadSprites{path="graphics/teleporter.png",xquads=6,yquads=1}
     BallImg, BallQuads = LoadSprites{path="graphics/ball.png",xquads=3,yquads=1}
 
-    EffectImg, EffectQuads = LoadSprites{path="graphics/particle.png",xquads=4,yquads=2,yquadnames={"dust","star"}}
+    EffectImg, EffectQuads = LoadSprites{path="graphics/particle.png",xquads=4,yquads=4,yquadnames={"dust","star","confetti","redstar"}}
 
     -- Load Sounds --
     DiscardSound = love.audio.newSource("audio/discard.mp3","static")
@@ -66,6 +66,7 @@ function love.load()
         love.audio.newSource("audio/talk9.mp3","static")
     }
     TeleportSound = love.audio.newSource("audio/teleport.mp3","static")
+    HuhSound = love.audio.newSource("audio/itsvictoryorthegrave.mp3","static")
 
     MainThemeMusic = love.audio.newSource("audio/maintheme.mp3","stream")
     MainThemeMusic:setLooping(true)
@@ -77,26 +78,25 @@ function love.load()
     MUSIC = {PlaceMusic,MainThemeMusic,EditThemeMusic}
 
     -- Load Items --
-
     ItemsImg, ItemsQuads = LoadSprites{path="graphics/items.png",xquads=14,yquads=1}
 
     _ITEMS_ORDER = {"springboard","crate","platform","yellowkey","redkey","orb","yellowdoorver","yellowdoorhor","reddoorver","reddoorhor","teleporterbluein","teleporterblueout","teleporterorangein","teleporterorangeout"}
-    _ITEM_CLASSES = {"springboard","crate","platform","key","door","orb","teleporter"}
+    _ITEM_CLASSES = {"key","orb","teleporter","springboard","platform","crate","door"}
     _ITEMS = {}
-    _ITEMS.springboard =   {name="springboard",  class="springboard",img=ItemsImg,quad=ItemsQuads[1], spawn={ox=1,oy=14,w=14,h=2}}
-    _ITEMS.crate =         {name="crate",        class="crate",      img=ItemsImg,quad=ItemsQuads[2], spawn={ox=0,oy=0,w=16,h=16}}
-    _ITEMS.platform =      {name="platform",     class="platform",   img=ItemsImg,quad=ItemsQuads[3], spawn={ox=0,oy=0,w=16,h=16}}
-    _ITEMS.yellowkey =     {name="yellowkey",    class="key",        img=ItemsImg,quad=ItemsQuads[4], spawn={ox=4,oy=2,w=8,h=12}, args={color="yellow"}}
-    _ITEMS.redkey =        {name="redkey",       class="key",        img=ItemsImg,quad=ItemsQuads[5], spawn={ox=4,oy=2,w=8,h=12}, args={color="red"}}
-    _ITEMS.orb =           {name="orb",          class="orb",        img=ItemsImg,quad=ItemsQuads[6], spawn={ox=2,oy=2,w=12,h=12}}
-    _ITEMS.yellowdoorver = {name="yellowdoorver",class="door",       img=ItemsImg,quad=ItemsQuads[7], spawn={ox=4,oy=0,w=8,h=32}, args={color="yellow"}}
-    _ITEMS.yellowdoorhor = {name="yellowdoorhor",class="door",       img=ItemsImg,quad=ItemsQuads[9], spawn={ox=0,oy=4,w=32,h=8}, args={color="yellow",dir="hor"}}
-    _ITEMS.reddoorver =    {name="reddoorver",   class="door",       img=ItemsImg,quad=ItemsQuads[8], spawn={ox=4,oy=0,w=8,h=32}, args={color="red"}}
-    _ITEMS.reddoorhor =    {name="reddoorhor",   class="door",       img=ItemsImg,quad=ItemsQuads[10],spawn={ox=0,oy=4,w=32,h=8}, args={color="red",dir="hor"}}
-    _ITEMS.teleporterbluein =  {name="teleporterbluein", class="teleporter", img=ItemsImg,quad=ItemsQuads[11],spawn={ox=2,oy=2,w=12,h=14},args={id="blue",other=false}}
-    _ITEMS.teleporterblueout = {name="teleporterblueout",class="teleporter", img=ItemsImg,quad=ItemsQuads[12],spawn={ox=2,oy=2,w=12,h=14},args={id="blue",other=true}}
-    _ITEMS.teleporterorangein =  {name="teleporterorangein", class="teleporter", img=ItemsImg,quad=ItemsQuads[13],spawn={ox=2,oy=2,w=12,h=14},args={id="orange",other=false}}
-    _ITEMS.teleporterorangeout = {name="teleporterorangeout",class="teleporter", img=ItemsImg,quad=ItemsQuads[14],spawn={ox=2,oy=2,w=12,h=14},args={id="orange",other=true}}
+    _ITEMS.springboard =         {displayname="springboard",            name="springboard",        class="springboard",img=ItemsImg,quad=ItemsQuads[1], spawn={ox=1,oy=14,w=14,h=2}}
+    _ITEMS.crate =               {displayname="crate",                  name="crate",              class="crate",      img=ItemsImg,quad=ItemsQuads[2], spawn={ox=0,oy=0,w=16,h=16}}
+    _ITEMS.platform =            {displayname="platform",               name="platform",           class="platform",   img=ItemsImg,quad=ItemsQuads[3], spawn={ox=0,oy=0,w=16,h=16}}
+    _ITEMS.yellowkey =           {displayname="yellow key",             name="yellowkey",          class="key",        img=ItemsImg,quad=ItemsQuads[4], spawn={ox=4,oy=2,w=8,h=12}, args={color="yellow"}}
+    _ITEMS.redkey =              {displayname="red key",                name="redkey",             class="key",        img=ItemsImg,quad=ItemsQuads[5], spawn={ox=4,oy=2,w=8,h=12}, args={color="red"}}
+    _ITEMS.orb =                 {displayname="orb",                    name="orb",                class="orb",        img=ItemsImg,quad=ItemsQuads[6], spawn={ox=2,oy=2,w=12,h=12}}
+    _ITEMS.yellowdoorver =       {displayname="yellow door (hor)",      name="yellowdoorver",      class="door",       img=ItemsImg,quad=ItemsQuads[7], spawn={ox=4,oy=0,w=8,h=32}, args={color="yellow"}}
+    _ITEMS.yellowdoorhor =       {displayname="yellow door (ver)",      name="yellowdoorhor",      class="door",       img=ItemsImg,quad=ItemsQuads[9], spawn={ox=0,oy=4,w=32,h=8}, args={color="yellow",dir="hor"}}
+    _ITEMS.reddoorver =          {displayname="red door (hor)",         name="reddoorver",         class="door",       img=ItemsImg,quad=ItemsQuads[8], spawn={ox=4,oy=0,w=8,h=32}, args={color="red"}}
+    _ITEMS.reddoorhor =          {displayname="red door (ver)",         name="reddoorhor",         class="door",       img=ItemsImg,quad=ItemsQuads[10],spawn={ox=0,oy=4,w=32,h=8}, args={color="red",dir="hor"}}
+    _ITEMS.teleporterbluein =    {displayname="teleporter blue (in)",   name="teleporterbluein",   class="teleporter", img=ItemsImg,quad=ItemsQuads[11],spawn={ox=2,oy=2,w=12,h=14},args={id="blue",other=false}}
+    _ITEMS.teleporterblueout =   {displayname="teleporter blue (out)",  name="teleporterblueout",  class="teleporter", img=ItemsImg,quad=ItemsQuads[12],spawn={ox=2,oy=2,w=12,h=14},args={id="blue",other=true}}
+    _ITEMS.teleporterorangein =  {displayname="teleporter orange (in)", name="teleporterorangein", class="teleporter", img=ItemsImg,quad=ItemsQuads[13],spawn={ox=2,oy=2,w=12,h=14},args={id="orange",other=false}}
+    _ITEMS.teleporterorangeout = {displayname="teleporter orange (out)",name="teleporterorangeout",class="teleporter", img=ItemsImg,quad=ItemsQuads[14],spawn={ox=2,oy=2,w=12,h=14},args={id="orange",other=true}}
 
     -- Load Libraries --
     Class = require("libs.middleclass")
@@ -127,7 +127,6 @@ function love.load()
     UpdateVolume(MUSIC,SETTINGS:Get("music"))
 
     TRANSITION = {timer=0.5,time=1,to=false,x=0,dir=1}
-
     SCENE:LoadScene("menu")
 end
 

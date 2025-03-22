@@ -30,7 +30,7 @@ function springboard:draw()
 
     love.graphics.setColor(1,1,1)
     love.graphics.draw(SpringboardImg,SpringboardQuads[quad],self.X+self.offsetx,self.Y+self.offsety,0,1,1,self.quadcenterx,self.quadcentery)
-    if GAME.DEBUGDRAW then
+    if DEBUGDRAW then
         love.graphics.setColor(1,1,1,0.5)
         love.graphics.rectangle("fill",self.X,self.Y,self.W,self.H)
     end
@@ -85,7 +85,7 @@ end
 function crate:draw()
     love.graphics.setColor(1,1,1)
     love.graphics.draw(CrateImg,self.X+self.offsetx,self.Y+self.offsety,0,1,1,self.quadcenterx,self.quadcentery)
-    if GAME.DEBUGDRAW then
+    if DEBUGDRAW then
         love.graphics.setColor(1,1,1,0.5)
         love.graphics.rectangle("fill",self.X,self.Y,self.W,self.H)
     end
@@ -136,7 +136,7 @@ function platform:draw()
 
     love.graphics.setColor(1,1,1)
     love.graphics.draw(PlatformImg,PlatformQuads[quad],self.X+self.offsetx,self.Y+self.offsety,0,1,1,self.quadcenterx,self.quadcentery)
-    if GAME.DEBUGDRAW then
+    if DEBUGDRAW then
         love.graphics.setColor(1,1,1,0.5)
         love.graphics.rectangle("fill",self.X,self.Y,self.W,self.H)
     end
@@ -198,7 +198,7 @@ function orb:draw()
         love.graphics.setLineWidth(_linewidth)
     end
 
-    if GAME.DEBUGDRAW then
+    if DEBUGDRAW then
         love.graphics.setColor(1,1,1,0.5)
         love.graphics.rectangle("fill",self.X,self.Y,self.W,self.H)
     end
@@ -252,7 +252,7 @@ function teleporter:draw()
     love.graphics.setColor(1,1,1)
     love.graphics.draw(TeleporterImg,TeleporterQuads[quad],self.X+self.offsetx,self.Y+self.offsety,0,1,1,self.quadcenterx,self.quadcentery)
 
-    if GAME.DEBUGDRAW then
+    if DEBUGDRAW then
         love.graphics.setColor(1,1,1,0.5)
         love.graphics.rectangle("fill",self.X,self.Y,self.W,self.H)
     end

@@ -10,7 +10,7 @@ return {
   tilewidth = 16,
   tileheight = 16,
   nextlayerid = 6,
-  nextobjectid = 40,
+  nextobjectid = 44,
   properties = {
     ["DEBUG"] = true,
     ["dialog_name"] = "none",
@@ -222,14 +222,14 @@ return {
           name = "",
           type = "conveyorbelt",
           shape = "rectangle",
-          x = 224,
-          y = 240,
-          width = 80,
+          x = 160,
+          y = 0,
+          width = 160,
           height = 16,
           rotation = 0,
           visible = true,
           properties = {
-            ["speed"] = 64
+            ["speed"] = -64
           }
         },
         {
@@ -262,6 +262,68 @@ return {
           properties = {
             ["id"] = "boner",
             ["other"] = false
+          }
+        },
+        {
+          id = 40,
+          name = "",
+          type = "door",
+          shape = "rectangle",
+          x = 240,
+          y = 176,
+          width = 16,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["color"] = "blue",
+            ["dir"] = "ver"
+          }
+        },
+        {
+          id = 41,
+          name = "",
+          type = "door",
+          shape = "rectangle",
+          x = 240,
+          y = 128,
+          width = 16,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["color"] = "green",
+            ["dir"] = "ver"
+          }
+        },
+        {
+          id = 42,
+          name = "",
+          type = "key",
+          shape = "rectangle",
+          x = 176,
+          y = 128,
+          width = 16,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["color"] = "green"
+          }
+        },
+        {
+          id = 43,
+          name = "",
+          type = "key",
+          shape = "rectangle",
+          x = 176,
+          y = 176,
+          width = 16,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["color"] = "blue"
           }
         }
       }
