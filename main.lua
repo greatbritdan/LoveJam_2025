@@ -161,7 +161,7 @@ function love.update(dt)
         end
     end
 
-    INPUT:Update()
+    --INPUT:Update()
     SCENE:Update(dt)
 end
 
@@ -187,13 +187,13 @@ function love.mousepressed(x,y,b)
         _BRITUI.INPUTTING.inputting = false
     end
     _BRITUI.INPUTTING = nil
-    INPUT:Mousepressed(b)
+    --INPUT:Mousepressed(b)
     SCENE:Run("Mousepressed",{x,y,b})
 end
 function love.mousereleased(x,y,b)
     if TRANSITION then return end
     x, y = x/Env.scale, y/Env.scale
-    INPUT:Mousereleased(b)
+    --INPUT:Mousereleased(b)
     SCENE:Run("Mousereleased",{x,y,b})
 end
 
@@ -202,26 +202,26 @@ function love.keypressed(key)
         love.event.quit()
     end
     if TRANSITION then return end
-    INPUT:Keypressed(key)
+    --INPUT:Keypressed(key)
     SCENE:Run("Keypressed",{key})
 end
 function love.keyreleased(key)
     if TRANSITION then return end
-    INPUT:Keyreleased(key)
+    --INPUT:Keyreleased(key)
     SCENE:Run("Keyreleased",{key})
 end
 
 function love.gamepadpressed(s,b)
     if TRANSITION then return end
-    INPUT:Gamepadpressed(s,b)
+    --INPUT:Gamepadpressed(s,b)
 end
 function love.gamepadreleased(s,b)
     if TRANSITION then return end
-    INPUT:Gamepadreleased(s,b)
+    --INPUT:Gamepadreleased(s,b)
 end
 function love.gamepadaxis(s,a,v)
     if TRANSITION then return end
-    INPUT:Gamepadaxis(s,a,v)
+    --INPUT:Gamepadaxis(s,a,v)
 end
 
 function InputPressed(name,dir)
