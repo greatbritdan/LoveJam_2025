@@ -1,8 +1,12 @@
 # Love Jam 2025
-Game for the Love Jam 2025 - Premeditated!
+You can control the world, but not the consequences.
 
-A game where you can't control the player and instead have to shape the world to bring the player to the goal!
-Features 15 levels!
+Made for the Love2d Game Jam (2025), all the graphics, audio and gameplay was made in 9 days over the course of around 80 Hours! This year I struggled to find a starting idea to expand on, I made several prototypes for other games which I might show off in a video like I did last year.
+
+# Controls
+
+- Q to clear save (hold for 3 seconds)
+- Space to play (or click the on screen button)
 
 # Credits
 - middleclass by Enrique García Cota (kikito): https://github.com/kikito/middleclass
