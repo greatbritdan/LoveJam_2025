@@ -107,7 +107,7 @@ function love.load()
     SCENE = require("libs.BritScene")
     SAVE = require("libs.BritSaveManager")
     MAP = require("libs.BritMap")
-    INPUT = require("libs.BritInput")
+    --INPUT = require("libs.BritInput") -- unused
 
     -- Load Classes -- 
     OBJECTS = {}
