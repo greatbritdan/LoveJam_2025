@@ -157,7 +157,7 @@ function player:update(dt)
             end
         end
         if data.obj.class == "teleporter" and (not self.teleportcooldown) then
-            if AABB(self.X+self.W/2-1,self.Y+self.H/2-1,2,2,data.obj.X+(data.obj.W/2)-1,data.obj.Y+(data.obj.H/2)-1,2,2) then
+            if AABB(self.X+self.W/2-2,self.Y+self.H/2-2,4,4,data.obj.X+(data.obj.W/2)-1,data.obj.Y+(data.obj.H/2)-1,2,2) then
                 local other = GetOtherTeleporter(data.obj.id,data.obj.other)
                 if other then
                     self.balls = {{X=data.obj.X-10,Y=data.obj.Y-10},{X=other.X-10,Y=other.Y-10}}
@@ -248,7 +248,7 @@ function player:draw()
         love.graphics.rectangle("fill",self.X+self.W/2-1,self.Y+self.H/2-1,2,2)
     end
 
-    if self.balls then
+    if self.balls then -- BALLS??????
         local quad = 3
         if self.teleportid == "blue" then quad = 1 end
         if self.teleportid == "orange" then quad = 2 end
@@ -284,6 +284,7 @@ function player:stop()
     self.inair = false
     self.orbed = false
     self.gravity = 180
+    self.balls = false
 
     self.dying = false
     self.dead = false

@@ -45,8 +45,6 @@ function scene.LoadScene()
     GAME.ITEMS_ALLOW = {}
     GAME.MAPPOS = {X=8,Y=8}
 
-    GAME.DEBUG = false
-
     GAME.PLAYER = false
     GAME.SIMULATING = false
 
@@ -65,11 +63,10 @@ function scene.LoadScene()
 
     -- Load inventory
     local inv_data = GAME.MAP.raw.properties
-    if inv_data.DEBUG or SETTINGS:Get("secret_debug") then GAME.DEBUG = true end
 
     GAME.INVENTORY = INVENTORY:new()
     for _,itemname in pairs(_ITEMS_ORDER) do
-        if GAME.DEBUG then
+        if DEVMODE then
             GAME.INVENTORY:addItem(_ITEMS[itemname].name,99999999) -- Add all items
         else
             if inv_data[_ITEMS[itemname].name] and inv_data[_ITEMS[itemname].name] > 0 then
@@ -91,7 +88,7 @@ function scene.LoadScene()
     GAME.UI.MENU = UI.BUTTON:new({X=8,Y=8,W=118,H=19},{children={{text="menu"}},repeating=false,func=function() ExitGame() end},"basic")
 
     GAME.UI.SIDEBAR = UI.MATRIX:new({X=345,Y=99,W=126,H=166},{},"basic")
-    if GAME.DEBUG then
+    if DEVMODE then
         GAME.UI.RELOAD = UI.BUTTON:new({X=8,Y=30,W=118,H=19},{children={{text="reload"}},repeating=false,func=function() ChooseLevel(LEVELNO) end},"basic")
         GAME.UI.SIDEBAR:Setup{BC={{GAME.UI.PLAY},{GAME.UI.MENU},{GAME.UI.RELOAD}}}
     else
@@ -186,8 +183,13 @@ function scene.Update(dt)
         if LEVELNO >= SETTINGS:Get("level") then
             SETTINGS:Set("level",LEVELNO); SETTINGS:SAVE()
         end
-        LASTLEVEL = LEVELNO
-        NextLevel()
+        if LEVELNO == 15 then
+            GAMEWON = true
+            ExitGame()
+        else
+            LASTLEVEL = LEVELNO
+            NextLevel()
+        end
         GAME.QueueNextLevel = false
     end
 end
@@ -344,7 +346,7 @@ function scene.Mousereleased(mx,my,b)
         if v.moving then
             local tilex, tiley = GetTileAtPos(mx,my,true)
             if InMap(tilex,tiley) then
-                if (not GAME.DEBUG) and ((not GAME.ITEMS_ALLOW[tilex.."-"..tiley]) or HasItem(tilex,tiley,v)) then
+                if (not DEVMODE) and ((not GAME.ITEMS_ALLOW[tilex.."-"..tiley]) or HasItem(tilex,tiley,v)) then
                     if v.oldx then
                         v.X, v.Y = v.oldx, v.oldy
                         PlaceSound:play()
@@ -374,7 +376,7 @@ function scene.Keypressed(key)
         return
     end
     if key == "space" then ToggleSimulation() end
-    if key == "tab" then DEBUGDRAW = not DEBUGDRAW end
+    if DEVMODE and key == "tab" then DEBUGDRAW = not DEBUGDRAW end
 end
 
 function ToggleSimulation()

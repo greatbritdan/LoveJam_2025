@@ -125,6 +125,7 @@ function love.load()
     SETTINGS:LOAD()
     UpdateVolume(SOUNDS,SETTINGS:Get("sounds"))
     UpdateVolume(MUSIC,SETTINGS:Get("music"))
+    DEVMODE = SETTINGS:Get("devmode")
 
     TRANSITION = {timer=0.5,time=1,to=false,x=0,dir=1}
     SCENE:LoadScene("menu")

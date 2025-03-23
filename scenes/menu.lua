@@ -4,9 +4,15 @@ LEVELNO = 0
 MENU = {}
 
 DEBUGDRAW = false
+GAMEWON = false
 
 function scene.LoadScene()
-    MENU.STATE = "title"
+    if GAMEWON then
+        MENU.STATE = "win"
+        GAMEWON = false
+    else
+        MENU.STATE = "title"
+    end
     MENU.BACKGROUNDSCROLL = 0
     MENU.BACKGROUNDTILESSCROLL = 0
     MENU.TIMER = 0
@@ -70,8 +76,10 @@ function scene.LoadScene()
         end
     end
 
-    MENU.UI.leveltest = UI.BUTTON:new({W=166,H=24},{children={{text="test"}},repeating=false,func=function() ChooseLevel(0) end},"basic")
-    MENU.UI.LEVELSELECT:Add(MENU.UI.leveltest,"MC","vertical")
+    if DEVMODE then
+        MENU.UI.leveltest = UI.BUTTON:new({W=166,H=24},{children={{text="test"}},repeating=false,func=function() ChooseLevel(0) end},"basic")
+        MENU.UI.LEVELSELECT:Add(MENU.UI.leveltest,"MC","vertical")
+    end
 
     MENU.UI.spacer = UI.SPACER:new({W=166,H=12},{},"basic")
     MENU.UI.LEVELSELECT:Add(MENU.UI.spacer,"MC","vertical")
@@ -130,6 +138,24 @@ function scene.LoadScene()
         {MENU.UI.back_settings}
     }}
     MENU.UI.SETTINGS:Recaclulate()
+
+    
+    -- WIN, YIPEE!!
+    MENU.UI.WIN = UI.MATRIX:new({X=0,Y=0,W=Env.width,H=Env.height},{},"basic")
+
+    MENU.UI.congratulations = UI.TEXT:new({W=206,H=18},{text="congratulations!",scale=2},"basic")
+    MENU.UI.hype = UI.TEXT:new({W=206,H=12},{text="you've completed the game!"},"basic")
+    MENU.UI.spacer_win = UI.SPACER:new({W=166,H=146},{},"basic")
+    MENU.UI.back_win = UI.BUTTON:new({W=166,H=24},{children={{text="back to menu"}},repeating=false,func=function() MENU.STATE = "title" end},"basic") 
+
+    MENU.UI.WIN:Setup{MC={
+        {MENU.UI.congratulations},
+        {MENU.UI.hype},
+        {MENU.UI.spacer_win},
+        {MENU.UI.back_win}
+    }}
+    MENU.UI.WIN:Recaclulate()
+
 
     MainThemeMusic:play()
 end
@@ -199,6 +225,8 @@ function scene.Update(dt)
         MENU.UI.LEVELSELECT:Update(dt)
     elseif MENU.STATE == "settings" then
         MENU.UI.SETTINGS:Update(dt)
+    elseif MENU.STATE == "win" then
+        MENU.UI.WIN:Update(dt)
     end
 end
 
@@ -275,6 +303,15 @@ function scene.Draw()
         if DEBUGDRAW then
             MENU.UI.SETTINGS:DebugDraw()
         end
+    elseif MENU.STATE == "win" then
+        love.graphics.setColor(1,1,1)
+        local sin = math.sin(MENU.TIMER*4)*2
+        love.graphics.draw(PlayerImg,PlayerQuads[9],(Env.width/2)-32,(Env.height/2)-32+sin,0,4,4)
+
+        MENU.UI.WIN:Draw()
+        if DEBUGDRAW then
+            MENU.UI.WIN:DebugDraw()
+        end
     end
 end
 
@@ -288,6 +325,8 @@ function scene.Mousepressed(mx,my,b)
         MENU.UI.SETTINGS:Mousepressed(mx,my,b)
     elseif MENU.STATE == "secret" then
         MENU.UI.SECRET:Mousepressed(mx,my,b)
+    elseif MENU.STATE == "win" then
+        MENU.UI.WIN:Mousepressed(mx,my,b)
     end
 end
 function scene.Mousereleased(mx,my,b)
@@ -298,6 +337,10 @@ function scene.Mousereleased(mx,my,b)
         MENU.UI.LEVELSELECT:Mousereleased(mx,my,b)
     elseif MENU.STATE == "settings" then
         MENU.UI.SETTINGS:Mousereleased(mx,my,b)
+    elseif MENU.STATE == "secret" then
+        MENU.UI.SECRET:Mousereleased(mx,my,b)
+    elseif MENU.STATE == "win" then
+        MENU.UI.WIN:Mousereleased(mx,my,b)
     end
 end
 
@@ -305,7 +348,7 @@ function scene.Keypressed(key)
     if key == "q" then
         MENU.RESETTIMER = 0
     end
-    if key == "tab" then DEBUGDRAW = not DEBUGDRAW end
+    if DEVMODE and key == "tab" then DEBUGDRAW = not DEBUGDRAW end
 end
 
 function scene.Keyreleased(key)
